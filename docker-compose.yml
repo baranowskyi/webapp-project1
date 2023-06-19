@@ -1,0 +1,40 @@
+version: "3.8"
+
+services: 
+
+  webapp:    
+    build:
+      context: .
+    container_name: app   
+    environment:
+      - DB_HOST=db_postgres
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS} 
+      - DB_ENGINE=${DB_ENGINE}
+      - DEBUG=${DEBUG}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - SECRET_KEY=${SECRET_KEY}
+      - TZ=${TZ}
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./webapp:/webapp      
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      - db_postgres 
+
+  db_postgres:      
+    image: postgres:15.3-alpine3.18 
+    container_name: db      
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - TZ=${TZ}
+    volumes:
+    - ./postgres_data:/var/lib/postgresql/data  
+    ports:
+      - "5432:5432"
+    

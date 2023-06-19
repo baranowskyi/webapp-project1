@@ -1,0 +1,8 @@
+.git
+.cache
+*.md
+__pycache__/
+
+.env
+.venv/
+.gitignore
