@@ -1,40 +1,20 @@
-from django.contrib.auth import get_user_model
 from django.db import models
 
-from django.core.validators import FileExtensionValidator, EmailValidator
+# validators
+from django.core.validators import FileExtensionValidator
 
 #modifided slug for english and russian words
 from pytils.translit import slugify
 
+# signals
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
-User = get_user_model()
+from users.models import UserSite
 
-
-class User(models.Model):
-    login = models.CharField('Login', max_length=50, null=False, unique=True)
-    password = models.CharField('Password', max_length=50, null=False, unique=True)
-    email = models.EmailField('Email', max_length=50, null=False, unique=True, validators=[EmailValidator(message="Invalid Email")])
-    pro_user = models.BooleanField("Pro User", default=False, editable=False)   
-     
-    class Meta:
-        verbose_name = 'User'
-        verbose_name_plural = 'Users'
-        ordering = ('id',)
-
-    def __str__(self):        
-        return f"{self.login}"
- 
-# def get_upload_path(instance, filename):
-#    return f'{instance.Artist.display_name}'
-
-# @staticmethod
-# def get_url():
-#     url = UserSite.login
-#     return f'{url}'  
-   
 class Artist(models.Model):    
     display_name = models.CharField("Artist Name", max_length=100, null=True, blank=True)
-    slug_artist = models.SlugField("Slug Artist", max_length=100, null=True, editable=False, unique=True)   
+    slug_artist = models.SlugField("Slug Artist", max_length=100, null=True, editable=False, unique=True)
     profile_url = models.URLField("Profile URL", default="", null=False, unique=True)
     avatar_link = models.ImageField("Avatar", upload_to="", default="media/site/default_logo.png", blank=True)
     verification = models.BooleanField("Verification", default=False, editable=False)
@@ -44,15 +24,27 @@ class Artist(models.Model):
     country = models.CharField("Country", max_length=30, null=True, blank=True)
     bio = models.TextField("Bio", max_length=500, null=True, blank=True)
     #social_network =
-    user = models.OneToOneField('core.User', models.CASCADE, related_name='artist')
+    username = models.OneToOneField('users.UserSite', models.CASCADE)
     
     # def save(self, *args, **kwargs):        
     #     if not self.display_name:                
     #         self.slug_artist = self.email.split('@')[0]
     #     else:    
     #         self.slug_artist = slugify(self.display_name)
-    #     super(Artist, self).save(*args, **kwargs)    
+    #     super(Artist, self).save(*args, **kwargs)
 
+    #create artist after create user 
+    @receiver(post_save, sender=UserSite)
+    def create_artist(sender, instance, created, **kwargs):
+        if created:
+            Artist.objects.create(username=instance) 
+
+    # @receiver(post_save, sender=User)  
+    # def post_save_artist(sender, instance, created, **kwargs):
+    #     if not hasattr(instance, 'user'):
+    #         Artist.objects.create(user=instance)             
+      
+  
     class Meta:
         verbose_name = 'Artist'
         verbose_name_plural = 'Artists'
@@ -60,6 +52,36 @@ class Artist(models.Model):
 
     def __str__(self):        
         return f"{self.display_name}"
+    
+    
+class Profile(models.Model):
+    follower_counter = models.PositiveIntegerField("Follower Counter", default=0, editable=False)
+    following_counter = models.PositiveIntegerField("Following Counter", default=0, editable=False)
+    track_counter = models.PositiveIntegerField("Track Counter", default=0, editable=False)
+    like_counter = models.PositiveIntegerField("Like Counter", default=0, editable=False)
+    header_link = models.FileField("Header Cover", upload_to="user", default="site/default_background.jpg", null=True, blank=True)
+    artist = models.OneToOneField('core.Artist', models.CASCADE)
+
+    # create profile after create artist 
+    @receiver(post_save, sender=Artist)
+    def create_profile(sender, instance, created, **kwargs):
+        if created:
+            Profile.objects.create(artist=instance)
+    
+    
+    # @receiver(post_save, sender=Artist)  
+    # def post_save_profile(sender, instance, created, **kwargs):
+    #     if not hasattr(instance, 'profile'):
+    #         Profile.objects.create(artist=instance)   
+
+    class Meta:
+        verbose_name = 'Profile'
+        verbose_name_plural = 'Profile'
+        ordering = ('id',)
+
+    def __str__(self):        
+        return f"id {self.pk}"
+
     
     
 class Track(models.Model):
@@ -83,7 +105,7 @@ class Track(models.Model):
     like_counter = models.PositiveIntegerField("Like Counter", default=0, editable=False)
     repost_counter = models.PositiveIntegerField("Repost Counter", default=0, editable=False)
     comment_counter = models.PositiveIntegerField("Comment Counter", default=0, editable=False)
-    artist = models.ForeignKey('core.Artist', models.CASCADE, related_name='tracks')
+    profile = models.ForeignKey('core.Profile', models.CASCADE)
     
     def save(self, *args, **kwargs):        
         if not self.title:
@@ -115,22 +137,7 @@ class Comment(models.Model):
 
     def __str__(self):        
         return f"id {self.pk}"
-    
-class Profile(models.Model):
-    follower_counter = models.PositiveIntegerField("Follower Counter", default=0, editable=False)
-    following_counter = models.PositiveIntegerField("Following Counter", default=0, editable=False)
-    track_counter = models.PositiveIntegerField("Track Counter", default=0, editable=False)
-    like_counter = models.PositiveIntegerField("Like Counter", default=0, editable=False)
-    header_link = models.FileField("Header Cover", upload_to="user", default="site/default_logo.png", null=True, blank=True)
-    artist = models.OneToOneField('core.Artist', models.CASCADE, related_name='profile')
 
-    class Meta:
-        verbose_name = 'Profile'
-        verbose_name_plural = 'Profile'
-        ordering = ('id',)
-
-    def __str__(self):        
-        return f"id {self.pk}"
     
 class Like(models.Model):
     like = models.BooleanField("Like", default=False)
@@ -145,6 +152,7 @@ class Like(models.Model):
     def __str__(self):        
         return f"id {self.pk}"
     
+    
 class SocialNetwork(models.Model):
     name = models.CharField('Social Network', max_length=50)
     url = models.URLField("Profile URL", max_length=200)
@@ -157,6 +165,7 @@ class SocialNetwork(models.Model):
 
     def __str__(self):        
         return f"id {self.pk}"
+    
 
 class Repost(models.Model):
     repost = models.BooleanField("Repost", default=False)
