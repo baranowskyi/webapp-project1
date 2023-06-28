@@ -22,44 +22,54 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',   
-    
+    'django.contrib.staticfiles',  
 ]
 
 # installed app
 INSTALLED_APPS += [
-    'rest_framework',
-    'drf_spectacular',
-    
+    'rest_framework',    
+    'django_filters',
 ]
 
 # project app
 INSTALLED_APPS += [
     'core',
     'users',
-    
+]
+
+#absolute URL generate
+INSTALLED_APPS += (
+    'django.contrib.sites',
+    'absoluteuri',
+)
+ABSOLUTEURI_PROTOCOL = 'http'
+SITE_ID = 1
+
+# documentation app (recomended install after all app install)
+INSTALLED_APPS += [
+    'drf_spectacular',
 ]
 
 # redefine Django User model
 AUTH_USER_MODEL = 'users.UserSite'
 
 REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
-    # 'DEFAULT_PERMISSION_CLASSES': [
-    #   'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    # ],   
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
-}
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
 
-SPECTACULAR_SETTINGS = {
-    "TITLE": "SoundCloud Copy API", # название проекта
-    "VERSION": "0.0.1", # версия проекта
-    "SERVE_INCLUDE_SCHEMA": False, # исключить эндпоинт /schema
-    "SWAGGER_UI_SETTINGS": {
-        "filter": True, # включить поиск по тегам
-    },
-    "COMPONENT_SPLIT_REQUEST": True
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+    ],
+
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser',
+        'rest_framework.parsers.FileUploadParser',
+    ],
+
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 
@@ -78,7 +88,9 @@ ROOT_URLCONF = 'webapp.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR / 'templates',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -128,11 +140,36 @@ USE_TZ = True
 
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# drf documentation
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'SoundCloud Copy API', 
+    'VERSION': '0.0.1', 
+    'SERVE_INCLUDE_SCHEMA': False, # exclude endpoint /schema
+
+    'SERVE_PERMISSIONS': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+
+    'SERVE_AUTHENTICATION': [
+        'rest_framework.authentication.BasicAuthentication',
+    ],
+
+    'SWAGGER_UI_SETTINGS': {
+        'filter': True, # tag search
+        'DeeLinking': True,
+        'DisplayOperationId': True,
+    },
+
+    'COMPONENT_SPLIT_REQUEST': True,
+    'SORT_OPERATIONS': False,
+}
 

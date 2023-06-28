@@ -12,11 +12,19 @@ from django.dispatch import receiver
 
 from users.models import UserSite
 
+from core.service_functions import services
+
+
 class Artist(models.Model):    
     display_name = models.CharField("Artist Name", max_length=100, null=True, blank=True)
     slug_artist = models.SlugField("Slug Artist", max_length=100, null=True, editable=False, unique=True)
-    profile_url = models.URLField("Profile URL", default="", null=False, unique=True)
-    avatar_link = models.ImageField("Avatar", upload_to="", default="media/site/default_logo.png", blank=True)
+    profile_url = models.URLField("Profile URL", null=False, unique=True, blank=True)
+    avatar_link = models.ImageField("Avatar", upload_to=services.get_avatar_upload_path, default="site/default_logo.png", blank=True,
+                                        validators=[
+                                        FileExtensionValidator(allowed_extensions=['jpg', 'png', 'gif']), 
+                                        services.validate_size_avatar
+                                        ]
+                                    )
     verification = models.BooleanField("Verification", default=False, editable=False)
     first_name = models.CharField("First Name", max_length=30, null=True, blank=True)
     last_name = models.CharField("Last Name", max_length=30, null=True, blank=True)
@@ -25,13 +33,6 @@ class Artist(models.Model):
     bio = models.TextField("Bio", max_length=500, null=True, blank=True)
     #social_network =
     username = models.OneToOneField('users.UserSite', models.CASCADE)
-    
-    # def save(self, *args, **kwargs):        
-    #     if not self.display_name:                
-    #         self.slug_artist = self.email.split('@')[0]
-    #     else:    
-    #         self.slug_artist = slugify(self.display_name)
-    #     super(Artist, self).save(*args, **kwargs)
 
     #create artist after create user 
     @receiver(post_save, sender=UserSite)
@@ -39,12 +40,10 @@ class Artist(models.Model):
         if created:
             Artist.objects.create(username=instance) 
 
-    # @receiver(post_save, sender=User)  
-    # def post_save_artist(sender, instance, created, **kwargs):
-    #     if not hasattr(instance, 'user'):
-    #         Artist.objects.create(user=instance)             
-      
-  
+    def save(self, *args, **kwargs):
+        services.get_artist_profile_url(self)
+        super(Artist, self).save(*args, **kwargs)
+
     class Meta:
         verbose_name = 'Artist'
         verbose_name_plural = 'Artists'
@@ -59,35 +58,38 @@ class Profile(models.Model):
     following_counter = models.PositiveIntegerField("Following Counter", default=0, editable=False)
     track_counter = models.PositiveIntegerField("Track Counter", default=0, editable=False)
     like_counter = models.PositiveIntegerField("Like Counter", default=0, editable=False)
-    header_link = models.FileField("Header Cover", upload_to="user", default="site/default_background.jpg", null=True, blank=True)
+    header_link = models.FileField("Header Cover", upload_to=services.get_profile_background_path, default="site/default_background.jpg", null=True, blank=True, 
+                                        validators=[
+                                        FileExtensionValidator(allowed_extensions=['jpg', 'png', 'gif']), 
+                                        services.validate_size_profile_background
+                                        ]
+                                   )
     artist = models.OneToOneField('core.Artist', models.CASCADE)
 
     # create profile after create artist 
-    @receiver(post_save, sender=Artist)
-    def create_profile(sender, instance, created, **kwargs):
-        if created:
-            Profile.objects.create(artist=instance)
-    
-    
-    # @receiver(post_save, sender=Artist)  
-    # def post_save_profile(sender, instance, created, **kwargs):
-    #     if not hasattr(instance, 'profile'):
-    #         Profile.objects.create(artist=instance)   
-
+    # @receiver(post_save, sender=Artist)
+    # def create_profile(sender, instance, created, **kwargs):
+    #     if created:
+    #         Profile.objects.create(artist=instance)
+   
     class Meta:
         verbose_name = 'Profile'
         verbose_name_plural = 'Profile'
         ordering = ('id',)
 
     def __str__(self):        
-        return f"id {self.pk}"
-
-    
+        return f"id{self.pk}"
+        
     
 class Track(models.Model):
     title = models.CharField("Title", max_length=255, blank=True)
     slug_track = models.SlugField("Slug Title", max_length=255, editable=False, unique=True)
-    file_link = models.FileField("File", upload_to="user", null=False, validators=[FileExtensionValidator(allowed_extensions=['mp3', 'wav'])],)
+    file_link = models.FileField("File", upload_to=services.get_track_upload_path, null=False, 
+                                    validators=[
+                                    FileExtensionValidator(allowed_extensions=['mp3', 'wav']), 
+                                    services.validate_size_track
+                                    ]
+                                 )
     cover_link = models.ImageField("Cover", upload_to="user", default="site/default_logo.png", null=True, blank=True)
     genre = models.CharField("Genre", max_length=30, null=True, blank=True)
     tag = models.CharField("Tag", max_length=200, null=True, blank=True)
@@ -107,12 +109,8 @@ class Track(models.Model):
     comment_counter = models.PositiveIntegerField("Comment Counter", default=0, editable=False)
     profile = models.ForeignKey('core.Profile', models.CASCADE)
     
-    def save(self, *args, **kwargs):        
-        if not self.title:
-            self.title = str(self.file_link)[:-4]
-            self.slug_track = slugify(self.file_link)[:-3]            
-        else:    
-            self.slug_track = slugify(self.title)
+    def save(self, *args, **kwargs):
+        services.get_slug_track_and_name(self)
         super(Track, self).save(*args, **kwargs)
 
     class Meta:

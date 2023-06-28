@@ -9,7 +9,7 @@ from users.models import UserSite
 
 
 @extend_schema_view(
-    post=extend_schema(summary='Registration', tags=['Reg And Login']),
+    post=extend_schema(summary='Registration', tags=['Registration']),
 )
 class RegistrationView(CreateAPIView):
     queryset = UserSite.objects.all()
@@ -19,7 +19,7 @@ class RegistrationView(CreateAPIView):
 @extend_schema_view(
     post=extend_schema(
         request=serializers.ChangePasswordSerializer, 
-        summary='Change Password', tags=['Reg And Login']),
+        summary='Change Password', tags=['Registration']),
 )
 class ChangePasswordView(APIView):
     def post(self, request):
@@ -35,7 +35,7 @@ class ChangePasswordView(APIView):
 @extend_schema_view(
     get=extend_schema(summary='Profile', tags=['Users']),
     put=extend_schema(summary='Edit Profile', tags=['Users']),
-    patch=extend_schema(summary='Edit Small', tags=['Users']),
+    patch=extend_schema(summary='Edit Small', tags=['Users']),    
 )
 class MeView(RetrieveUpdateAPIView):
     queryset = UserSite.objects.all()

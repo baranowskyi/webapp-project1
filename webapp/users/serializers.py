@@ -31,7 +31,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         return value
     
     def create(self, validated_data):
-        user = UserSite.objects.create_user(**validated_data)
+        user = UserSite.objects.create(**validated_data)
         return user
     
     # def create(self, validated_data):
@@ -49,7 +49,10 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserSite
-        fields = ('old_password', 'new_password')
+        fields = (
+            'old_password', 
+            'new_password',
+            )
     
     def validate(self, attrs):
         user = self.instance
@@ -75,11 +78,11 @@ class MeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserSite
-        fields = {
+        fields = (
             'id',
             'username',
             'email',
-        }
+        )
         
 
 class MeUpdateSerializer(serializers.ModelSerializer):
