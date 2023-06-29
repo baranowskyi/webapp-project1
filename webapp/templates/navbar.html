@@ -1,21 +1,73 @@
-<div class="header">
-    <div class="header__section">   
-        <div class="header__item headerlogo"><a href="#">Logo</a></div>
-        <div class="header__item headerButton"><a href="#">Home</a></div>
-        <div class="header__item headerButton"><a href="#">Feed</a></div>
-        <div class="header__item headerButton"><a href="#">Library</a></div>
-    </div> 
+<div class="header">  
+    <div class="conteiner-header-bar"> 
+            <div class="header_logo"><a href="{% url 'profile'%}"><img src="/static/media/site-logo.svg"></img></a></div>
+        <div class="header__section header_left">  
+            <div class="header__item"><a href="{% url 'profile'%}">Home</a></div>
+            <div class="header__item"><a href="#">Feed</a></div>
+            <div class="header__item"><a href="#">Library</a></div>
+        </div> 
 
-    <div class="header__section">
-        <form method="GET" action="{% url 'profile'%}">
-            <input type="text" name="search" placeholder="Search"/>
-        </form>
-    </div>
+        <div class="header__section header_middle">
+            <form class="search_form" method="GET" action="{% url 'profile'%}">
+                <input class="search_input" type="text" name="search" placeholder="Search"/>
+                <button class="search_button" type="submit"></button>
+            </form>
+        </div>
 
-    <div class="header__section">   
-        <div class="header__item headerlogo"><a href="#">Logo</a></div>
-        <div class="header__item headerButton"><a href="#">Home</a></div>
-        <div class="header__item headerButton"><a href="#">Feed</a></div>
-        <div class="header__item headerButton"><a href="#">Library</a></div>
-    </div> 
+        <div class="header__section header_right">   
+            <div class="header__item__r color_text_try_pro"><a href="#">Try Next Pro</a></div>
+            <div class="header__item__r"><a href="#">For Artists</a></div>
+            <div class="header__item__r"><a href="#">Upload</a></div> 
+        </div> 
+        <div class="notification_icon"><a href=""><img src="/static/media/notification-icon-off.svg"></img></a></div>
+        <div class="letter_icon"><a href=""><img src="/static/media/letter-icon-off.svg"></img></a></div>
+
+        <div class="dropdown">     
+            <div class="img-button">       
+              <button onclick="myFunction()" class="dropbtn"></button>
+            </div>
+            <div id="myDropdown" class="dropdown-content">
+              <a href="#">About us</a>
+              <a href="#">Legal</a>
+              <a href="#">Copyrigth</a>
+              <div class="dropdown-divider"></div>
+              <a href="#">Mobile apps</a>
+              <a href="#">For Creators</a>
+              <a href="#">Blog</a>
+              <a href="#">Jobs</a>
+              <a href="#">Developers</a>
+              <div class="dropdown-divider"></div>
+              <a href="#">Support</a>
+              <a href="#">Keyboard shortcuts</a>
+              <a href="#">Subscriptin</a>
+              <a href="#">Settings</a>
+              <a href="#">Sign out</a>
+            </div>
+        </div>
+    </div>     
 </div>
+
+
+    
+<script>    
+    function myFunction() {
+      document.getElementById("myDropdown").classList.toggle("show");
+    }    
+    window.onclick = function(event) {
+      if (!event.target.matches('.dropbtn')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');            
+          }
+        }
+      }
+    }    
+</script>
+
+
+
+
+
