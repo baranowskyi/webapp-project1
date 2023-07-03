@@ -1,70 +1,107 @@
 <div class="header">  
-    <div class="conteiner-header-bar"> 
-            <div class="header_logo"><a href="{% url 'profile'%}"><img src="/static/media/site-logo.svg"></img></a></div>
-        <div class="header__section header_left">  
+    <div class="container-header-bar"> 
+            <div class="header-logo"><a href="{% url 'profile'%}"><img src="/static/media/site-logo.svg"></img></a></div>
+        <div class="header__section header-left">  
             <div class="header__item"><a href="{% url 'profile'%}">Home</a></div>
             <div class="header__item"><a href="#">Feed</a></div>
             <div class="header__item"><a href="#">Library</a></div>
         </div> 
 
-        <div class="header__section header_middle">
-            <form class="search_form" method="GET" action="{% url 'profile'%}">
-                <input class="search_input" type="text" name="search" placeholder="Search"/>
-                <button class="search_button" type="submit"></button>
+        <div class="header__section header-middle">
+            <form class="search-form" method="GET" action="{% url 'profile'%}">
+                <input class="search-input" type="text" name="search" placeholder="Search"/>
+                <button class="search-button" type="submit"></button>
             </form>
         </div>
 
-        <div class="header__section header_right">   
-            <div class="header__item__r color_text_try_pro"><a href="#">Try Next Pro</a></div>
+        <div class="header__section header-right">   
+            <div class="header__item__r color-text-try-pro"><a href="#">Try Next Pro</a></div>
             <div class="header__item__r"><a href="#">For Artists</a></div>
             <div class="header__item__r"><a href="#">Upload</a></div> 
         </div> 
-        <div class="notification_icon"><a href=""><img src="/static/media/notification-icon-off.svg"></img></a></div>
-        <div class="letter_icon"><a href=""><img src="/static/media/letter-icon-off.svg"></img></a></div>
 
-        <div class="dropdown">     
-            <div class="img-button">       
-              <button onclick="myFunction()" class="dropbtn"></button>
+        <!-- profile navbar -->
+        <div class="profile-navbar">          
+          <div class="photo-navbar"><img class="photo-navbar-img" src="/static/media/logo_artist.png"></div>
+          <div class="arrow-icon"></div>
+          <button onclick="profileDrop()" class="profile-button"></button>
+          <div class="dropdown-content-profile-navbar">
+            <a href="http://127.0.0.1:8000/api/docs/">Profile</a>
+            <a href="#">Likes</a>
+            <a href="#">Playlists</a>            
+            <a href="#" style=" color: #f2f2f2;">Stations</a>
+            <a href="#">Following</a>
+            <a href="#">Who to follow</a>
+            <a href="#" style=" color: #f2f2f2;">Try Next Pro</a>
+            <a href="#" style=" color: #f2f2f2;">Developers</a>            
+            <a href="#" style=" color: #f2f2f2;">Partner offers</a>
+            <a href="#">Tracks</a>
+            <a href="#" style=" color: #f2f2f2;">Insights</a>
+            <a href="#" style=" color: #f2f2f2;">Distribute</a>
+          </div>
+        </div>
+
+        <!-- notification navbar -->
+        <div class="notification-icon">
+          <button onclick="" class="notification-button"></button>
+        </div>
+
+        <!-- letter navbar -->
+        <div class="letter-icon">
+          <button onclick="" class="letter-button"></button>
+        </div>
+
+        <!-- dotting navbar -->
+        <div class="dotting-navbar">     
+            <div class="dotting-button">       
+              <button onclick="dottingDrop()" class="dot-button"></button>
             </div>
-            <div id="myDropdown" class="dropdown-content">
-              <a href="#">About us</a>
-              <a href="#">Legal</a>
-              <a href="#">Copyrigth</a>
+            <div class="dropdown-content-dotting-navbar">
+              <a href="#" style=" color: #f2f2f2;">About us</a>
+              <a href="#" style=" color: #f2f2f2;">Legal</a>
+              <a href="#" style=" color: #f2f2f2;">Copyrigth</a>
               <div class="dropdown-divider"></div>
-              <a href="#">Mobile apps</a>
-              <a href="#">For Creators</a>
-              <a href="#">Blog</a>
-              <a href="#">Jobs</a>
-              <a href="#">Developers</a>
+              <a href="#" style=" color: #f2f2f2;">Mobile apps</a>
+              <a href="#" style=" color: #f2f2f2;">For Creators</a>
+              <a href="#" style=" color: #f2f2f2;">Blog</a>
+              <a href="#" style=" color: #f2f2f2;">Jobs</a>
+              <a href="#" style=" color: #f2f2f2;">Developers</a>
               <div class="dropdown-divider"></div>
-              <a href="#">Support</a>
-              <a href="#">Keyboard shortcuts</a>
-              <a href="#">Subscriptin</a>
-              <a href="#">Settings</a>
+              <a href="#" style=" color: #f2f2f2;">Support</a>
+              <a href="#" style=" color: #f2f2f2;">Keyboard shortcuts</a>
+              <a href="#" style=" color: #f2f2f2;">Subscriptin</a>
+              <a href="#" style=" color: #f2f2f2;">Settings</a>
               <a href="#">Sign out</a>
             </div>
         </div>
     </div>     
 </div>
 
-
     
-<script>    
-    function myFunction() {
-      document.getElementById("myDropdown").classList.toggle("show");
-    }    
-    window.onclick = function(event) {
-      if (!event.target.matches('.dropbtn')) {
-        var dropdowns = document.getElementsByClassName("dropdown-content");
-        var i;
-        for (i = 0; i < dropdowns.length; i++) {
-          var openDropdown = dropdowns[i];
-          if (openDropdown.classList.contains('show')) {
-            openDropdown.classList.remove('show');            
-          }
-        }
-      }
-    }    
+<script>  
+
+// profile navbar
+function profileDrop() {
+  document.querySelector(".profile-navbar").classList.toggle("profile-navbar-color");
+  document.querySelector(".dropdown-content-profile-navbar").classList.toggle("show-profile-navbar");  
+}  
+document.addEventListener("click", function(event) {
+  if (!event.target.matches(".profile-button")) {     
+    document.querySelector(".profile-navbar").classList.remove("profile-navbar-color");
+    document.querySelector(".dropdown-content-profile-navbar").classList.remove("show-profile-navbar");
+  }
+}); 
+
+// dotting navbar
+function dottingDrop() {
+  document.querySelector(".dropdown-content-dotting-navbar").classList.toggle("show-dotting-navbar");
+}    
+document.addEventListener("click", function(event) {
+  if (!event.target.matches(".dot-button")) {
+    document.querySelector(".dropdown-content-dotting-navbar").classList.remove('show-dotting-navbar');    
+  }
+}); 
+
 </script>
 
 

@@ -1,0 +1,43 @@
+<div class="artist-header">
+    <div class="background-artist">
+        <img class="background-artist-img" src="/static/media/background_artist.png"></img>
+    </div>
+    <div class="artist-info">
+        <div class="avatar-profile-block">
+            <img class="avatar-profile-img" src="/static/media/logo_artist.png"></img>
+            <div class="edit-avatar-button">
+                <button class="avatar-button"><i class="fa-solid fa-camera"></i>&nbsp Update image</button>
+            </div>            
+        </div>
+        <div class="artist-data">
+            <div class="nick-name">Artist_Name &nbsp<i class="fa-solid fa-circle-check" style="color: #3588d8; background-color: white; border-radius: 50%;"></i></div>
+            <div class="name">First_Name Last_Name</div>
+            <div class="country-city">City, Country</div>            
+            <div class="pro-user"><i class="fa-solid fa-certificate" style="color: #fe5621;"></i>&nbsp NEXT PRO</div>
+        </div>
+        <div class="edit-background">
+            <button onclick="editBackgroundDrop()" class="background-button"><i class="fa-solid fa-camera"></i>&nbsp Update image</button>
+            <div class="dropdown-content-edit-background">
+                <a href="#">Replace image</a>
+                <a href="#">Delete image</a>                
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include 'modal-image-view.html' %}
+
+<script>
+
+// edit background
+function editBackgroundDrop() {  
+  document.querySelector(".dropdown-content-edit-background").classList.toggle("show-edit-background");  
+}  
+document.addEventListener("click", function(event) {
+  if (!event.target.matches(".background-button")) { 
+    document.querySelector(".dropdown-content-edit-background").classList.remove("show-edit-background");
+    // document.getElementsByClassName("background-button")[0].style.opacity = "0";
+  }
+}); 
+
+</script>

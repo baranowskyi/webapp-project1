@@ -9,32 +9,16 @@
     <title>SСсopy</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='{% static "styles/main.css" %}'>
-    <!-- <script src="/scripts/script.js"></script> -->
-    
+
+    <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
 </head>
 <body>
 
 {% include 'navbar.html' %}
 
-<div>
-    <img class="background_artist" src="/static/media/background_artist.png"></img>
-</div>
+{% include 'artist-header.html' %}
 
-<div class="conteiner-content">
-
-    {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <li>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-        
-    {% block content %}
-
-    {% endblock %}
-    
-</div>
+{% include 'profile.html' %}    
 
 </body>
 </html>

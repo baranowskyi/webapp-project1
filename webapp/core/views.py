@@ -8,7 +8,7 @@ from django.contrib.auth.forms import UserCreationForm
 #User = get_user_model()
 
 def profile(request):
-    return render(request, 'profile.html')
+    return render(request, 'main.html')
 
 
 def login_user(request):
