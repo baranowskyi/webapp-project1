@@ -24,19 +24,54 @@
         <i class="fas fa-volume-up"></i>
         <i class="fas fa-volume-mute"></i>
       </span>
-
-      <input
-        type="range"
-        min="0"
-        max="1"
-        step="0.01"
-        value="0.05"
-        class="volume-slider"
-        />
+      
     </div>
+</div>
+
+
+<div class="bottom-player">
+  <div class="buttons-player">
+
+    <span class="back-button button-st">
+      <i class="fa-solid fa-backward-step"></i>      
+    </span> 
+
+    <span class="play-button button-st">
+      <i class="fas fa-play"></i>
+      <i class="fas fa-pause"></i>
+    </span>    
+
+    <span class="next-button button-st">
+      <i class="fa-solid fa-forward-step"></i>      
+    </span>
+
+    <span class="repeat-button button-st">
+      <i class="fa-solid fa-repeat"></i>      
+    </span>
+
+    <div class="container-line-and-time">
+      <div class="play-line-start button-st">
+        <div style="color: #fe5621" id="time-line">0:00</div>      
+      </div>
+      <div class="container-play-line">
+        <input class="play-line-slider slider" type="range" min="0" max="" step="any" value="0" />
+      </div>
+      <div class="play-line-end button-st">      
+        <div id="duration-line">0:00</div>
+      </div>
+    </div>    
+    
+      <span class="speaker-button">
+        <i class="fas fa-volume-up"></i>
+        <i class="fas fa-volume-mute"></i>
+      </span> 
+
+      <div class="container-volume">
+        <input class="volume-slider slider" type="range" min="0" max="1" step="any" value="0.05" />
+      </div>   
+
   </div>
-
-
+</div>
 
 <script type="text/javascript" src='{% static "audioplayer/wavesurfer.js@7.0.0-beta.14.min.cjs" %}'></script>
 <script type="text/javascript" src='{% static "audioplayer/audioplayer.js" %}'></script>
