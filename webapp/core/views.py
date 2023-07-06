@@ -7,6 +7,9 @@ from django.contrib.auth.forms import UserCreationForm
 # from django.contrib.auth import get_user_model
 #User = get_user_model()
 
+def main_page(request):
+    return render(request, 'index.html')
+
 def profile(request):
     return render(request, 'main.html')
 
@@ -14,10 +17,10 @@ def profile(request):
 def login_user(request):
     page = 'login'
     if request.method == 'POST':
-        username = request.POST.get('username').lower()
+        username = request.POST.get('username').lower()        
         password = request.POST.get('password')
         try:
-            user = UserSite.objects.get(username=username)
+            user = UserSite.objects.get(username=username)            
         except:
             messages.error(request, 'Not that User')
         user = authenticate(request, username=username, password=password)
@@ -26,12 +29,12 @@ def login_user(request):
             return redirect('profile')
         else:
             messages.error(request, 'Wrong Username or Password')    
-    return render(request, 'login_registration.html', {'page': page})
+    return render(request, 'modal-login-form.html', {'page': page})
 
 
 def logout_user(request):
     logout(request)
-    return redirect('login')
+    return redirect('profile')
 
 ############### registration form
 
@@ -45,7 +48,7 @@ def register_user(request):
     if request.method == 'POST':
         form = CustomRegisterForm(request.POST)
         if form.is_valid():
-            user = form.save(commit=False)            
+            user = form.save(commit=False)         
             user.username = user.username.lower()
             user.save() 
             raw_password = form.cleaned_data.get('password1')
@@ -55,5 +58,5 @@ def register_user(request):
         else:
              messages.error(request, 'Error Registration')
     form = CustomRegisterForm()    
-    return render(request, 'login_registration.html', {'form': form})
+    return render(request, 'modal-registration-form.html', {'form': form})
     

@@ -1,0 +1,48 @@
+<div id="modal-login" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">        
+        <span id="span-login" class="close">&times;</span>  
+      </div>    
+      <div class="modal-body">          
+
+        <form method="POST" action="{% url 'login' %}">
+
+            {% csrf_token %}
+
+            <div class="welcome-text">Welcome back!</div>
+            <div>
+                <input class="login-input" type="text" name="username" placeholder="Your Username"/>
+            </div>
+            <div>
+                <input class="password-input" type="password" name="password" placeholder="Your Password"/>
+            </div>
+            <div>
+                <input class="submit-button" type="submit" value="Sign in"/>
+            </div>
+        </form>        
+
+       </div>       
+    </div>
+</div>      
+
+<script>
+
+    let modal_login = document.getElementById("modal-login");
+    let btn_login = document.getElementsByClassName("login-button")[0];
+    let span_login = document.getElementById("span-login");
+
+    btn_login.onclick = function() {
+        modal_login.style.display = "block";
+    }    
+
+    span_login.onclick = function() {
+        modal_login.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal_login) {
+        modal_login.style.display = "none";
+        }
+    }
+
+</script>

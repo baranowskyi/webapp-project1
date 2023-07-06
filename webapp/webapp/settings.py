@@ -15,6 +15,12 @@ DEBUG = os.environ.get('DEBUG')
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split()
 
 
+# redefine Django User model
+AUTH_USER_MODEL = 'users.UserSite'
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -50,9 +56,6 @@ SITE_ID = 1
 INSTALLED_APPS += [
     'drf_spectacular',
 ]
-
-# redefine Django User model
-AUTH_USER_MODEL = 'users.UserSite'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [

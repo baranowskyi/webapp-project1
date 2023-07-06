@@ -9,23 +9,37 @@
     <title>SСсopy</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' href='{% static "styles/main.css" %}'>
-    
+
     <!-- fontawesome -->
     <link rel="stylesheet" type="text/css" href="{% static 'fontawesomefree/css/all.min.css' %}">
 
     <!-- audioplayer -->
     <link rel='stylesheet' type='text/css' href='{% static "audioplayer/audioplayer.css" %}'>
+    
+
+
 </head>
-<body>
+<body>   
+    
 
-{% include 'navbar.html' %}
+<div class="container-content">
 
-{% include 'artist-header.html' %}
+    <div><h1>Index</h1></div>
+    <div>
+        <button class="login-button">Login</button>
+    </div>    
+    <div>
+        <button class="registration-button">Registration</button>
+    </div>    
 
-{% include 'profile.html' %}    
+    {% include 'modal-login-form.html' %}
+
+    <!-- {% include 'modal-registration-form.html' %} -->
+
+    {% include 'audioplayer.html' %}
+
+</div>
+
 
 </body>
-</html>
-
-
-
+</html>    

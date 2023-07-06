@@ -5,16 +5,23 @@
     <div class="artist-info">
         <div class="avatar-profile-block">
             <img class="avatar-profile-img" src="/static/media/logo_artist.png"></img>
+            {% if request.user.is_authenticated %}
             <div class="edit-avatar-button">
-                <button class="avatar-button"><i class="fa-solid fa-camera"></i>&nbsp Update image</button>
-            </div>            
+                <button onclick="editAvatarDrop()" class="avatar-button"><i class="fa-solid fa-camera"></i>&nbsp Update image</button>
+                <div class="dropdown-content-edit-avatar">
+                    <a href="#">Replace image</a>
+                    <a href="#">Delete image</a>                
+                </div>
+            </div>
+            {% endif%}            
         </div>
         <div class="artist-data">
-            <div class="nick-name">Artist_Name &nbsp<i class="fa-solid fa-circle-check" style="color: #3588d8; background-color: white; border-radius: 50%;"></i></div>
+            <div class="nick-name">({{ user }}) Artist_Name &nbsp<i class="fa-solid fa-circle-check" style="color: #3588d8; background-color: white; border-radius: 50%;"></i></div>
             <div class="name">First_Name Last_Name</div>
             <div class="country-city">City, Country</div>            
             <div class="pro-user"><i class="fa-solid fa-certificate" style="color: #fe5621;"></i>&nbsp NEXT PRO</div>
         </div>
+        {% if request.user.is_authenticated %}
         <div class="edit-background">
             <button onclick="editBackgroundDrop()" class="background-button"><i class="fa-solid fa-camera"></i>&nbsp Update image</button>
             <div class="dropdown-content-edit-background">
@@ -22,12 +29,23 @@
                 <a href="#">Delete image</a>                
             </div>
         </div>
+        {% endif%}
     </div>
 </div>
 
-{% include 'modal-image-view.html' %}
 
 <script>
+
+// edit avatar
+function editAvatarDrop() {  
+  document.querySelector(".dropdown-content-edit-avatar").classList.toggle("show-edit-avatar");  
+}  
+document.addEventListener("click", function(event) {
+  if (!event.target.matches(".avatar-button")) { 
+    document.querySelector(".dropdown-content-edit-avatar").classList.remove("show-edit-avatar");
+  }
+}); 
+
 
 // edit background
 function editBackgroundDrop() {  
@@ -41,3 +59,5 @@ document.addEventListener("click", function(event) {
 }); 
 
 </script>
+
+{% include 'modal-image-view.html' %}

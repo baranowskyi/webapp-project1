@@ -4,6 +4,8 @@ from rest_framework.exceptions import ParseError
 
 from users.models import UserSite
 
+
+
 class RegistrationSerializer(serializers.ModelSerializer):
 
     email = serializers.EmailField()
@@ -30,16 +32,17 @@ class RegistrationSerializer(serializers.ModelSerializer):
         validate_password(value)
         return value
     
-    def create(self, validated_data):
+    # def create(self, validated_data):
+    #     user = UserSite.objects.create(**validated_data)
+    #     return user   
+
+    def create(self,validated_data):
+        # user = UserSite.objects.create(email = validated_data['email'])
         user = UserSite.objects.create(**validated_data)
+        user.set_password(validated_data['password'])
+        user.save()
         return user
     
-    # def create(self, validated_data):
-    #     profile_data = validated_data.pop('username')
-    #     user = User.objects.create(**validated_data)
-    #     User.objects.create(user=user, **profile_data)
-    #     return user   
-        
     
 
 class ChangePasswordSerializer(serializers.ModelSerializer):
@@ -74,6 +77,7 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
         return instance
 
 
+
 class MeSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -84,6 +88,7 @@ class MeSerializer(serializers.ModelSerializer):
             'email',
         )
         
+
 
 class MeUpdateSerializer(serializers.ModelSerializer):
 
