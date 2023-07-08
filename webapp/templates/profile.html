@@ -1,5 +1,31 @@
-<div class="container-content">
+<div class="main-content">
 
-    <div><h1>Profile</h1></div>
+    <!-- nav bar -->
+    <div class="user-nav-bar-content">
+        NAV BAR
+    </div>
+
+    <div class="main-user-content">
+
+        <!-- left content -->
+        <div class="left-content">            
+            <div class="spotlight">SPOTLIGHT</div>
+            <div class="artist-tracks">
+                <div class="recent-track">Recent</div>
+                {% include 'audioplayer.html' %}
+            </div>
+        </div>
+
+        <!-- right content -->
+        <div class="right-content">
+            RIGHT CONTENT
+            <div class="artist-info"></div>
+            <div class="artist-like-tracks"></div>
+            <div class="artist-following"></div>
+            <div class="artist-last-comments"></div>
+            <div class="artist-another-info"></div>
+        </div>
+
+    </div>  
 
 </div>

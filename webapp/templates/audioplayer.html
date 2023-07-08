@@ -1,54 +1,90 @@
 {% load static %}
 
-<div class="audio-container">
-    
-    <!-- <div class="track-name">The name of the track</div> -->
+<div class="audio-container">  
 
-    <div id="waveform">
-        <div id="time">0:00</div>
-        <div id="duration">0:00</div>
-        <div id="hover"></div>
+    <!-- track image -->
+    <div class="track-img">
+      <img class="cover-img" src="/static/media/cover-art-1.jpg">
     </div>
+
+    <!-- track info top -->
+    <div class="track-container">
+      <div class="track-top-info">
+        <span class="button-play">
+          <i class="fa-solid fa-circle-play"></i>
+          <i class="fa-solid fa-circle-pause"></i>
+        </span>
+        <div class="name-container">
+          <div class="name-artist"><a class="name-artist-a" href="#">Artist</a></div>
+          <div class="name-track"><a class="name-track-a" href="#">Track Name</a></div>
+        </div>
+        <div class="date-tag-container">
+          <div class="date-track">10 years ago</div>
+          <div class="tag-track">#Drum and Bass</div>
+        </div>
+      </div>
+
+      <!-- wave form -->
+      <div id="waveform">
+          <div id="time">0:00</div>
+          <div id="duration">0:00</div>
+          <div id="hover"></div>
+      </div> 
+
+      <!-- track info botton -->
+      <div class="track-bottom-container">
+        <button class="like-button default-bt"><i class="fa-solid fa-heart"></i>&nbsp 140</button>
+        <button class="share-button default-bt"><i class="fa-solid fa-share-from-square"></i>&nbsp Share</button>
+        <button class="copy-link-button default-bt"><i class="fa-solid fa-link"></i>&nbsp Copy Link</button>
+        <button class="edit-button default-bt"><i class="fa-solid fa-pen"></i>&nbsp Edit</button>
+        <button class="more-button default-bt"><i class="fa-solid fa-ellipsis"></i>&nbsp More</button>
+        <button class="download-button default-bt"><i class="fa-solid fa-download" style="color: #fe5621"></i></button>
+        <div class="buy-button"><a class="buy-button-a" href="#">Buy</a></div>
+        <div class="play-like-repost-bottom">
+          <div class="play-counter"><i class="fas fa-play"></i>&nbsp 3,187</div>
+          <div class="repost-counter"><a class="repost-counter-a" href="#"><i class="fa-solid fa-retweet"></i>&nbsp 300</a></div>
+          <div class="comment-counter"><a class="comment-counter-a" href="#"><i class="fa-solid fa-message"></i>&nbsp 187</a></div>
+        </div>
+      </div>
+    </div>
+
 
     <div class="buttons">
       <span class="play-btn btn">
         <i class="fas fa-play"></i>
         <i class="fas fa-pause"></i>
       </span>
-
       <span class="stop-btn btn">
         <i class="fas fa-stop"></i>
       </span>
-
       <span class="mute-btn btn">
         <i class="fas fa-volume-up"></i>
         <i class="fas fa-volume-mute"></i>
-      </span>
-      
+      </span>      
     </div>
+
 </div>
 
-
+<!-- bottom player -->
 <div class="bottom-player">
   <div class="buttons-player">
 
+    <!-- navigation button -->
     <span class="back-button button-st">
       <i class="fa-solid fa-backward-step"></i>      
     </span> 
-
     <span class="play-button button-st">
       <i class="fas fa-play"></i>
       <i class="fas fa-pause"></i>
-    </span>    
-
+    </span>  
     <span class="next-button button-st">
       <i class="fa-solid fa-forward-step"></i>      
     </span>
-
     <span class="repeat-button button-st">
       <i class="fa-solid fa-repeat"></i>      
     </span>
 
+    <!-- progress line -->
     <div class="container-line-and-time">
       <div class="play-line-start button-st">
         <div style="color: #fe5621" id="time-line">0:00</div>      
@@ -59,17 +95,35 @@
       <div class="play-line-end button-st">      
         <div id="duration-line">0:00</div>
       </div>
-    </div>    
-    
-      <span class="speaker-button">
-        <i class="fas fa-volume-up"></i>
-        <i class="fas fa-volume-mute"></i>
-      </span> 
+    </div> 
 
-      <div class="container-volume">
-        <input class="volume-slider slider" type="range" min="0" max="1" step="any" value="0.05" />
-      </div>   
+      <!-- mute\unmute and volume -->
+      <div class="speaker-container">
+        <span class="speaker-button">
+          <i class="fas fa-volume-up"></i>
+          <i class="fas fa-volume-mute"></i>
+        </span> 
+        <div class="container-volume">
+          <input class="volume-slider slider" type="range" min="0" max="1" step="any" value="0.05" />
+        </div> 
+      </div>
 
+      <!-- mini info -->
+      <div class="mini-player">
+        <div class="mini-cover-bottom">
+          <img class="mini-cover-img" src="/static/media/cover-art-1.jpg">
+        </div>
+        <div class="mini-info-bottom">
+          <div class="mini-name-artist"><a class="mini-name-artist-a" href="#">Artist</a></div>
+          <div class="mini-name-track"><a class="mini-name-track-a" href="#">A Living Room </a></div>
+        </div>
+        <div class="mini-like-follow-list">
+          <div class="mini-like"><a class="mini-like-a" href="#"><i class="fa-solid fa-heart"></i></a></div>
+          <div class="mini-follow"><a class="mini-follow-a" href="#"><i class="fa-solid fa-user-check"></i></a></div>
+          <div class="mini-list"><a class="mini-list-a" href="#"><i class="fa-solid fa-list-check"></i></a></div>
+        </div>
+      </div>
+      
   </div>
 </div>
 
