@@ -10,7 +10,7 @@
     <!-- track info top -->
     <div class="track-container">
       <div class="track-top-info">
-        <span class="button-play">
+        <span class="main-play-button">
           <i class="fa-solid fa-circle-play"></i>
           <i class="fa-solid fa-circle-pause"></i>
         </span>
@@ -48,63 +48,48 @@
       </div>
     </div>
 
-
-    <div class="buttons">
-      <span class="play-btn btn">
-        <i class="fas fa-play"></i>
-        <i class="fas fa-pause"></i>
-      </span>
-      <span class="stop-btn btn">
-        <i class="fas fa-stop"></i>
-      </span>
-      <span class="mute-btn btn">
-        <i class="fas fa-volume-up"></i>
-        <i class="fas fa-volume-mute"></i>
-      </span>      
-    </div>
-
 </div>
 
-<!-- bottom player -->
-<div class="bottom-player">
-  <div class="buttons-player">
+<!-- footer player -->
+<div class="footer-player">
+  <div class="footer-buttons">
 
     <!-- navigation button -->
-    <span class="back-button button-st">
+    <span class="footer-back-button button-st">
       <i class="fa-solid fa-backward-step"></i>      
     </span> 
-    <span class="play-button button-st">
+    <span class="footer-play-button button-st">
       <i class="fas fa-play"></i>
       <i class="fas fa-pause"></i>
     </span>  
-    <span class="next-button button-st">
+    <span class="footer-next-button button-st">
       <i class="fa-solid fa-forward-step"></i>      
     </span>
-    <span class="repeat-button button-st">
+    <span class="footer-repeat-button button-st">
       <i class="fa-solid fa-repeat"></i>      
     </span>
 
     <!-- progress line -->
-    <div class="container-line-and-time">
-      <div class="play-line-start button-st">
+    <div class="footer-container-line-and-time">
+      <div class="footer-play-line-start button-st">
         <div style="color: #fe5621" id="time-line">0:00</div>      
       </div>
-      <div class="container-play-line">
-        <input class="play-line-slider slider" type="range" min="0" max="" step="any" value="0" />
+      <div class="footer-container-play-line">
+        <input class="footer-play-line-slider slider" type="range" min="0" max="" step="any" value="0" />
       </div>
-      <div class="play-line-end button-st">      
+      <div class="footer-play-line-end button-st">      
         <div id="duration-line">0:00</div>
       </div>
     </div> 
 
       <!-- mute\unmute and volume -->
-      <div class="speaker-container">
-        <span class="speaker-button">
+      <div class="footer-speaker-container">
+        <span class="footer-speaker-button">
           <i class="fas fa-volume-up"></i>
           <i class="fas fa-volume-mute"></i>
         </span> 
-        <div class="container-volume">
-          <input class="volume-slider slider" type="range" min="0" max="1" step="any" value="0.05" />
+        <div class="footer-container-volume">
+          <input class="footer-volume-slider slider" type="range" min="0" max="1" step="any" value="0.2" />
         </div> 
       </div>
 
