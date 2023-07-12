@@ -1,8 +1,14 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from users.models import UserSite 
+from core import models
+from users import serializers
+from core.serializers import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
+
+from django.http import HttpResponseRedirect
+from core.permitions import *
 
 # from django.contrib.auth import get_user_model
 #User = get_user_model()
@@ -10,8 +16,31 @@ from django.contrib.auth.forms import UserCreationForm
 def main_page(request):
     return render(request, 'index.html')
 
-def profile(request):
-    return render(request, 'main.html')
+
+
+def profile(request, slug_artist):
+    artist_info = models.Artist.objects.filter(slug_artist=slug_artist).select_related('username').values(
+        'display_name',
+        # 'slug_artist',        
+        'profile_url',
+        'avatar_image',
+        'header_image',
+        'verification',
+        'first_name',
+        'last_name',
+        'city',
+        'country',
+        'bio',  
+        'follower_counter',
+        'following_counter',
+        'track_counter',
+        'username__pro_user'       
+        )      
+    # print(artist_info)   
+    context = {
+         'artist_info': artist_info,        
+    }    
+    return render(request, 'main.html', context)
 
 
 def login_user(request):
@@ -26,15 +55,20 @@ def login_user(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('profile')
+            # return redirect('profile')
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER')) # redirect on curent page
         else:
             messages.error(request, 'Wrong Username or Password')    
-    return render(request, 'modal-login-form.html', {'page': page})
+    return render(request, 'modal-login-form.html', {'page': page}) 
+    
+
 
 
 def logout_user(request):
-    logout(request)
-    return redirect('profile')
+    logout(request)    
+    # return redirect('profile')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER')) # redirect on curent page    
+    
 
 ############### registration form
 

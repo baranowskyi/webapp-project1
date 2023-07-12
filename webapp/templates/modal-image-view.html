@@ -1,12 +1,12 @@
 <div id="modal-image-view" class="modal">
   <div class="modal-content">
     <div class="modal-header">
-      Artist_Name
+      {{ artist_info.display_name }}
       <span id="span-image" class="close">&times;</span>       
       <div class="dropdown-divider-avatar"></div>       
     </div>    
     <div class="modal-body">        
-      <img src="/static/media/logo_artist.png"></img>      
+      <img src="{{ MEDIA_URL }}/media/{{ artist_info.avatar_image}}"></img>      
     </div>       
   </div>
 </div>

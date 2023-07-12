@@ -18,11 +18,15 @@
 </head>
 <body>
 
-{% include 'navbar.html' %}
+{% for artist_info in artist_info %}
 
-{% include 'artist-header.html' %}
+    {% include 'navbar.html' %}
 
-{% include 'profile.html' %}    
+    {% include 'artist-header.html' %}
+
+    {% include 'profile.html' %}    
+
+{% endfor %}
 
 </body>
 </html>

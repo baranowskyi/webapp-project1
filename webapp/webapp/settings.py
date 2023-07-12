@@ -18,8 +18,8 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split()
 # redefine Django User model
 AUTH_USER_MODEL = 'users.UserSite'
 
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+# LOGIN_REDIRECT_URL = '/'
+# LOGOUT_REDIRECT_URL = '/'
 
 
 INSTALLED_APPS = [
@@ -143,12 +143,14 @@ USE_I18N = True
 USE_TZ = True
 
 
+
 STATIC_URL = '/static/'
-#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

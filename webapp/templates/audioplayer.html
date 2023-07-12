@@ -1,5 +1,7 @@
 {% load static %}
 
+<!--------------------------------------------------------------- main player ------------------------------------------------------------->
+
 <div class="audio-container">  
 
     <!-- track image -->
@@ -25,11 +27,13 @@
       </div>
 
       <!-- wave form -->
-      <div id="waveform">
-          <div id="time">0:00</div>
-          <div id="duration">0:00</div>
-          <div id="hover"></div>
+      <div class="waveform" id="waveform1">
+          <div class="time" id="time1">0:00</div>
+          <div class="duration" id="duration1">0:00</div>
+          <div class="hover" id="hover1"></div>
       </div> 
+
+      {{ track|json_script:"artist-json" }}      
 
       <!-- track info botton -->
       <div class="track-bottom-container">
@@ -50,7 +54,7 @@
 
 </div>
 
-<!-- footer player -->
+<!--------------------------------------------------------------- footer player ------------------------------------------------------------->
 <div class="footer-player">
   <div class="footer-buttons">
 

@@ -1,8 +1,8 @@
 <div class="header">  
     <div class="container-header-bar"> 
-            <div class="header-logo"><a href="{% url 'profile'%}"><img src="/static/media/site-logo.svg"></img></a></div>
+            <div class="header-logo"><a href=""><img src="/static/media/site-logo.svg"></img></a></div>
         <div class="header__section header-left">  
-            <div class="header__item"><a href="{% url 'profile'%}">Home</a></div>
+            <div class="header__item"><a href="">Home</a></div>
             <div class="header__item"><a href="#">Feed</a></div>
             <div class="header__item"><a href="#">Library</a></div>
         </div> 
@@ -28,7 +28,7 @@
         {% if request.user.is_authenticated %}
         <!-- profile navbar -->
         <div class="profile-navbar">          
-          <div class="photo-navbar"><img class="photo-navbar-img" src="/static/media/logo_artist.png"></div>
+          <div class="photo-navbar"><img class="photo-navbar-img" src="{{ MEDIA_URL }}/media/{{ artist_info.avatar_image}}"></div>
           <div class="arrow-icon"></div>
           <button onclick="profileDrop()" class="profile-button"></button>
           <div class="dropdown-content-profile-navbar">
