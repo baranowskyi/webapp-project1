@@ -1,10 +1,10 @@
 <div class="artist-header">
     <div class="background-artist">      
-        <img class="background-artist-img" src="{{ MEDIA_URL }}/media/{{ artist_info.header_image }}"></img>
+        <img class="background-artist-img" src="/media/{{ artist_info.header_image }}"></img>
     </div>
     <div class="artist-info">
         <div class="avatar-profile-block">
-            <img class="avatar-profile-img" src="{{ MEDIA_URL }}/media/{{ artist_info.avatar_image }}"></img>
+            <img class="avatar-profile-img" src="/media/{{ artist_info.avatar_image }}"></img>
             {% if request.user.is_authenticated %}
             <div class="edit-avatar-button">
                 <button onclick="editAvatarDrop()" class="avatar-button"><i class="fa-solid fa-camera"></i>&nbsp Update image</button>
@@ -16,13 +16,27 @@
             {% endif%}            
         </div>
         <div class="artist-data">          
-            <div class="nick-name">{{ artist_info.display_name }}
+            <div class="nick-name">{{ artist_info.display_name }} ({{ user }})
               {% if artist_info.verification %} 
               &nbsp<i class="fa-solid fa-circle-check" style="color: #3588d8; background-color: white; border-radius: 50%;"></i>
               {% endif %}
             </div>  
-            <div class="name">{{ artist_info.first_name }} {{ artist_info.last_name }}</div>
-            <div class="country-city">{{ artist_info.city }}, {{ artist_info.country }}</div>
+            <div class="name-block">
+              {% if artist_info.first_name %}
+              <div class="name">{{ artist_info.first_name }}</div>
+              {% endif %} 
+              {% if artist_info.last_name %}
+              <div class="name">{{ artist_info.last_name }}</div>
+              {% endif %}
+            </div>
+            <div class="country-city-block">
+              {% if artist_info.city %}
+              <div class="country-city">{{ artist_info.city }}</div> 
+              {% endif %}
+              {% if artist_info.country %}
+              <div class="country-city">{{ artist_info.country }}</div>
+              {% endif %}
+            </div>
             {% if artist_info.username__pro_user %}          
             <div class="pro-user"><i class="fa-solid fa-certificate" style="color: #fe5621;"></i>&nbsp NEXT PRO</div>
             {% endif %}          

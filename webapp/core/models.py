@@ -6,13 +6,15 @@ from django.core.validators import FileExtensionValidator
 #modifided slug for english and russian words
 from pytils.translit import slugify
 
-# signals
-from django.db.models.signals import post_save
-from django.dispatch import receiver
+# # signals
+# from django.db.models.signals import post_save, pre_save
+# from django.dispatch import receiver
 
-from users.models import UserSite
+# from users.models import UserSite
 
 from core.service_functions import services
+
+# from core.signals import *
 
 
 class Artist(models.Model):    
@@ -29,12 +31,12 @@ class Artist(models.Model):
                                     ]
                                     )
     header_image = models.ImageField("Header Cover", 
-                                    upload_to=services.get_profile_background_path,                                  
+                                    upload_to=services.get_profile_headear_path,                                  
                                     null=True, 
                                     blank=True, 
                                     validators=[
                                     FileExtensionValidator(allowed_extensions=['jpg', 'png', 'gif']), 
-                                    services.validate_size_profile_background
+                                    services.validate_size_profile_headear
                                     ]
                                     )
     verification = models.BooleanField("Verification", default=False)
@@ -54,35 +56,24 @@ class Artist(models.Model):
         ordering = ('id',)
 
     def __str__(self):        
-        return f"{self.display_name}"
-    
-    #create artist after create user 
-    @receiver(post_save, sender=UserSite)
-    def create_artist(sender, instance, created, **kwargs):        
-        if created:            
-            Artist.objects.create(
-                username=instance, 
-                slug_artist=services.get_default_slug_artist(),
-                display_name=services.get_default_slug_artist(),
-                avatar_image=services.get_default_avatar_image(),
-                header_image=services.get_default_header_image()
-                )  
+        return f"{self.display_name}"  
 
-    def save(self, *args, **kwargs):        
-        services.get_default_artist_profile_url(self) # get profile url       
-        super(Artist, self).save(*args, **kwargs)  
-        
+    # def save(self, *args, **kwargs):        
+    #     services.get_default_artist_profile_url(self) # get profile url       
+    #     super(Artist, self).save(*args, **kwargs) 
+
+
     
 class Track(models.Model):
     title = models.CharField("Title", max_length=255, blank=True)
-    slug_track = models.SlugField("Slug Title", max_length=255, editable=False, unique=True)
+    slug_track = models.SlugField("Slug Title", max_length=255, editable=False)
     track_file = models.FileField("File", upload_to=services.get_track_upload_path, null=False, 
                                     validators=[
                                     FileExtensionValidator(allowed_extensions=['mp3', 'wav']), 
                                     services.validate_size_track
                                     ]
                                  )
-    cover_image = models.ImageField("Cover", upload_to="user", default="site/logo_artist.png", null=True, blank=True)
+    cover_image = models.ImageField("Cover", upload_to="user", default="default_logo_artist.png", null=True, blank=True)
     genre = models.CharField("Genre", max_length=30, null=True, blank=True)
     tag = models.CharField("Tag", max_length=200, null=True, blank=True)
     public_access = models.BooleanField("Public Access", default=False)

@@ -26,13 +26,14 @@
         </div> 
 
         {% if request.user.is_authenticated %}
+        {% for active_artist_info in active_artist_info%}
         <!-- profile navbar -->
         <div class="profile-navbar">          
-          <div class="photo-navbar"><img class="photo-navbar-img" src="{{ MEDIA_URL }}/media/{{ artist_info.avatar_image}}"></div>
+          <div class="photo-navbar"><img class="photo-navbar-img" src="/media/{{ active_artist_info.avatar_image }}"></div>
           <div class="arrow-icon"></div>
           <button onclick="profileDrop()" class="profile-button"></button>
           <div class="dropdown-content-profile-navbar">
-            <a href="#"><i class="fa-solid fa-user" style="color: #000000;"></i>&nbsp Profile</a>
+            <a href="{% url 'profile' active_artist_info.profile_url %}"><i class="fa-solid fa-user" style="color: #000000;"></i>&nbsp Profile</a>
             <a href="#"><i class="fa-solid fa-heart" style="color: #000000;"></i>&nbsp Likes</a>
             <a href="#"><i class="fa-solid fa-folder-open" style="color: #000000;"></i>&nbsp Playlists</a>            
             <a href="#" style=" color: #f2f2f2;"><i class="fa-solid fa-tower-broadcast" style="color: #f2f2f2;"></i>&nbsp Stations</a>
@@ -55,6 +56,7 @@
         <div class="letter-icon">
           <button onclick="" class="letter-button"></button>
         </div>
+        {% endfor %}
         {% endif %}
 
         <!-- dotting navbar -->

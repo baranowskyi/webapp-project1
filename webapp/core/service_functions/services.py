@@ -7,6 +7,8 @@ from pytils.translit import slugify
 
 from users.models import UserSite
 
+
+
 ############################
 ######### UPLOAD FILE
 ############################
@@ -14,8 +16,8 @@ from users.models import UserSite
 ### avatar 
 
 def get_avatar_upload_path(instance, file):
-    # media/artist/artist_user/avatar
-    return f"artist/artist_{instance.username}/avatar/{file}"
+    # media/artist/username_[username]/avatar
+    return f"artist/username_{instance.username}/avatar/{file}"
     
 
 def validate_size_avatar(file):    
@@ -23,23 +25,23 @@ def validate_size_avatar(file):
         raise ValidationError(f"Upload File {file.size/1024/1024} MB > File Limit {constants.AVATAR_SIZE_LIMIT} MB")
     
 
-### profile background    
+### profile headeary   
     
-def get_profile_background_path(instance, file):
-    # media/artist/artist_user/background
-    return f"artist/artist_{instance.username}/background/{file}"
+def get_profile_headear_path(instance, file):
+    # media/artist/username_[username]/header
+    return f"artist/username_{instance.username}/header/{file}"
     
     
-def validate_size_profile_background(file):
-    if file.size > constants.BACKGROUND_SIZE_LIMIT * (1024 ** 2):        
-        raise ValidationError(f"Upload File {file.size/1024/1024} MB > File Limit {constants.BACKGROUND_SIZE_LIMIT} MB")
+def validate_size_profile_headear(file):
+    if file.size > constants.HEADER_SIZE_LIMIT * (1024 ** 2):        
+        raise ValidationError(f"Upload File {file.size/1024/1024} MB > File Limit {constants.HEADER_SIZE_LIMIT} MB")
     
 
 ### track 
     
 def get_track_upload_path(instance, file):
-    # media/user/user_id/track
-    return f"artist/artist_{instance.username}/track/{file}"
+    # media/artist/username_[username]/track  
+    return f"artist/username_{instance.artist.username}/track/{file}"
     
 def validate_size_track(file):    
     if file.size > constants.TRACK_SIZE_LIMIT * (1024 ** 2):        
@@ -54,8 +56,8 @@ def validate_size_track(file):
 
 def get_slug_track_and_name(instance):                
         if not instance.title:
-            instance.title = str(instance.file_link)[:-4] 
-            instance.slug_track = slugify(instance.file_link)[:-3]            
+            instance.title = str(instance.track_file)[:-4] 
+            instance.slug_track = slugify(instance.track_file)[:-3]            
         else:    
             instance.slug_track = slugify(instance.title)
         return instance
@@ -70,9 +72,13 @@ def get_default_slug_artist():
 
 ### url artist profile
 
-def get_default_artist_profile_url(instance):   
-    instance.profile_url = f"{instance.slug_artist}"
-    return instance
+# def get_default_artist_profile_url(instance):   
+#     instance.profile_url = f"{instance.slug_artist}"
+#     return instance
+
+def get_default_artist_profile_url():   
+    profile_url = get_default_slug_artist()
+    return profile_url
 
 
 def get_default_avatar_image():      
@@ -80,4 +86,4 @@ def get_default_avatar_image():
 
 
 def get_default_header_image():      
-    return f"{constants.DEFAULT_BACKGROUND}"  
+    return f"{constants.DEFAULT_HEADER}"  

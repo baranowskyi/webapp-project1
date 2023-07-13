@@ -2,11 +2,13 @@
 
 {% load static %}
 
+{% for artist_info in artist_info %}
+
 <html>    
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>SСсopy</title>
+    <title>Stream {{ artist_info.display_name }}</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' href='{% static "styles/main.css" %}'>
     
@@ -18,7 +20,7 @@
 </head>
 <body>
 
-{% for artist_info in artist_info %}
+
 
     {% include 'navbar.html' %}
 

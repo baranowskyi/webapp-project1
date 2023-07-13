@@ -8,7 +8,7 @@ class ArtistAdmin(admin.ModelAdmin):
 
 @admin.register(models.Track)
 class TrackAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'public_access', 'publish_date', 'play_counter', 'like_counter', 'repost_counter', 'comment_counter')    
+    list_display = ('id', 'title', 'artist', 'public_access', 'publish_date', 'play_counter', 'like_counter', 'repost_counter', 'comment_counter')    
 
 @admin.register(models.SocialNetwork)
 class SocialNetworkAdmin(admin.ModelAdmin):
