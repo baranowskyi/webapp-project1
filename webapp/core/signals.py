@@ -1,7 +1,7 @@
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 
-from core.models import Artist
+from core.models import Artist, Track
 from users.models import UserSite
 from core.service_functions import services
 

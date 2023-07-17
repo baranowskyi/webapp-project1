@@ -6,11 +6,12 @@ from rest_framework.status import HTTP_204_NO_CONTENT
 
 from users import serializers
 from users.models import UserSite
+from users.forms import CustomRegisterForm
 
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import UserCreationForm
+
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 
@@ -60,39 +61,27 @@ class MeView(RetrieveUpdateAPIView):
 #***********************************************************************************
 
 
-def login_user(request):
-    page = 'login'
+def login_user(request):    
     if request.method == 'POST':
         username = request.POST.get('username').lower()        
         password = request.POST.get('password')
         try:
-            user = UserSite.objects.get(username=username)            
+            user = UserSite.objects.get(username=username)
+            if user is not None:
+                user = authenticate(request, username=username, password=password)
+                login(request, user)            
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER')) # redirect on curent page           
         except:
-            messages.error(request, 'Not that User')
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            # return redirect('profile')
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER')) # redirect on curent page
-        else:
-            messages.error(request, 'Wrong Username or Password')    
-    return render(request, 'modal-login-form.html', {'page': page})     
-
+            messages.error(request, 'Enter a valid Username or Password') 
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER')) # redirect on curent page
 
 
 def logout_user(request):
-    logout(request)    
-    # return redirect('profile')
+    logout(request) 
+    request.user = None
     return HttpResponseRedirect(request.META.get('HTTP_REFERER')) # redirect on curent page    
-    
 
-############### registration form
 
-class CustomRegisterForm(UserCreationForm):
-	class Meta:
-		model = UserSite
-		fields = ("username", "email", "password1", "password2")
-                
 
 def register_user(request):
     if request.method == 'POST':

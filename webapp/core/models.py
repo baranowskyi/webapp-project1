@@ -6,15 +6,7 @@ from django.core.validators import FileExtensionValidator
 #modifided slug for english and russian words
 from pytils.translit import slugify
 
-# # signals
-# from django.db.models.signals import post_save, pre_save
-# from django.dispatch import receiver
-
-# from users.models import UserSite
-
 from core.service_functions import services
-
-# from core.signals import *
 
 
 class Artist(models.Model):    
@@ -67,13 +59,24 @@ class Artist(models.Model):
 class Track(models.Model):
     title = models.CharField("Title", max_length=255, blank=True)
     slug_track = models.SlugField("Slug Title", max_length=255, editable=False)
-    track_file = models.FileField("File", upload_to=services.get_track_upload_path, null=False, 
+    track_file = models.FileField("File", 
+                                    upload_to=services.get_track_upload_path, 
+                                    null=False, 
                                     validators=[
                                     FileExtensionValidator(allowed_extensions=['mp3', 'wav']), 
                                     services.validate_size_track
                                     ]
-                                 )
-    cover_image = models.ImageField("Cover", upload_to="user", default="default_logo_artist.png", null=True, blank=True)
+                                    )
+    cover_image = models.ImageField("Cover", 
+                                    upload_to=services.get_cover_upload_path,
+                                    default=services.get_default_cover_image,
+                                    null=True, 
+                                    blank=True,
+                                    validators=[
+                                    FileExtensionValidator(allowed_extensions=['jpg', 'png', 'gif']), 
+                                    services.validate_size_cover
+                                    ]
+                                    )
     genre = models.CharField("Genre", max_length=30, null=True, blank=True)
     tag = models.CharField("Tag", max_length=200, null=True, blank=True)
     public_access = models.BooleanField("Public Access", default=False)
@@ -92,13 +95,13 @@ class Track(models.Model):
     class Meta:
         verbose_name = 'Track'
         verbose_name_plural = 'Tracks'
-        ordering = ('id',)
+        ordering = ('-publish_date',)
 
     def __str__(self):        
         return f"{self.title}"
     
     def save(self, *args, **kwargs):
-        services.get_slug_track_and_name(self)
+        services.get_slug_track_and_name(self)        
         super(Track, self).save(*args, **kwargs)    
     
     

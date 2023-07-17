@@ -1,48 +1,82 @@
-<div id="modal-login" class="modal">
+<div id="modal-login" class="modal">    
     <div class="modal-content">
       <div class="modal-header">        
         <span id="span-login" class="close">&times;</span>  
       </div>    
-      <div class="modal-body">          
+      <div class="modal-body">  
 
         <form method="POST" action="{% url 'login' %}">
 
             {% csrf_token %}
 
             <div class="welcome-text">Welcome back!</div>
-            <div>
+            <div>                
                 <input class="login-input" type="text" name="username" placeholder="Your Username"/>
             </div>
-            <div>
+            <div> 
                 <input class="password-input" type="password" name="password" placeholder="Your Password"/>
+            </div>  
+            {% for message in messages %}  
+            <div class="message {{ message.tags }} message-error-form">
+                {{ message }}
             </div>
+            {% endfor %}            
+
             <div>
                 <input class="submit-button" type="submit" value="Sign in"/>
             </div>
-        </form>        
+            
+        </form>                
 
        </div>       
     </div>
-</div>      
+</div>  
+
 
 <script>
 
-    let modal_login = document.getElementById("modal-login");
-    let btn_login = document.getElementsByClassName("login-button")[0];
-    let span_login = document.getElementById("span-login");
+    const modal_login = document.getElementById("modal-login")
+    const btn_login = document.getElementsByClassName("login-button")[0]
+    const span_login = document.getElementById("span-login")
 
-    btn_login.onclick = function() {
-        modal_login.style.display = "block";
-    }    
+    // click on sing in button
+    btn_login.onclick = () => {
+        modal_login.style.display = "block" 
+        clearError()
+    }     
 
-    span_login.onclick = function() {
-        modal_login.style.display = "none";
+    // click on close window icon
+    span_login.onclick = () => {
+        modal_login.style.display = "none"
+        clearError()
     }
 
-    window.onclick = function(event) {
+    // click on another place
+    window.onclick = (event) => {        
         if (event.target == modal_login) {
-        modal_login.style.display = "none";
-        }
+            modal_login.style.display = "none" 
+            clearError()       
+        }   
+             
+    }
+
+    // clear errors styles
+    const clearError = () => {
+        message_error.style.display = "none"
+        input_login.classList.remove("input-error") 
+        input_password.classList.remove("input-error")
     }
 
 </script>
+
+<!-- if is messages error in form fields show errors and form again  -->
+{% if messages %}
+    <script>         
+        const input_login = document.getElementsByClassName("login-input")[0]
+        const input_password = document.getElementsByClassName("password-input")[0]
+        const message_error = document.getElementsByClassName("message-error-form")[0]
+        modal_login.style.display = "block" 
+        input_login.classList.add("input-error") 
+        input_password.classList.add("input-error")      
+    </script>
+{% endif %}
