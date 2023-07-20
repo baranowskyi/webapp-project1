@@ -12,17 +12,17 @@ class TrackAdmin(admin.ModelAdmin):
 
 @admin.register(models.SocialNetwork)
 class SocialNetworkAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'url')   
+    list_display = ('id', 'name', 'url', 'artist')   
 
 @admin.register(models.Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('id', 'date')
+    list_display = ('id', 'date', 'track', 'artist')
 
 @admin.register(models.Like)
 class LikeAdmin(admin.ModelAdmin):
-    list_display = ('id', 'like')    
+    list_display = ('id', 'track', 'artist')    
 
 @admin.register(models.Repost)
 class RepostAdmin(admin.ModelAdmin):
-    list_display = ('id', 'repost')
+    list_display = ('id', 'date', 'track', 'artist')
 

@@ -90,7 +90,8 @@ class Track(models.Model):
     like_counter = models.PositiveIntegerField("Like Counter", default=0, editable=False)
     repost_counter = models.PositiveIntegerField("Repost Counter", default=0, editable=False)
     comment_counter = models.PositiveIntegerField("Comment Counter", default=0, editable=False)
-    artist = models.ForeignKey('core.Artist', models.CASCADE)
+    artist = models.ForeignKey('core.Artist', models.CASCADE)    
+
     
     class Meta:
         verbose_name = 'Track'
@@ -120,15 +121,16 @@ class Comment(models.Model):
         return f"id {self.pk}"
 
     
-class Like(models.Model):
-    like = models.BooleanField("Like", default=False)
+class Like(models.Model):    
     track = models.ForeignKey('core.Track', models.CASCADE)
-    artist = models.ForeignKey('core.Artist', models.CASCADE)
+    artist = models.ForeignKey('core.Artist', models.CASCADE) 
+          
 
     class Meta:
         verbose_name = 'Like'
         verbose_name_plural = 'Likes'
         ordering = ('id',)
+        unique_together = ('track', 'artist')
 
     def __str__(self):        
         return f"id {self.pk}"
@@ -149,7 +151,7 @@ class SocialNetwork(models.Model):
     
 
 class Repost(models.Model):
-    repost = models.BooleanField("Repost", default=False)
+    date = models.DateTimeField("Date", auto_now_add=True, editable=False)
     track = models.ForeignKey('core.Track', models.CASCADE)
     artist = models.ForeignKey('core.Artist', models.CASCADE)
 
@@ -157,6 +159,7 @@ class Repost(models.Model):
         verbose_name = 'Repost'
         verbose_name_plural = 'Reposts'
         ordering = ('id',)
+        unique_together = ('track', 'artist')
 
     def __str__(self):        
         return f"id {self.pk}"

@@ -42,7 +42,9 @@
 
       <!-- track info botton -->
       <div class="track-bottom-container">
-        <button class="like-button default-bt" id="like-button{{ artist_track.track__id }}"><i class="fa-solid fa-heart"></i>{% if artist_track.track__like_counter != 0 %} &nbsp {{artist_track.track__like_counter}}  {% endif %}</button>
+        <button class="like-button default-bt" id="like-button{{ artist_track.track__id }}"><i class="fa-solid fa-heart"></i>
+          &nbsp <div id="like-button-text{{ artist_track.track__id }}" style="display: contents;">Like</div>
+        </button>
         <button class="share-button default-bt" id="share-button{{ artist_track.track__id }}"><i class="fa-solid fa-share-from-square"></i>&nbsp Share</button>
         <button class="copy-link-button default-bt" id="copy-link-button{{ artist_track.track__id }}"><i class="fa-solid fa-link"></i>&nbsp Copy Link</button>
         {% for active_artist_info in active_artist_info %}
@@ -73,8 +75,78 @@
 
 </div>
 
+
+<script>
+
+likeButton = document.querySelectorAll("#like-button{{ artist_track.track__id }}")
+
+likeButton.forEach((element_likeButton) => {
+  // element_likeButton.addEventListener("click", () => {          
+      
+    $.ajax({
+        type: "GET",
+        url: "/api/who-likes-track/{{ artist_track.track__id }}",
+        dataType: 'json',
+        cache: false,          
+        success: (data) => {
+          console.log(data)            
+          // element_likeButton.style = "border: 2px solid red;"
+          e = document.querySelectorAll('#like-button-text{{ artist_track.track__id }}')
+          e.forEach((e) => {
+            if (e.textContent == 'Like'){
+              e.textContent = e.textContent.replace('Like', data.length)
+            }
+            e.textContent = data.length              
+          })            
+        },
+        error: (error) => {
+          console.log(error)
+        }
+    });
+  // })
+
+  element_likeButton.addEventListener("click", () => {
+    if (!element_likeButton.classList.contains("like-click")) {
+      element_likeButton.style = "border: 1px solid red;"
+      element_likeButton.classList.add("like-click") 
+    }
+    else {   
+    element_likeButton.classList.remove("like-click")
+    element_likeButton.style = "border: 1px solid #e5e5e5;"    
+    } 
+   
+  })
+
+}) 
+ 
+</script>
+
+
 {% endfor %}
 
+
+<!-- <button type="button" id="get">Получить текст с сервера</button>
+<div id="result"></div>
+
+<script>
+  function getData() {
+    
+    const requestURL = "/api/who-likes-track/2";
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', requestURL);
+    xhr.onload = () => {
+      if (xhr.status !== 200) {
+        return;
+      }
+      document.querySelector('#result').innerHTML = xhr.response;
+    }
+    xhr.send();
+  }
+  
+  document.querySelector('#get').addEventListener('click', () => {
+    getData();
+  });
+</script> -->
 
 <!--------------------------------------------------------------- footer player ------------------------------------------------------------->
 
@@ -141,4 +213,11 @@
 
 <script type="text/javascript" src='{% static "audioplayer/wavesurfer.js@7.0.0-beta.14.min.cjs" %}'></script>
 <script type="text/javascript" src='{% static "audioplayer/audioplayer.js" %}'></script>
+
+
+
+
+
+
+
 
