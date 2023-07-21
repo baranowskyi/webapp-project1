@@ -1,13 +1,7 @@
 from rest_framework import serializers
 from core.models import Like
 from users.models import UserSite
-from core.models import Artist, Track
 
-class UserSiteSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = UserSite
-        fields = ['id', 'username', ]
 
 
 class WhoLikesSerializer(serializers.ModelSerializer): 
@@ -27,6 +21,6 @@ class AddLikeSerializer(serializers.ModelSerializer):
        
     class Meta:
         model = Like
-        fields = ['track', 'artist', ] 
+        fields = ['artist', 'track', ] 
          
               

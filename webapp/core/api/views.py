@@ -8,6 +8,8 @@ from core.permissions import IsOwnerOrReadOnly, ReadOnly
 from rest_framework.exceptions import ParseError
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+
 from django.contrib.auth.decorators import login_required
 
 
@@ -39,7 +41,8 @@ class WhoLikesTrack(ListAPIView):
 )
 class AddLikeTrack(ListAPIView, CreateAPIView, DestroyAPIView):
 
-    serializer_class = AddLikeSerializer    
+    serializer_class = AddLikeSerializer  
+    # authentication_classes = (BasicAuthentication,)
     permission_classes = (IsAuthenticatedOrReadOnly, ) 
     lookup_field = 'track_id'     
 

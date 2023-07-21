@@ -27,6 +27,7 @@ def profile(request, slug_artist):
         'following_counter',
         'track_counter',
 
+        'username__id',
         'username__username',
         'username__pro_user',              
         ) 
@@ -65,7 +66,7 @@ def profile(request, slug_artist):
         active_artist_info = Artist.objects.filter(username=id_user).values(
             'profile_url',
             'avatar_image',
-            'username__username'            
+            'username__username',            
         ) 
         context_active_artist = {
             'active_artist_info': list(active_artist_info),

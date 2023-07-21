@@ -4,7 +4,7 @@
 
 ## Стек: 
 
-* Django, API Rest Framwork, DRF Spectacular
+* Django, Rest Framework, Swagger
 * HTML, CSS, JavaScript
 
 ## Внешние компоненты
