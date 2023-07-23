@@ -1,162 +1,146 @@
-{% load static %}
-
 <!--------------------------------------------------------------- main player ------------------------------------------------------------->
-
-<!-- data for audio js -->
-{{ artist_track|json_script:"artist-track-json-data" }}
-
-{% for artist_track in artist_track %}
-
-<div class="audio-container">  
-
-    <!-- track image -->
-    <div class="track-img">
-      <img class="cover-img" id="cover-img{{ artist_track.track__id }}" src="/media/{{ artist_track.track__cover_image }}">
-    </div>
-
-    <!-- track info top -->
-    <div class="track-container">
-      <div class="track-top-info">
-        <span class="main-play-button" id="main-play-button{{ artist_track.track__id }}">
-          <i class="fa-solid fa-circle-play"></i>
-          <i class="fa-solid fa-circle-pause"></i>
-        </span>
-        <div class="name-container">
-          <div class="name-artist" id="name-artist{{ artist_track.track__id }}"><a class="name-artist-a" href="#">{{ artist_info.display_name }}</a></div>
-          <div class="name-track" id="name-track{{ artist_track.track__id }}"><a class="name-track-a" href="#">{{ artist_track.track__title }}</a></div>
-        </div>
-        <div class="date-tag-container">
-          <div class="date-track" id="date-track{{ artist_track.track__id }}">{{ artist_track.track__publish_date | timesince }} ago</div>
-          {% if artist_track.track__genre != None %}
-          <div class="tag-track" id="tag-track{{ artist_track.track__id }}"># {{ artist_track.track__genre }}</div>
-          {% endif %}
-        </div>
-      </div>
-
-      <!-- wave form -->
-      <div class="waveform" id="waveform{{ artist_track.track__id }}">
-          <div class="time" id="time{{ artist_track.track__id }}">0:00</div>
-          <div class="duration" id="duration{{ artist_track.track__id }}">0:00</div>
-          <div class="hover" id="hover{{ artist_track.track__id }}"></div>
-      </div>          
-
-      <!-- track info botton -->
-      <div class="track-bottom-container">
-        <button class="like-button default-bt" id="like-button{{ artist_track.track__id }}"><i class="fa-solid fa-heart"></i>
-          &nbsp <div class="like-button-text" id="like-button-text{{ artist_track.track__id }}" style="display: contents;">Like</div>
-        </button>
-        <button class="share-button default-bt" id="share-button{{ artist_track.track__id }}"><i class="fa-solid fa-share-from-square"></i>&nbsp Share</button>
-        <button class="copy-link-button default-bt" id="copy-link-button{{ artist_track.track__id }}"><i class="fa-solid fa-link"></i>&nbsp Copy Link</button>
-        {% for active_artist_info in active_artist_info %}
-        {% if request.user.is_authenticated and artist_info.username__username == active_artist_info.username__username %}
-        <button class="edit-button default-bt" id="edit-button{{ artist_track.track__id }}"><i class="fa-solid fa-pen"></i>&nbsp Edit</button>
-        {% endif %}
-        {% endfor %}
-        <button class="more-button default-bt" id="more-button{{ artist_track.track__id }}"><i class="fa-solid fa-ellipsis"></i>&nbsp More</button>
-        {% if artist_track.track__download_access %}
-        <button class="download-button default-bt" id="download-button{{ artist_track.track__id }}"><i class="fa-solid fa-download" style="color: #fe5621"></i></button>
-        {% endif %}
-        {% if artist_track.track__buy_link != None %}
-        <div class="buy-button" id="buy-button{{ artist_track.track__id }}"><a class="buy-button-a" href="#">Buy</a></div>
-        {% endif %}
-        <div class="play-like-repost-bottom">
-          {% if artist_track.track__play_counter != 0 or None %}
-          <div class="play-counter" id="play-counter{{ artist_track.track__id }}"><i class="fas fa-play"></i>&nbsp {{ artist_track.track__play_counter }}</div>
-          {% endif %}
-          {% if artist_track.track__repost_counter != 0 or None %}
-          <div class="repost-counter" id="repost-counter{{ artist_track.track__id }}"><a class="repost-counter-a" href="#"><i class="fa-solid fa-retweet"></i>&nbsp {{ artist_track.track__repost_counter }}</a></div>
-          {% endif %}
-          {% if artist_track.track__comment_counter != 0 or None %}
-          <div class="comment-counter" id="comment-counter{{ artist_track.track__id }}"><a class="comment-counter-a" href="#"><i class="fa-solid fa-message"></i>&nbsp {{ artist_track.track__comment_counter }}</a></div>
-          {% endif %}
-        </div>
-      </div>
-    </div>
-
-</div>
-
-{% endfor %}
-
 
 <script>
 
-document.addEventListener("DOMContentLoaded", () => {
+const currentUser = "{{ request.user }}"
+const getArtistPage = ("{{request.path}}").slice(1, -1)
 
-  // get all like buttons on tracks
-  likeButton = document.querySelectorAll("button[id*=like-button]") 
+async function getAllTrack() {
+  const data = await fetch(`http://127.0.0.1:8000/api/${getArtistPage}/show-tracks/`)
+  const trackList = await data.json()
+  
+  trackList.forEach(track => trackToHTML(track))
+}
 
-  // update likes info on page
-  likeButton.forEach( async (e) => {
-    track = await e.id.slice(11)       
-    await getAjaxLikeData(track)
-  })
+window.addEventListener("DOMContentLoaded", getAllTrack)
 
-  // get data from Like database
-  getAjaxLikeData = (track_id) => {
-    $.ajax({
-      type: "GET",
-      url: "/api/who-likes-track/" + track_id,
-      dataType: 'json',
-      cache: false, 
-      success: (data) => { 
-        for (artist in data) {
-          // if active artist has likes          
-          if (data[artist]["artist"] == "{{ request.user.artist }}") {            
-            e = document.querySelector("#like-button" + track_id)
-            e.classList.add("like-click")
-          }
+function trackToHTML( {
+  id, 
+  title, 
+  track_file,
+  cover_image, 
+  genre, 
+  tag, 
+  public_access,
+  publish_date,
+  update_date,
+  discription,
+  copy_link,
+  download_access,
+  buy_link,
+  likes,
+  artist }) {  
+   
+  // get time ago  
+  timeAgo = (input) => {
+    const date = (input instanceof Date) ? input : new Date(input)
+    const formatter = new Intl.RelativeTimeFormat('en')
+    const ranges = {
+        years: 3600 * 24 * 365,
+        months: 3600 * 24 * 30,
+        weeks: 3600 * 24 * 7,
+        days: 3600 * 24,
+        hours: 3600,
+        minutes: 60,
+        seconds: 1
+    }
+    const secondsElapsed = (date.getTime() - Date.now()) / 1000
+    for (let key in ranges) {
+        if (ranges[key] < Math.abs(secondsElapsed)) {
+        const delta = secondsElapsed / ranges[key]
+        return formatter.format(Math.round(delta), key)
         }
-        e = document.querySelector("#like-button-text" + track_id)        
-        if (e.textContent == 'Like') {
-          e.textContent = e.textContent.replace('Like', data.length)
-        }
-        e.textContent = data.length 
-      },
-      error: (error) => {        
-        console.log(error)   
-        e = document.querySelector("#like-button-text" + track_id)
-        e.textContent = 'Like'    
-      }            
-    })     
-  }  
+    }
+  }
 
-  // post and delete data to Like database
-  editAjaxLikeData = (track_id, type_request) => {
-    $.ajax({
-      type: type_request,
-      url: "/api/add-like-track/" + track_id,
-      dataType: 'json',
-      headers: { "X-CSRFToken": '{{ csrf_token }}' },
-      data: { artist: "{{ artist_info.username__id }}", track: track_id },
-      cache: false,
-      success: (data) => {        
-        getAjaxLikeData(track_id)
-      },
-      error: (error) => {        
-        console.log(error)
-      }
-    }) 
-  }  
 
-  // catch click like button
-  document.addEventListener("click", (e) => {      
-    if (e.target.classList.contains("like-button")) {
-      // get track ID
-      track_id = e.target.id.slice(11)        
-      // add like style and count likes + 1
-      if (!e.target.classList.contains("like-click")) {        
-        e.target.classList.add("like-click")  
-        editAjaxLikeData(track_id, type_request="POST")
-      }
-      //remove like style and count likes - 1
-      else {   
-        e.target.classList.remove("like-click")          
-        editAjaxLikeData(track_id, type_request="DELETE")
-      } 
-    }  
-  })
+  artistId = artist.id  
+  artistName = artist.display_name
+  trackId = id  
+  trackFile = track_file
+  const like_counter = getAjaxLikeData(trackId, csrftoken)
+  const publish_date_ago = timeAgo(publish_date)
+  
+  const trackContainer = document.getElementById("artist-tracks") 
 
-}) 
+  
+
+  trackContainer.insertAdjacentHTML('beforeend', `
+    <div class="audio-container" id="audio-container${id}">
+      <!-- track image -->
+      <div class="track-img">
+        <img class="cover-img" id="cover-img${id}" src="${cover_image}">
+      </div>
+
+      <!-- track info top -->
+      <div class="track-container">
+        <div class="track-top-info">
+          <span class="main-play-button" id="main-play-button${id}">
+            <i class="fa-solid fa-circle-play"></i>
+            <i class="fa-solid fa-circle-pause"></i>
+          </span>
+          <div class="name-container">
+            <div class="name-artist" id="name-artist${id}"><a class="name-artist-a" href="#">${artistName}</a></div>
+            <div class="name-track" id="name-track${id}"><a class="name-track-a" href="#">${title}</a></div>
+          </div>
+          <div class="date-tag-container">
+            <div class="date-track" id="date-track${id}">${publish_date_ago}</div>
+            <div class="tag-track" id="tag-track${id}">#${genre}</div>
+          </div>
+        </div>
+
+        <!-- wave form -->
+        <div class="waveform" id="waveform${id}">
+            <div class="time" id="time${id}">0:00</div>
+            <div class="duration" id="duration${id}">0:00</div>
+            <div class="hover" id="hover${id}"></div>
+        </div>          
+
+        <!-- track info botton -->
+        <div class="track-bottom-container">
+          <button class="like-button default-bt" id="like-button${id}"><i class="fa-solid fa-heart"></i>
+            <div class="like-button-text" id="like-button-text${id}" style="display: contents;">${like_counter}</div>
+          </button>
+          <button class="share-button default-bt" id="share-button${id}"><i class="fa-solid fa-share-from-square"></i>&nbsp Share</button>
+          <button class="copy-link-button default-bt" id="copy-link-button${id}"><i class="fa-solid fa-link"></i>&nbsp Copy Link</button>
+          <button class="edit-button default-bt" id="edit-button${id}"><i class="fa-solid fa-pen"></i>&nbsp Edit</button>
+          <button class="more-button default-bt" id="more-button${id}"><i class="fa-solid fa-ellipsis"></i>&nbsp More</button>
+          <button class="download-button default-bt" id="download-button${id}"><i class="fa-solid fa-download" style="color: #fe5621"></i></button>
+          <div class="buy-button" id="buy-button${id}"><a class="buy-button-a" href="#">Buy</a></div>
+          <div class="play-like-repost-bottom">            
+            <div class="play-counter" id="play-counter${id}"><i class="fas fa-play"></i>&nbsp </div> 
+            <div class="repost-counter" id="repost-counter${id}"><a class="repost-counter-a" href="#"><i class="fa-solid fa-retweet"></i>&nbsp </a></div>
+            <div class="comment-counter" id="comment-counter${id}"><a class="comment-counter-a" href="#"><i class="fa-solid fa-message"></i>&nbsp </a></div>
+          </div>
+        </div>
+      </div>  
+    </div>  
+  `)
+
+  getWaveForm(trackId, trackFile)
+
+  getDominantImageColor(id)
+
+}
+
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
+<script>
+
+  window.onload = () => {
+    getDominantImageColor = (id) => {        
+        let sourceImage = document.querySelector(`#cover-img${id}`)
+        let background = document.querySelector(`#audio-container${id}`)        
+        
+        let colorThief = new ColorThief()
+        // get color palette
+        let color = colorThief.getColor(sourceImage)        
+        // set the background color
+        background.style.backgroundColor = "rgb(" + color + ")"
+    }
+    // getDominantImageColor()
+  }
 
 </script>
 
@@ -207,7 +191,7 @@ document.addEventListener("DOMContentLoaded", () => {
       <!-- mini info -->
       <div class="mini-player">
         <div class="mini-cover-bottom">
-          <img class="mini-cover-img" src="/static/media/cover-art-1.jpg">
+          <img class="mini-cover-img" src="">
         </div>
         <div class="mini-info-bottom">
           <div class="mini-name-artist"><a class="mini-name-artist-a" href="#">Artist</a></div>
@@ -222,14 +206,5 @@ document.addEventListener("DOMContentLoaded", () => {
       
   </div>
 </div>
-
-<script type="text/javascript" src='{% static "audioplayer/wavesurfer.js@7.0.0-beta.14.min.cjs" %}'></script>
-<script type="text/javascript" src='{% static "audioplayer/audioplayer.js" %}'></script>
-
-
-
-
-
-
 
 

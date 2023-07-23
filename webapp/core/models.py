@@ -1,10 +1,6 @@
 from django.db import models
 
-# validators
 from django.core.validators import FileExtensionValidator
-
-#modifided slug for english and russian words
-from pytils.translit import slugify
 
 from core.service_functions import services
 
@@ -48,7 +44,7 @@ class Artist(models.Model):
         ordering = ('id',)
 
     def __str__(self):        
-        return f"{self.display_name}"  
+        return self.display_name  
 
     # def save(self, *args, **kwargs):        
     #     services.get_default_artist_profile_url(self) # get profile url       
@@ -86,10 +82,10 @@ class Track(models.Model):
     copy_link = models.URLField("Copy Link", default="", editable=False)
     download_access = models.BooleanField("Download Access", default=False)
     buy_link = models.URLField("Buy Link", null=True, blank=True)
-    play_counter = models.PositiveIntegerField("Play Counter", default=0, editable=False)
-    like_counter = models.PositiveIntegerField("Like Counter", default=0, editable=False)
-    repost_counter = models.PositiveIntegerField("Repost Counter", default=0, editable=False)
-    comment_counter = models.PositiveIntegerField("Comment Counter", default=0, editable=False)
+    # play_counter = models.PositiveIntegerField("Play Counter", default=0, editable=False)
+    # like_counter = models.PositiveIntegerField("Like Counter", default=0, editable=False)
+    # repost_counter = models.PositiveIntegerField("Repost Counter", default=0, editable=False)
+    # comment_counter = models.PositiveIntegerField("Comment Counter", default=0, editable=False)
     artist = models.ForeignKey('core.Artist', models.CASCADE)    
 
     
@@ -99,7 +95,7 @@ class Track(models.Model):
         ordering = ('-publish_date',)
 
     def __str__(self):        
-        return f"{self.title}"
+        return self.title
     
     def save(self, *args, **kwargs):
         services.get_slug_track_and_name(self)        
@@ -109,8 +105,8 @@ class Track(models.Model):
 class Comment(models.Model):
     date = models.DateTimeField("Date", auto_now_add=True, editable=False)
     comment = models.TextField("Comment", max_length=2000, null=False, blank=False)
-    track = models.ForeignKey('core.Track', models.CASCADE)
-    artist = models.ForeignKey('core.Artist', models.CASCADE)
+    track = models.ForeignKey('core.Track', models.CASCADE, related_name='comments')
+    artist = models.ForeignKey('core.Artist', models.CASCADE, related_name='comments')
 
     class Meta:
         verbose_name = 'Comment'
@@ -122,8 +118,8 @@ class Comment(models.Model):
 
     
 class Like(models.Model):    
-    track = models.ForeignKey('core.Track', models.CASCADE)
-    artist = models.ForeignKey('core.Artist', models.CASCADE) 
+    track = models.ForeignKey('core.Track', models.CASCADE, related_name='likes')
+    artist = models.ForeignKey('core.Artist', models.CASCADE, related_name='likes') 
           
 
     class Meta:
@@ -139,7 +135,7 @@ class Like(models.Model):
 class SocialNetwork(models.Model):
     name = models.CharField('Social Network', max_length=50)
     url = models.URLField("Profile URL", max_length=200)
-    artist = models.ForeignKey('core.Artist', models.CASCADE)
+    artist = models.ForeignKey('core.Artist', models.CASCADE, related_name='socialnetworks')
 
     class Meta:
         verbose_name = 'Social Network'
@@ -152,8 +148,8 @@ class SocialNetwork(models.Model):
 
 class Repost(models.Model):
     date = models.DateTimeField("Date", auto_now_add=True, editable=False)
-    track = models.ForeignKey('core.Track', models.CASCADE)
-    artist = models.ForeignKey('core.Artist', models.CASCADE)
+    track = models.ForeignKey('core.Track', models.CASCADE, related_name='reposts')
+    artist = models.ForeignKey('core.Artist', models.CASCADE, related_name='reposts')
 
     class Meta:
         verbose_name = 'Repost'

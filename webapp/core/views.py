@@ -47,11 +47,7 @@ def profile(request, slug_artist):
         # 'track__discription',
         'track__copy_link',
         'track__download_access',
-        'track__buy_link',
-        'track__play_counter',
-        'track__like_counter',
-        'track__repost_counter',
-        'track__comment_counter',        
+        'track__buy_link',                
     ).order_by('-track__publish_date')
 
     context = {
@@ -66,7 +62,10 @@ def profile(request, slug_artist):
         active_artist_info = Artist.objects.filter(username=id_user).values(
             'profile_url',
             'avatar_image',
-            'username__username',            
+            'username__id', 
+            'username__username', 
+            'display_name', 
+                     
         ) 
         context_active_artist = {
             'active_artist_info': list(active_artist_info),

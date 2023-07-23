@@ -75,23 +75,4 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
         instance.set_password(password)
         instance.save()
         return instance
-    
-
-
-class MeSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = UserSite
-        fields = (
-            'id',
-            'username',
-            'email',
-        )
-        
-
-
-class MeUpdateSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = UserSite
-        fields = '__all__'
+ 

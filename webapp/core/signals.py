@@ -18,8 +18,8 @@ def create_artist(sender, instance, created, **kwargs):
     if created:            
         Artist.objects.create(
             username=instance, 
-            slug_artist=services.get_default_slug_artist(),
-            display_name=services.get_default_slug_artist(),
+            slug_artist=services.get_default_slug_artist_and_name()["slug_artist"],
+            display_name=services.get_default_slug_artist_and_name()["name_artist"],
             avatar_image=services.get_default_avatar_image(),
             header_image=services.get_default_header_image(),
             profile_url=services.get_default_artist_profile_url()

@@ -17,7 +17,7 @@ from django.shortcuts import render, redirect
 
 
 @extend_schema_view(
-    post=extend_schema(summary='Registration', tags=['Registration']),
+    post=extend_schema(summary='Registration', tags=['User']),
 )
 class RegistrationView(CreateAPIView):
     queryset = UserSite.objects.all()
@@ -27,7 +27,7 @@ class RegistrationView(CreateAPIView):
 @extend_schema_view(
     post=extend_schema(
         request=serializers.ChangePasswordSerializer, 
-        summary='Change Password', tags=['Registration']),
+        summary='Change Password', tags=['User']),
 )
 class ChangePasswordView(APIView):
     def post(self, request):
@@ -40,23 +40,7 @@ class ChangePasswordView(APIView):
         return Response(status=HTTP_204_NO_CONTENT)
 
 
-@extend_schema_view(
-    get=extend_schema(summary='Profile', tags=['Users']),
-    put=extend_schema(summary='Edit Profile', tags=['Users']),
-    patch=extend_schema(summary='Edit Small', tags=['Users']),    
-)
-class MeView(RetrieveUpdateAPIView):
-    queryset = UserSite.objects.all()
-    serializer_class = serializers.MeSerializer
-
-    def get_serializer_class(self):
-        if self.request.method in ['PUT', 'PATCH']:
-            return serializers.MeUpdateSerializer
-        return serializers.MeSerializer
-    
-    def get_object(self):
-        return self.request.user
-    
+   
 
 #***********************************************************************************
 

@@ -10,18 +10,16 @@ from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnl
 
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 
-from django.contrib.auth.decorators import login_required
-
 
 #---------------------------------------- LIKES TRACK --------------------------------------------
 
 
 @extend_schema_view(
-    get=extend_schema(summary='Who Likes Track', tags=['Like Track']),    
+    get=extend_schema(summary="Show track's Likes", tags=["Track's Likes"]),    
 )
-class WhoLikesTrack(ListAPIView):
+class ShowLikesTrack(ListAPIView):
 
-    serializer_class = WhoLikesSerializer     
+    serializer_class = ShowLikesSerializer     
     permission_classes = (IsAuthenticatedOrReadOnly,)   
 
     def get_queryset(self):
@@ -29,19 +27,17 @@ class WhoLikesTrack(ListAPIView):
         if queryset:            
             return queryset
         raise ParseError(
-                "Track not exists likes"
-            )   
-       
-  
+                "Track don't exists"
+            ) 
+    
 
-
-@extend_schema_view(
-    post=extend_schema(summary='Add Like Track', tags=['Like Track']), 
-    delete=extend_schema(summary='Delete Like Track', tags=['Like Track']),   
+@extend_schema_view(    
+    post=extend_schema(summary='Add Like the track', tags=["Track's Likes"]), 
+    delete=extend_schema(summary='Delete Like from the track', tags=["Track's Likes"]),   
 )
-class AddLikeTrack(ListAPIView, CreateAPIView, DestroyAPIView):
+class EditLikeTrack(CreateAPIView, DestroyAPIView):
 
-    serializer_class = AddLikeSerializer  
+    serializer_class = LikeSerializer  
     # authentication_classes = (BasicAuthentication,)
     permission_classes = (IsAuthenticatedOrReadOnly, ) 
     lookup_field = 'track_id'     
@@ -51,17 +47,33 @@ class AddLikeTrack(ListAPIView, CreateAPIView, DestroyAPIView):
         if queryset:
             return queryset
         raise ParseError(
-                "Track not exists likes"    
+                "Track don't has likes"    
             )  
 
     def perform_create(self, serializer): 
         if Like.objects.filter(track=self.kwargs['track_id'], artist=self.request.user.artist).exists():      
             raise ParseError(
-                    "You like track"    
+                    "You like the track"    
                 )  
         serializer.save(artist=self.request.user.artist, track=Track.objects.get(id=self.kwargs['track_id']))
+
       
 
-    
+#---------------------------------------- TRACK -------------------------------------------- 
+   
 
+@extend_schema_view(
+    get=extend_schema(summary="Show Artist's Tracks", tags=["Artist's Tracks"]),    
+)
+class ArtistTracks(ListAPIView):
 
+    serializer_class = ArtistTracksSerializer   
+    permission_classes = (IsAuthenticatedOrReadOnly,)   
+
+    def get_queryset(self):
+        queryset = Track.objects.filter(artist__slug_artist=self.kwargs['slug_artist'])    
+        if queryset:            
+            return queryset
+        raise ParseError(
+                "Artist don't has tracks"
+            )   

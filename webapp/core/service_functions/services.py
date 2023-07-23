@@ -84,12 +84,20 @@ def get_slug_track_and_name(instance):
             instance.slug_track = slugify(instance.title)
         return instance
 
-#--------------------------------------------------------------- slug artist
+#--------------------------------------------------------------- slug artist and name
 
-def get_default_slug_artist():
-    slug_artist = UserSite.objects.values().last()['email']
-    slug_artist = slugify(str(slug_artist).partition('@')[0])
-    return slug_artist
+# from email
+# def get_default_slug_artist():
+#     slug_artist = UserSite.objects.values().last()['email']
+#     slug_artist = slugify(str(slug_artist).partition('@')[0])
+#     return slug_artist
+
+# from id user
+def get_default_slug_artist_and_name():
+    slug_artist = UserSite.objects.values().last()['id']
+    name_artist = "User " + str(slug_artist)
+    slug_artist = slugify("User " + str(slug_artist))    
+    return {"slug_artist" : slug_artist, "name_artist" : name_artist}
 
 #---------------------------------------------------------------- url artist profile
 
@@ -98,7 +106,7 @@ def get_default_slug_artist():
 #     return instance
 
 def get_default_artist_profile_url():   
-    profile_url = get_default_slug_artist()
+    profile_url = get_default_slug_artist_and_name()["slug_artist"]
     return profile_url
 
 
