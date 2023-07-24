@@ -119,13 +119,13 @@ function trackToHTML( {
 
   getWaveForm(trackId, trackFile)
 
-  getDominantImageColor(id)
+  // getDominantImageColor(id)
 
 }
 
 </script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
+
 <script>
 
   window.onload = () => {
@@ -134,7 +134,7 @@ function trackToHTML( {
         let background = document.querySelector(`#audio-container${id}`)        
         
         let colorThief = new ColorThief()
-        // get color palette
+        // get color palette from cover
         let color = colorThief.getColor(sourceImage)        
         // set the background color
         background.style.backgroundColor = "rgb(" + color + ")"
