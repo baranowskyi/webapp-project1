@@ -25,18 +25,17 @@
             <div class="header__item__r"><a href="#">Upload</a></div> 
         </div> 
 
-        {% if request.user.is_authenticated %}
-        {% for active_artist_info in active_artist_info%}
+        {% if request.user.is_authenticated %}        
         <!-- profile navbar -->
         <div class="profile-navbar">          
-          <div class="photo-navbar"><img class="photo-navbar-img" src="/media/{{ active_artist_info.avatar_image }}"></div>
+          <div class="photo-navbar"><img class="photo-navbar-img" src="#"></div>
           <div class="arrow-icon"></div>
           <button onclick="profileDrop()" class="profile-button"></button>
           <div class="dropdown-content-profile-navbar">
-            <a href="{% url 'profile' active_artist_info.profile_url %}"><i class="fa-solid fa-user" style="color: #000000;"></i>&nbsp Profile</a>
+            <a href="#"><i class="fa-solid fa-user" style="color: #000000;"></i>&nbsp Profile</a>
             <a href="#"><i class="fa-solid fa-heart" style="color: #000000;"></i>&nbsp Likes</a>
             <a href="#"><i class="fa-solid fa-folder-open" style="color: #000000;"></i>&nbsp Playlists</a>            
-            <a href="#" style=" color: #f2f2f2;"><i class="fa-solid fa-tower-broadcast" style="color: #f2f2f2;"></i>&nbsp Stations</a>
+            <a href="#" style=" color: #f2f2f2;"><i class="fa-solid fa-tower-cell" style="color: #f2f2f2;"></i>&nbsp Stations</a>
             <a href="#"><i class="fa-solid fa-users" style="color: #000000;"></i>&nbsp Following</a>
             <a href="#"><i class="fa-solid fa-user-group" style="color: #000000;"></i>&nbsp Who to follow</a>
             <a href="#" style=" color: #f2f2f2;"><i class="fa-solid fa-star" style="color: #f2f2f2;"></i>&nbsp Try Next Pro</a>                       
@@ -55,8 +54,7 @@
         <!-- letter navbar -->
         <div class="letter-icon">
           <button onclick="" class="letter-button"></button>
-        </div>
-        {% endfor %}
+        </div>        
         {% endif %}
 
         <!-- dotting navbar -->
@@ -78,7 +76,7 @@
               <a href="#" style=" color: #f2f2f2;">Support</a>
               <a href="#" style=" color: #f2f2f2;">Keyboard shortcuts</a>
               {% if request.user.is_authenticated %}
-              <a href="#" style=" color: #f2f2f2;">Subscriptin</a>
+              <a href="#" style=" color: #f2f2f2;">Subscription</a>
               <a href="#" style=" color: #f2f2f2;">Settings</a>
               <a href="{% url 'logout' %}">Sign out</a>
               {% else %}
@@ -95,25 +93,25 @@
 
 // profile navbar
 function profileDrop() {
-  document.querySelector(".profile-navbar").classList.toggle("profile-navbar-color");
-  document.querySelector(".dropdown-content-profile-navbar").classList.toggle("show-profile-navbar");  
+  document.querySelector(".profile-navbar").classList.toggle("profile-navbar-color")
+  document.querySelector(".dropdown-content-profile-navbar").classList.toggle("show-profile-navbar") 
 }  
 document.addEventListener("click", function(event) {
   if (!event.target.matches(".profile-button")) {     
-    document.querySelector(".profile-navbar").classList.remove("profile-navbar-color");
-    document.querySelector(".dropdown-content-profile-navbar").classList.remove("show-profile-navbar");
+    document.querySelector(".profile-navbar").classList.remove("profile-navbar-color")
+    document.querySelector(".dropdown-content-profile-navbar").classList.remove("show-profile-navbar")
   }
-}); 
+})
 
 // dotting navbar
 function dottingDrop() {
-  document.querySelector(".dropdown-content-dotting-navbar").classList.toggle("show-dotting-navbar");
+  document.querySelector(".dropdown-content-dotting-navbar").classList.toggle("show-dotting-navbar")
 }    
 document.addEventListener("click", function(event) {
   if (!event.target.matches(".dot-button")) {
-    document.querySelector(".dropdown-content-dotting-navbar").classList.remove('show-dotting-navbar');    
+    document.querySelector(".dropdown-content-dotting-navbar").classList.remove('show-dotting-navbar')    
   }
-}); 
+}) 
 
 </script>
 

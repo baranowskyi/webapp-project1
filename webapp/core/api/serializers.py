@@ -47,3 +47,19 @@ class ArtistTracksSerializer(serializers.ModelSerializer):
     class Meta:
         model = Track
         fields = '__all__'
+
+
+#------------------------ Artist info -----------------------------------------
+
+class UserNameSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UserSite
+        fields = ['username', 'pro_user']
+
+class ArtistInfoSerializer(serializers.ModelSerializer):
+    username = UserNameSerializer(many=False, read_only=True)
+
+    class Meta:
+        model = Artist
+        fields = '__all__'

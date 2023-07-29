@@ -1,17 +1,18 @@
 <div class="main-content">
 
     <!-- nav bar -->
-    {% include 'navbar-content.html' %}        
+    <div class="navbar-content-container">{% include 'navbar-content.html' %}</div>
 
     <div class="main-user-content">
 
         <!-- left content -->
-        <div class="left-content">            
-            <!-- <div class="spotlight">SPOTLIGHT</div> -->
-            <div class="artist-tracks" id="artist-tracks">
-                <div class="recent-track">Recent</div>
-                {% include 'audioplayer.html' %}
-            </div>
+        <div class="left-content">
+            <div class="artist-all">{% include 'artist-all.html' %}</div>
+            <div class="artist-popular-tracks">{% include 'artist-popular-tracks.html' %}</div>
+            <div class="artist-tracks" id="artist-tracks">{% include 'artist-tracks.html' %}</div> 
+            <div class="artist-albums">{% include 'artist-albums.html' %}</div>
+            <div class="artist-playlists">{% include 'artist-playlists.html' %}</div>
+            <div class="artist-reposts">{% include 'artist-reposts.html' %}</div>
         </div>
 
         <!-- right content -->
@@ -27,3 +28,5 @@
     </div>  
 
 </div>
+
+

@@ -1,33 +1,33 @@
 <div id="modal-image-view" class="modal">
   <div class="modal-content">
     <div class="modal-header">
-      {{ artist_info.display_name }}
+      
       <span id="span-image" class="close">&times;</span>       
       <div class="dropdown-divider-avatar"></div>       
     </div>    
     <div class="modal-body">        
-      <img src="{{ MEDIA_URL }}/media/{{ artist_info.avatar_image}}"></img>      
+      <img src=""></img>      
     </div>       
   </div>
 </div>
 
 <script>
 
-  let modal_image = document.getElementById("modal-image-view");
-  let btn_image = document.getElementsByClassName("avatar-profile-img")[0];
-  let span_image = document.getElementById("span-image");
+  let modal_image = document.getElementById("modal-image-view")
+  let btn_image = document.getElementsByClassName("avatar-profile-img")[0]
+  let span_image = document.getElementById("span-image")
 
   btn_image.onclick = function() {
-    modal_image.style.display = "block";
+    modal_image.style.display = "block"
   }
 
   span_image.onclick = function() {
-    modal_image.style.display = "none";
+    modal_image.style.display = "none"
   }
 
   window.onclick = function(event) {
     if (event.target == modal_image) {
-      modal_image.style.display = "none";
+      modal_image.style.display = "none"
     }
   }
 

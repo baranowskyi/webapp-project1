@@ -4,7 +4,7 @@ from core import models
 
 @admin.register(models.Artist)
 class ArtistAdmin(admin.ModelAdmin):
-    list_display = ('id', 'display_name', 'verification', 'first_name', 'last_name', 'city', 'country', 'follower_counter', 'following_counter', 'track_counter')
+    list_display = ('id', 'display_name', 'verification', 'first_name', 'last_name', 'city', 'country')
 
 @admin.register(models.Track)
 class TrackAdmin(admin.ModelAdmin):

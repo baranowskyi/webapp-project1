@@ -1,16 +1,20 @@
-<div class="navbar-content-container">
+<script>
+
+// show navbar content
+getClassPutHTMLAfterBeginTag(
+    "navbar-content-container", `
     <div class="navbar-content">
         <div class="navbar-content-left">
-            <div class="navbar-content-left-link"><a class="navbar-content-left-link-a" href="#">All</a></div>
-            <div class="navbar-content-left-link"><a class="navbar-content-left-link-a" href="#">Popular tracks</a></div>
-            <div class="navbar-content-left-link"><a class="navbar-content-left-link-a" href="#">Tracks</a></div>
-            <div class="navbar-content-left-link"><a class="navbar-content-left-link-a" href="#">Albums</a></div>
-            <div class="navbar-content-left-link"><a class="navbar-content-left-link-a" href="#">Playlists</a></div>
-            <div class="navbar-content-left-link"><a class="navbar-content-left-link-a" href="#">Reposts</a></div>
+            <div class="navbar-content-left-link"><a class="navbar-content-left-link-a" id="all-link" href="/${urlPathName}" onclick="return false;">All</a></div>
+            <div class="navbar-content-left-link"><a class="navbar-content-left-link-a" id="popular-tracks-link" href="/${urlPathName}/popular-tracks" onclick="return false;">Popular tracks</a></div>
+            <div class="navbar-content-left-link"><a class="navbar-content-left-link-a" id="tracks-link" href="/${urlPathName}/tracks" onclick="return false;">Tracks</a></div>
+            <div class="navbar-content-left-link"><a class="navbar-content-left-link-a" id="albums-link" href="/${urlPathName}/albums" onclick="return false;">Albums</a></div>
+            <div class="navbar-content-left-link"><a class="navbar-content-left-link-a" id="playlists-link" href="/${urlPathName}/sets" onclick="return false;">Playlists</a></div>
+            <div class="navbar-content-left-link"><a class="navbar-content-left-link-a" id="reposts-link" href="/${urlPathName}/reposts" onclick="return false;">Reposts</a></div>
         </div>
         <div class="navbar-content-right">
             <button class="navbar-content-right-button orange-button"><i class="fa-solid fa-chart-column" style="color: #fff;"></i>&nbsp Your Insights</button>
-            <button class="navbar-content-right-button"><i class="fa-solid fa-tower-broadcast"></i>&nbsp Station</button>
+            <button class="navbar-content-right-button"><i class="fa-solid fa-tower-cell"></i>&nbsp Station</button>
             <button class="navbar-content-right-button orange-button"><i class="fa-solid fa-user-plus" style="color: #fff;"></i>&nbsp Follow</button>
             <button class="navbar-content-right-button"><i class="fa-solid fa-share-from-square"></i>&nbsp Share</button>
             <button class="navbar-content-right-button"><i class="fa-solid fa-pen"></i>&nbsp Edit</button>
@@ -18,4 +22,29 @@
             <button class="navbar-content-right-button"><i class="fa-solid fa-ellipsis"></i></button>
         </div>
     </div>
-</div>
+`)
+
+// navbar content catch event 
+const navbarContentLink = document.querySelectorAll(".navbar-content-left-link-a")
+navbarContentLink.forEach(item => item.addEventListener('click', function() {
+    navbarContentLink.forEach(item => {
+        item.classList.remove("navbar-content-left-link-a-active")      
+        })
+    item.classList.add("navbar-content-left-link-a-active")
+    // replace link in browser
+    const urlLink = item['href']    
+    history.pushState(null, null, urlLink)    
+
+    if (item['id'] === "tracks-link") {
+
+        const urlPathNameTracks = window.location.pathname.split("/")[2]
+        console.log(urlPathNameTracks)        
+
+        if (urlPathNameTracks === "tracks") {   
+            getAllArtistTracks()
+        }
+    }
+}
+))
+
+</script>

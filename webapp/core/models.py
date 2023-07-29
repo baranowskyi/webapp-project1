@@ -33,10 +33,7 @@ class Artist(models.Model):
     city = models.CharField("City", max_length=30, null=True, blank=True)
     country = models.CharField("Country", max_length=30, null=True, blank=True)
     bio = models.TextField("Bio", max_length=500, null=True, blank=True)
-    follower_counter = models.PositiveIntegerField("Follower Counter", default=0, editable=False)
-    following_counter = models.PositiveIntegerField("Following Counter", default=0, editable=False)
-    track_counter = models.PositiveIntegerField("Track Counter", default=0, editable=False)
-    username = models.OneToOneField('users.UserSite', models.CASCADE)    
+    username = models.OneToOneField('users.UserSite', models.CASCADE, related_name='artist')    
 
     class Meta:
         verbose_name = 'Artist'
@@ -45,11 +42,7 @@ class Artist(models.Model):
 
     def __str__(self):        
         return self.display_name  
-
-    # def save(self, *args, **kwargs):        
-    #     services.get_default_artist_profile_url(self) # get profile url       
-    #     super(Artist, self).save(*args, **kwargs) 
-
+    
 
     
 class Track(models.Model):
@@ -81,12 +74,8 @@ class Track(models.Model):
     discription = models.TextField("Discription", max_length=2000, null=True, blank=True)    
     copy_link = models.URLField("Copy Link", default="", editable=False)
     download_access = models.BooleanField("Download Access", default=False)
-    buy_link = models.URLField("Buy Link", null=True, blank=True)
-    # play_counter = models.PositiveIntegerField("Play Counter", default=0, editable=False)
-    # like_counter = models.PositiveIntegerField("Like Counter", default=0, editable=False)
-    # repost_counter = models.PositiveIntegerField("Repost Counter", default=0, editable=False)
-    # comment_counter = models.PositiveIntegerField("Comment Counter", default=0, editable=False)
-    artist = models.ForeignKey('core.Artist', models.CASCADE)    
+    buy_link = models.URLField("Buy Link", null=True, blank=True)    
+    artist = models.ForeignKey('core.Artist', models.CASCADE, related_name='tracks')    
 
     
     class Meta:

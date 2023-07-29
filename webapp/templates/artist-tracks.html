@@ -1,0 +1,147 @@
+<!-- ARTIST TRACKS PAGE -->
+
+<script>
+
+const currentUser = "{{ request.user }}"
+const currentUserAuthenticated = "{{request.user.is_authenticated}}"
+const currentUserArtist = "{{ request.user.artist }}"
+const currentUserArtistID = "{{ request.user.artist.id }}"
+
+// window.addEventListener("DOMContentLoaded", getAllTrack)
+
+const urlPathNameTracks = window.location.pathname.split("/")[2]
+if (urlPathNameTracks === "tracks") {  
+    activateLinkNavbarContent("tracks-link")
+    getAllArtistTracks()
+}
+
+async function getAllArtistTracks() {
+    const res = await fetch(`/api/${urlPathName}/show-tracks/`)
+    const data = await res.json()    
+
+    data.forEach(item => trackToHTML(item))
+}
+
+function trackToHTML({
+    id, 
+    title, 
+    track_file,
+    cover_image, 
+    genre, 
+    tag, 
+    public_access,
+    publish_date,
+    update_date,
+    discription,
+    copy_link,
+    download_access,
+    buy_link,
+    likes,
+    artist }) {  
+
+    artistId = artist.id  
+    artistName = artist.display_name
+    trackId = id  
+    trackFile = track_file
+
+    const likeCounter = getAjaxLikeData(trackId, csrftoken)
+    const publishDateAgo = timeAgo(publish_date)
+
+    // show main code player
+    const trackContainerHTMLid = document.getElementById("artist-tracks")
+    trackContainerHTMLid.insertAdjacentHTML('beforeend', `
+    <div class="audio-container" id="audio-container${id}">
+
+        <!-- track image -->
+        <div class="track-img">
+            <img class="cover-img" id="cover-img${id}" src="${cover_image}">
+        </div>
+
+        <!-- track info top -->
+        <div class="track-container">
+            <div class="track-top-info">
+                <span class="main-play-button" id="main-play-button${id}">
+                    <i class="fa-solid fa-circle-play"></i>
+                    <i class="fa-solid fa-circle-pause"></i>
+                </span>
+                <div class="name-container">
+                    <div class="name-artist" id="name-artist${id}"><a class="name-artist-a" href="#">${artistName}</a></div>
+                    <div class="name-track" id="name-track${id}"><a class="name-track-a" href="#">${title}</a></div>
+                </div>
+                <div class="date-tag-container">
+                    <div class="date-track" id="date-track${id}">${publishDateAgo}</div>  
+                </div>
+            </div>
+
+            <!-- wave form -->
+            <div class="waveform" id="waveform${id}">
+                <div class="time" id="time${id}">0:00</div>
+                <div class="duration" id="duration${id}">0:00</div>
+                <div class="hover" id="hover${id}"></div>
+            </div>          
+
+            <!-- track info botton -->
+            <div class="track-bottom-container">
+                <button class="like-button default-bt" id="like-button${id}"><i class="fa-solid fa-heart"></i>
+                    <div class="like-button-text" id="like-button-text${id}" style="display: contents;">${likeCounter}</div>
+                </button>  
+                <button class="share-button default-bt" id="share-button${id}"><i class="fa-solid fa-share-from-square"></i>&nbsp Share</button>
+                <button class="copy-link-button default-bt" id="copy-link-button${id}"><i class="fa-solid fa-link"></i>&nbsp Copy Link</button>          
+                <button class="more-button default-bt" id="more-button${id}"><i class="fa-solid fa-ellipsis"></i>&nbsp More</button> 
+                <div class="play-like-repost-bottom">            
+                    <div class="play-counter" id="play-counter${id}"><i class="fas fa-play"></i>&nbsp 34</div> 
+                    <div class="repost-counter" id="repost-counter${id}"><a class="repost-counter-a" href="#"><i class="fa-solid fa-retweet"></i>&nbsp 2344</a></div>
+                    <div class="comment-counter" id="comment-counter${id}"><a class="comment-counter-a" href="#"><i class="fa-solid fa-message"></i>&nbsp 44</a></div>
+                </div>
+            </div>
+        </div>  
+    </div>  
+    `)
+
+    // show tag  
+    if (genre) {
+        getIDPutHTMLAfterTag(
+            `date-track${id}`, 
+            `<div class="tag-track" id="tag-track${id}"><i class="fa-regular fa-hashtag"></i>&nbsp${genre}</div>
+        `)
+    }
+
+    // show repost button 
+    if (currentUserArtistID != artistId) {
+        getIDPutHTMLAfterTag(
+            `like-button${id}`, 
+            `<button class="repost-button default-bt" id="repost-button${id}"><i class="fa-solid fa-retweet"></i>
+            <div class="repost-button-text" id="repost-button-text${id}" style="display: contents;">159</div>
+            </button>
+        `)
+    }
+
+    // show edit button  
+    if (currentUserArtistID == artistId) {    
+        getIDPutHTMLAfterTag(
+            `copy-link-button${id}`, 
+            `<button class="edit-button default-bt" id="edit-button${id}"><i class="fa-solid fa-pen"></i>&nbsp Edit</button>
+        `)
+    }
+
+    // show download button  
+    if (download_access) {
+        getIDPutHTMLAfterTag(
+            `more-button${id}`, 
+            `<button class="download-button default-bt" id="download-button${id}"><i class="fa-solid fa-download" style="color: #fe5621"></i></button>
+        `)
+    }
+
+    // show buy button  
+    if (buy_link) {
+        getIDPutHTMLAfterTag(
+            `more-button${id}`, 
+            `<div class="buy-button" id="buy-button${id}"><a class="buy-button-a" href="#">Buy</a></div>
+        `)
+    }
+
+    getWaveForm(trackId, trackFile)  
+
+}
+
+</script>

@@ -15,7 +15,7 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 
 
 @extend_schema_view(
-    get=extend_schema(summary="Show track's Likes", tags=["Track's Likes"]),    
+    get=extend_schema(summary="Show track Likes", tags=["Track Likes"]),    
 )
 class ShowLikesTrack(ListAPIView):
 
@@ -32,8 +32,8 @@ class ShowLikesTrack(ListAPIView):
     
 
 @extend_schema_view(    
-    post=extend_schema(summary='Add Like the track', tags=["Track's Likes"]), 
-    delete=extend_schema(summary='Delete Like from the track', tags=["Track's Likes"]),   
+    post=extend_schema(summary='Add Like the track', tags=["Track Likes"]), 
+    delete=extend_schema(summary='Delete Like from the track', tags=["Track Likes"]),   
 )
 class EditLikeTrack(CreateAPIView, DestroyAPIView):
 
@@ -63,7 +63,7 @@ class EditLikeTrack(CreateAPIView, DestroyAPIView):
    
 
 @extend_schema_view(
-    get=extend_schema(summary="Show Artist's Tracks", tags=["Artist's Tracks"]),    
+    get=extend_schema(summary="Show Artist Tracks", tags=["Artist Tracks"]),    
 )
 class ArtistTracks(ListAPIView):
 
@@ -77,3 +77,22 @@ class ArtistTracks(ListAPIView):
         raise ParseError(
                 "Artist don't has tracks"
             )   
+    
+
+#---------------------------------------- ARTIST --------------------------------------------------
+
+@extend_schema_view(
+    get=extend_schema(summary="Show Artist Info", tags=["Artist Info"]),    
+)
+class ArtistInfo(ListAPIView):
+
+    serializer_class = ArtistInfoSerializer   
+    permission_classes = (IsAuthenticatedOrReadOnly,) 
+
+    def get_queryset(self):
+        queryset = Artist.objects.filter(slug_artist=self.kwargs['slug_artist'])    
+        if queryset:            
+            return queryset
+        raise ParseError(
+                "Don't has Artist info"
+            )  

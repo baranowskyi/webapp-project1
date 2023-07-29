@@ -2,13 +2,11 @@
 
 {% load static %}
 
-{% for artist_info in artist_info %}
-
 <html>    
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Stream {{ artist_info.display_name }}</title>
+    <title>Stream {{ request.user.artist }}</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
 
     <!----------------------- CSS -->    
@@ -17,31 +15,44 @@
     <!-- fontawesome -->
     <link rel="stylesheet" type="text/css" href="{% static 'fontawesomefree/css/all.min.css' %}">
     <!-- audioplayer -->
-    <link rel='stylesheet' type='text/css' href='{% static "audioplayer/audioplayer.css" %}'>    
+    <link rel='stylesheet' type='text/css' href='{% static "audioplayer/audioplayer.css" %}'>   
+    
+    <!----------------------- JS -->    
+    <script type="text/javascript" src='{% static "js/jquery-3.7.0.min.js" %}'></script>    
+
+    <!-- htmx -->
+    <!-- <script type="text/javascript" src='{% static "js/htmx_1.9.4.min.js" %}'></script> -->
+
+    <!-- automatic change color background -->
+    <script type="text/javascript" src='{% static "js/color-thief_2.3.0.umd.js" %}'></script> 
+        
+    <!-- audio wave -->
+    <script type="text/javascript" src='{% static "audioplayer/wavesurfer.js@7.0.0-beta.14.min.cjs" %}'></script>
+
+
+    <!-- custom js function -->
+    <script type="text/javascript" src='{% static "js/services.js" %}'></script>
 
 </head>
 <body>
 
     {% include 'navbar-header.html' %}
 
-    {% include 'header.html' %}
+    <div id="artist-header-container">
+        {% include 'header.html' %}
+    </div>
+    
 
-    {% include 'profile.html' %}    
+    {% include 'profile.html' %}   
 
-{% endfor %}
+    {% include 'footer-player.html' %} 
 
-    <!----------------------- JS -->    
-    <script type="text/javascript" src='{% static "js/jquery-3.7.0.min.js" %}'></script>
+    
+    
 
-    <!-- automatic change color background -->
-    <script type="text/javascript" src='{% static "js/color-thief_2.3.0.umd.js" %}'></script>
+    
 
-
-
-        
-    <!-- audio wave -->
-    <script type="text/javascript" src='{% static "audioplayer/wavesurfer.js@7.0.0-beta.14.min.cjs" %}'></script>
-
+    
     <!-- custom js -->    
     <script type="text/javascript" src='{% static "audioplayer/audioplayer.js" %}'></script>    
     <script type="text/javascript" src='{% static "likes/likes.js" %}'></script>
