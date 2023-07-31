@@ -1,1 +1,26 @@
-<h1>PLAYLISTS</h1>
+<script>
+
+if (getInfoFromURL("tracktype") === "sets") {  
+    activateLinkNavbarContent("playlists-link")
+    getArtistPlaylists()    
+}
+
+function getArtistPlaylists() {
+    getClassPutHTML(
+        "artist-playlists", 
+        "beforeEnd",
+        `
+        <div class="artist-playlists-container">
+            <h1>PLAYLISTS</h1>
+            <div class="no-content">
+                <img src="/media/artist-albums.png" class="no-content-img">
+                <div class="no-content-text-up"></div>
+                <div class="no-content-text-down">
+                    ${getInfoFromURL("artist")} hasn’t created any playlists yet.
+                </div>
+            </div>
+        </div>    
+    `)
+}   
+    
+</script>

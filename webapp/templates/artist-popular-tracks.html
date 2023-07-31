@@ -1,1 +1,29 @@
-<h1>POPULAR TRACKS</h1>
+<script>
+
+if (getInfoFromURL("tracktype") === "popular-tracks") {  
+    activateLinkNavbarContent("popular-tracks-link")
+    getArtistPopularTracks()    
+}
+    
+    
+function getArtistPopularTracks() {
+    getClassPutHTML(
+        "artist-popular-tracks", 
+        "beforeEnd",
+        `
+        <div class="artist-popular-tracks-container">
+            <h1>POPULAR TRACKS</h1>
+            <div class="no-content">
+                <img src="/media/artist-tracks.png" class="no-content-img">
+                <div class="no-content-text-up">
+                    Nothing to hear here        
+                </div>
+                <div class="no-content-text-down">
+                    Follow ${getInfoFromURL("artist")} for updates on sounds they share in the future.
+                </div>
+            </div>
+        </div>    
+    `)
+}
+
+</script>

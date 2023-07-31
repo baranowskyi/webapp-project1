@@ -1,16 +1,18 @@
 <script>
 
 // show navbar content
-getClassPutHTMLAfterBeginTag(
-    "navbar-content-container", `
+getClassPutHTML(
+    "navbar-content-container", 
+    "afterBegin",
+    `
     <div class="navbar-content">
         <div class="navbar-content-left">
-            <div class="navbar-content-left-link"><a class="navbar-content-left-link-a" id="all-link" href="/${urlPathName}" onclick="return false;">All</a></div>
-            <div class="navbar-content-left-link"><a class="navbar-content-left-link-a" id="popular-tracks-link" href="/${urlPathName}/popular-tracks" onclick="return false;">Popular tracks</a></div>
-            <div class="navbar-content-left-link"><a class="navbar-content-left-link-a" id="tracks-link" href="/${urlPathName}/tracks" onclick="return false;">Tracks</a></div>
-            <div class="navbar-content-left-link"><a class="navbar-content-left-link-a" id="albums-link" href="/${urlPathName}/albums" onclick="return false;">Albums</a></div>
-            <div class="navbar-content-left-link"><a class="navbar-content-left-link-a" id="playlists-link" href="/${urlPathName}/sets" onclick="return false;">Playlists</a></div>
-            <div class="navbar-content-left-link"><a class="navbar-content-left-link-a" id="reposts-link" href="/${urlPathName}/reposts" onclick="return false;">Reposts</a></div>
+            <div class="navbar-content-left-link"><a class="navbar-content-left-link-a" id="all-link" href="/${getInfoFromURL("artist")}" onclick="return false;">All</a></div>
+            <div class="navbar-content-left-link"><a class="navbar-content-left-link-a" id="popular-tracks-link" href="/${getInfoFromURL("artist")}/popular-tracks" onclick="return false;">Popular tracks</a></div>
+            <div class="navbar-content-left-link"><a class="navbar-content-left-link-a" id="tracks-link" href="/${getInfoFromURL("artist")}/tracks" onclick="return false;">Tracks</a></div>
+            <div class="navbar-content-left-link"><a class="navbar-content-left-link-a" id="albums-link" href="/${getInfoFromURL("artist")}/albums" onclick="return false;">Albums</a></div>
+            <div class="navbar-content-left-link"><a class="navbar-content-left-link-a" id="playlists-link" href="/${getInfoFromURL("artist")}/sets" onclick="return false;">Playlists</a></div>
+            <div class="navbar-content-left-link"><a class="navbar-content-left-link-a" id="reposts-link" href="/${getInfoFromURL("artist")}/reposts" onclick="return false;">Reposts</a></div>
         </div>
         <div class="navbar-content-right">
             <button class="navbar-content-right-button orange-button"><i class="fa-solid fa-chart-column" style="color: #fff;"></i>&nbsp Your Insights</button>
@@ -31,19 +33,65 @@ navbarContentLink.forEach(item => item.addEventListener('click', function() {
         item.classList.remove("navbar-content-left-link-a-active")      
         })
     item.classList.add("navbar-content-left-link-a-active")
+    
     // replace link in browser
     const urlLink = item['href']    
-    history.pushState(null, null, urlLink)    
+    history.pushState(null, null, urlLink) 
 
-    if (item['id'] === "tracks-link") {
-
-        const urlPathNameTracks = window.location.pathname.split("/")[2]
-        console.log(urlPathNameTracks)        
-
-        if (urlPathNameTracks === "tracks") {   
-            getAllArtistTracks()
+    if (item['id'] === "all-link") { 
+        if (getInfoFromURL("tracktype") === "all") {
+            hideLeftContentElementUnless("artist-all")
+            if (!document.querySelector(".artist-all-container")) {
+                getArtistAll()
+            }
         }
     }
+
+    if (item['id'] === "popular-tracks-link") {  
+        if (getInfoFromURL("tracktype") === "popular-tracks") {
+            hideLeftContentElementUnless("artist-popular-tracks")
+            if (!document.querySelector(".artist-popular-tracks-container")) {
+                getArtistPopularTracks()
+            }
+        }
+    }
+
+    if (item['id'] === "tracks-link") {  
+        if (getInfoFromURL("tracktype") === "tracks") { 
+            hideLeftContentElementUnless("artist-tracks")                        
+            if (!document.querySelector(".audio-container")) {
+                getAllArtistTracks()
+            }
+        }
+    }
+
+    if (item['id'] === "albums-link") {  
+        if (getInfoFromURL("tracktype") === "albums") {
+            hideLeftContentElementUnless("artist-albums")
+            if (!document.querySelector(".artist-albums-container")) {
+                getArtistAlbums()
+            }
+        }
+    }
+
+    if (item['id'] === "playlists-link") {  
+        if (getInfoFromURL("tracktype") === "sets") {
+            hideLeftContentElementUnless("artist-playlists")
+            if (!document.querySelector(".artist-playlists-container")) {
+                getArtistPlaylists()
+            }
+        }
+    }
+
+    if (item['id'] === "reposts-link") {  
+        if (getInfoFromURL("tracktype") === "reposts") {
+            hideLeftContentElementUnless("artist-reposts")
+            if (!document.querySelector(".artist-reposts-container")) {
+                getArtistReposts()
+            }
+        }
+    }
+
 }
 ))
 

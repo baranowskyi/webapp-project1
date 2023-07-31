@@ -12,24 +12,19 @@
     <!----------------------- CSS -->    
     <link rel='stylesheet' type='text/css' href='{% static "styles/main.css" %}'>   
     <link rel='stylesheet' type='text/css' href='{% static "styles/navbar-content.css" %}'>  
+    <link rel='stylesheet' type='text/css' href='{% static "styles/no-content.css" %}'> 
     <!-- fontawesome -->
     <link rel="stylesheet" type="text/css" href="{% static 'fontawesomefree/css/all.min.css' %}">
     <!-- audioplayer -->
     <link rel='stylesheet' type='text/css' href='{% static "audioplayer/audioplayer.css" %}'>   
     
     <!----------------------- JS -->    
-    <script type="text/javascript" src='{% static "js/jquery-3.7.0.min.js" %}'></script>    
-
-    <!-- htmx -->
-    <!-- <script type="text/javascript" src='{% static "js/htmx_1.9.4.min.js" %}'></script> -->
-
+    <script type="text/javascript" src='{% static "js/jquery-3.7.0.min.js" %}'></script> 
+    
     <!-- automatic change color background -->
-    <script type="text/javascript" src='{% static "js/color-thief_2.3.0.umd.js" %}'></script> 
-        
+    <script type="text/javascript" src='{% static "js/color-thief_2.3.0.umd.js" %}'></script>         
     <!-- audio wave -->
     <script type="text/javascript" src='{% static "audioplayer/wavesurfer.js@7.0.0-beta.14.min.cjs" %}'></script>
-
-
     <!-- custom js function -->
     <script type="text/javascript" src='{% static "js/services.js" %}'></script>
 
@@ -45,13 +40,7 @@
 
     {% include 'profile.html' %}   
 
-    {% include 'footer-player.html' %} 
-
-    
-    
-
-    
-
+    {% include 'footer-player.html' %}   
     
     <!-- custom js -->    
     <script type="text/javascript" src='{% static "audioplayer/audioplayer.js" %}'></script>    

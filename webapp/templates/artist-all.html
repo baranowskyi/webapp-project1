@@ -1,4 +1,32 @@
-<h1>ALL</h1>
+<script>
 
-<div class="spotlight">SPOTLIGHT</div>
-<div class="recent-track">Recent</div>
+if (getInfoFromURL("tracktype") === "all") {  
+    activateLinkNavbarContent("all-link")
+    getArtistAll()
+}
+
+function getArtistAll() {
+    getClassPutHTML(
+        "artist-all", 
+        "beforeEnd",
+        `
+        <div class="artist-all-container">
+            <h1>ALL</h1>
+            <!-- <div class="spotlight">SPOTLIGHT</div>
+            <div class="recent-track">Recent</div> -->
+
+            <div class="no-content">
+                <img src="/media/artist-all.png" class="no-content-img">
+                <div class="no-content-text-up">
+                    Nothing to hear here        
+                </div>
+                <div class="no-content-text-down">
+                    Follow ${getInfoFromURL("artist")} for updates on sounds they share in the future.
+                </div>
+            </div> 
+        </div>       
+    `)
+}
+
+</script>
+
