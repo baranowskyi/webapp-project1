@@ -2,6 +2,7 @@
 
 if (getInfoFromURL("tracktype") === "all") {  
     activateLinkNavbarContent("all-link")
+    putTitleArtistAll()
     getArtistAll()
 }
 
@@ -16,7 +17,7 @@ function getArtistAll() {
             <div class="recent-track">Recent</div> -->
 
             <div class="no-content">
-                <img src="/media/artist-all.png" class="no-content-img">
+                <img src="/media/no-content-artist-all.png" class="no-content-img">
                 <div class="no-content-text-up">
                     Nothing to hear here        
                 </div>

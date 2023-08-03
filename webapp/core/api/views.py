@@ -96,3 +96,20 @@ class ArtistInfo(ListAPIView):
         raise ParseError(
                 "Don't has Artist info"
             )  
+    
+
+@extend_schema_view(
+    get=extend_schema(summary="Show Current Artist Info", tags=["Artist Info"]),    
+)    
+class CurrentArtistInfo(ListAPIView):
+
+    serializer_class = CurrentArtistInfoSerializer   
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+
+    def get_queryset(self):
+        queryset = Artist.objects.filter(username__username=self.request.user)
+        if queryset:            
+            return queryset
+        raise ParseError(
+                "Artist doesn't authenticate"
+            )  

@@ -55,7 +55,8 @@ class UserNameSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserSite
-        fields = ['username', 'pro_user']
+        fields = ['username', 'pro_user', 'is_authenticated']
+
 
 class ArtistInfoSerializer(serializers.ModelSerializer):
     username = UserNameSerializer(many=False, read_only=True)
@@ -63,3 +64,11 @@ class ArtistInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Artist
         fields = '__all__'
+
+
+class CurrentArtistInfoSerializer(serializers.ModelSerializer):
+    username = UserNameSerializer(many=False, read_only=True)
+
+    class Meta:
+        model = Artist
+        fields = ['id', 'username', 'display_name']

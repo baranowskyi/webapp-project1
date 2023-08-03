@@ -2,6 +2,7 @@
 
 if (getInfoFromURL("tracktype") === "reposts") {  
     activateLinkNavbarContent("reposts-link")
+    putTitleArtistReposts()
     getArtistReposts()    
 }
 
@@ -13,7 +14,7 @@ function getArtistReposts() {
         <div class="artist-reposts-container">
             <h1>REPOSTS</h1>
             <div class="no-content">
-                <img src="/media/artist-reposts.png" class="no-content-img">
+                <img src="/media/no-content-artist-reposts.png" class="no-content-img">
                 <div class="no-content-text-up"></div>
                 <div class="no-content-text-down">
                     ${getInfoFromURL("artist")} hasn’t reposted any sounds yet.

@@ -2,30 +2,31 @@
 
 <script>
 
-const currentUser = "{{ request.user }}"
-const currentUserAuthenticated = "{{request.user.is_authenticated}}"
+const currentUser = "{{ request.user }}"        
+const currentUserAuthenticated = "{{ request.user.is_authenticated}}"
 const currentUserArtist = "{{ request.user.artist }}"
 const currentUserArtistID = "{{ request.user.artist.id }}"
 
-// window.addEventListener("DOMContentLoaded", getAllTrack)
-
-
 if (getInfoFromURL("tracktype") === "tracks") {  
     activateLinkNavbarContent("tracks-link")
-    getAllArtistTracks()
+    putTitleArtistTracks()
+    getAllArtistTracks()    
 }
 
-async function getAllArtistTracks() {
-    const res = await fetch(`/api/${getInfoFromURL("artist")}/show-tracks/`)
-    const data = await res.json() 
-    
-    if (data) {
-        data.forEach(item => trackToHTML(item))  
+async function getAllArtistTracks() {    
+    try {
+        const res = await fetch(`/api/${getInfoFromURL("artist")}/show-tracks/`)
+        if (res.ok) {
+            const data = await res.json()
+            data.forEach(item => trackToHTML(item))
+        }
+        else {
+            noContent()            
+        }
     }
-    else {
-        noContent()
+    catch(err) {
+        throw Error(`Artist dosen't have tracks >>>`, err)          
     }
-    
 }
 
 function trackToHTML({
@@ -56,7 +57,7 @@ function trackToHTML({
     // show main code player    
     getClassPutHTML(
         "artist-tracks",
-        "beforeend", 
+        "beforeEnd", 
         `
         <div class="audio-container" id="audio-container${id}">
 
@@ -158,13 +159,13 @@ function trackToHTML({
 }
 
 // show no content info
-noContent = () => {
-    getIDPutHTML(
+function noContent() {
+    getClassPutHTML(
         "artist-tracks",
-        "beforeend", 
+        "beforeEnd", 
         `
         <div class="no-content">
-            <img src="/media/artist-tracks.png" class="no-content-img">
+            <img src="/media/no-content-artist-tracks.png" class="no-content-img">
             <div class="no-content-text-up">
                 Nothing to hear here        
             </div>
@@ -173,7 +174,6 @@ noContent = () => {
             </div>
         </div>
     `)
-
 }
 
 </script>

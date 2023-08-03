@@ -6,7 +6,7 @@ window.addEventListener("DOMContentLoaded", getHeader)
 
 async function getHeader() {
     const res = await fetch(`/api/${getInfoFromURL("artist")}/show-info/`)
-    const data = await res.json()
+    const data = await res.json()    
 
     data.forEach(item => infoToHTML(item))
 }
@@ -39,7 +39,7 @@ function infoToHTML({
                     <img class="avatar-profile-img" src="${avatar_image}"></img>  
                 </div>
                 <div class="artist-data"> 
-                    <div class="nick-name">${display_name} (login: ${currentUser})
+                    <div class="nick-name">${display_name} (logined: ${currentUser})
                     </div>  
                     <div class="name-block">                    
                     </div>
