@@ -71,4 +71,7 @@ class CurrentArtistInfoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Artist
-        fields = ['id', 'username', 'display_name']
+        fields = ['id', 'display_name', 'avatar_image', 'username']
+        
+        
+   

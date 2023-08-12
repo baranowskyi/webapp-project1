@@ -74,8 +74,8 @@ navbarContentLink.forEach(item => item.addEventListener('click', function() {
             hideLeftContentElementUnless("artist-all")
             if (!document.querySelector(".artist-all-container")) {
                 getArtistAll()
-            }
-            putTitleArtistAll()
+            }            
+            document.title = pageTitleText.ArtistAll
         }
     }
 
@@ -84,8 +84,8 @@ navbarContentLink.forEach(item => item.addEventListener('click', function() {
             hideLeftContentElementUnless("artist-popular-tracks")
             if (!document.querySelector(".artist-popular-tracks-container")) {
                 getArtistPopularTracks()
-            }
-            putTitleArtistPopularTracks()
+            }            
+            document.title = pageTitleText.ArtistPopularTracks
         }
     }
 
@@ -94,8 +94,8 @@ navbarContentLink.forEach(item => item.addEventListener('click', function() {
             hideLeftContentElementUnless("artist-tracks")                        
             if (!document.querySelector(".audio-container")) {
                 getAllArtistTracks()
-            }
-            putTitleArtistTracks()
+            }            
+            document.title = pageTitleText.ArtistTracks
         }
     }
 
@@ -104,8 +104,8 @@ navbarContentLink.forEach(item => item.addEventListener('click', function() {
             hideLeftContentElementUnless("artist-albums")
             if (!document.querySelector(".artist-albums-container")) {
                 getArtistAlbums()
-            }
-            putTitleArtistAlbums()
+            }            
+            document.title = pageTitleText.ArtistAlbums
         }
     }
 
@@ -114,8 +114,8 @@ navbarContentLink.forEach(item => item.addEventListener('click', function() {
             hideLeftContentElementUnless("artist-playlists")
             if (!document.querySelector(".artist-playlists-container")) {
                 getArtistPlaylists()
-            }
-            putTitleArtistPlaylists()
+            }            
+            document.title = pageTitleText.ArtistPlaylists
         }
     }
 
@@ -124,8 +124,8 @@ navbarContentLink.forEach(item => item.addEventListener('click', function() {
             hideLeftContentElementUnless("artist-reposts")
             if (!document.querySelector(".artist-reposts-container")) {
                 getArtistReposts()
-            }
-            putTitleArtistReposts()
+            }            
+            document.title = pageTitleText.ArtistReposts
         }
     }
 

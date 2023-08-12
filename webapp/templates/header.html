@@ -2,12 +2,34 @@
 
 <script>
 
-window.addEventListener("DOMContentLoaded", getHeader)
+loadHeaderBlock()
+
+async function loadHeaderBlock() {
+    console.log("<---------- header start -------------->")
+
+    console.log("1 - on spinner")
+    putPreloadSpinner()
+
+    console.log("2 - get header")
+    await getHeader()  
+        
+    console.log("3 - load media")
+    await loadImage('.avatar-profile-img')
+    await loadImage('.background-artist-img')
+        
+    console.log("4 - load modal")
+    ShowAvatarModalWindow() 
+        
+    console.log("5 - off spinner")
+    hidePreloaderSpinner() 
+        
+    console.log("<---------- header end -------------->")    
+}
+
 
 async function getHeader() {
     const res = await fetch(`/api/${getInfoFromURL("artist")}/show-info/`)
-    const data = await res.json()    
-
+    const data = await res.json() 
     data.forEach(item => infoToHTML(item))
 }
 
@@ -25,33 +47,30 @@ function infoToHTML({
     bio,
     username }) {
 
+    const currentUserName = parseCurrentArtistInfo("username", "username")   
+
     // show main code header
-    getIDPutHTML(
-        "artist-header-container", 
+    getClassPutHTML(
+        "artist-header", 
         "beforeEnd", 
-        `
-        <div class="artist-header">
-            <div class="background-artist">      
-                <img class="background-artist-img" src="${header_image}"></img>
-            </div>
-            <div class="artist-info">
-                <div class="avatar-profile-block">
-                    <img class="avatar-profile-img" src="${avatar_image}"></img>  
-                </div>
-                <div class="artist-data"> 
-                    <div class="nick-name">${display_name} (logined: ${currentUser})
-                    </div>  
-                    <div class="name-block">                    
-                    </div>
-                    <div class="country-city-block">                    
-                    </div> 
-                </div>
-            </div>
+        `         
+        <div class="background-artist preload-content">      
+            <img class="background-artist-img" src="${header_image}"></img>
         </div>
-        `)
-    
+        <div class="artist-info">
+            <div class="avatar-profile-block preload-content">
+                <img class="avatar-profile-img" src="${avatar_image}"></img>  
+            </div>
+            <div class="artist-data"> 
+                <div class="nick-name">${display_name} (logined: ${currentUser})</div>  
+                <div class="name-block"></div>
+                <div class="country-city-block"></div> 
+            </div>
+        </div>        
+    `) 
+        
     // show edit avatar button
-    if ((currentUserAuthenticated) && (currentUser == username.username)) {
+    if (currentUserName === username.username) {
         getClassPutHTML(
             "avatar-profile-img", 
             "afterEnd",
@@ -72,7 +91,7 @@ function infoToHTML({
             "nick-name",
             "beforeEnd",
              `
-            &nbsp<i class="fa-solid fa-circle-check" style="color: #3588d8; background-color: white; border-radius: 50%;"></i>
+            <i class="fa-solid fa-circle-check" style="color: #3588d8; background-color: white; border-radius: 50%;"></i>
         `)
     }
 
@@ -122,7 +141,7 @@ function infoToHTML({
     }
 
     // show edit header button
-    if ((currentUserAuthenticated) && (currentUser == username.username)) {
+    if (currentUserName === username.username) {
         getClassPutHTML(
             "artist-data", 
             "afterEnd",
@@ -136,7 +155,30 @@ function infoToHTML({
             </div>
         `)
     }
+
+    // modal avatar view -------------------------------------------------------------/
+    getIDPutHTML(
+        "artist-header-container", 
+        "afterEnd", 
+        `  
+        <div id="modal-image-view" class="modal">
+            <div class="modal-content">
+                <div class="modal-header"> 
+                    ${display_name}           
+                    <span id="span-image" class="close">&times;</span>       
+                    <div class="dropdown-divider-avatar"></div>       
+                </div>    
+                <div class="modal-body">        
+                    <img src="${avatar_image}"></img>      
+                </div>       
+            </div>
+        </div>
+    `)
 }
+
+//---------------------------------------------------------------------------------------------------------------------------//
+//------------------------------------------- edit avatar and background ----------------------------------------------------//
+//---------------------------------------------------------------------------------------------------------------------------//
 
 // edit avatar
 function editAvatarDrop() {  
@@ -159,6 +201,32 @@ document.addEventListener("click", function(event) {
     }
 }) 
 
-</script>
 
-{% include 'modal-image-view.html' %}
+//---------------------------------------------------------------------------------------------------------------------------//
+//------------------------------------------- modal avatar view -------------------------------------------------------------//
+//---------------------------------------------------------------------------------------------------------------------------//
+
+function ShowAvatarModalWindow() {
+    const modalWindow = document.querySelector("#modal-image-view")     
+    const avatarImage = document.querySelector(".avatar-profile-img")    
+    const closeModalWindow = document.querySelector("#span-image")    
+
+    // if click on avatar show modal window
+    avatarImage.onclick = () => {
+        modalWindow.style.display = "block"    
+    }    
+
+    // close modal window on button close
+    closeModalWindow.onclick = () => {
+        modalWindow.style.display = "none"
+    }
+
+    // close modal window if click outside modal window
+    window.onclick = (event) => {    
+        if (event.target === modalWindow) {
+            modalWindow.style.display = "none"
+        }
+    }
+}
+
+</script>

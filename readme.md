@@ -4,14 +4,15 @@
 
 ### Стек 
 
-* Django, Django Rest Framework, документация API (DRF Spectacular)
+* Django, Django Rest Framework
 * HTML, CSS, JavaScript
 
 ### Внешние подключаемые компоненты
 
 * Отображение формы звуковой волны с возможностью вопроизведения аудио [wavesurfer.js](https://wavesurfer-js.org/)  
 * Автоматическая установка цвета фона аудио проигрывателя в зависимости от цвета обложки [color-thief.js](https://lokeshdhakar.com/projects/color-thief/) 
-* Иконки - **Font Awesome** (free) с интергацией в Django [fontawesomefree](https://fontawesome.com/docs/web/use-with/python-django)   
+* Иконки - **Font Awesome** (free) с интергацией в Django [fontawesomefree](https://fontawesome.com/docs/web/use-with/python-django) 
+* Спиннер загрузки контента [loading.io](https://loading.io/css/)  
 
 ### Настройки проекта
 

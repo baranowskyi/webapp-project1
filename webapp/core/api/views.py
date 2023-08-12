@@ -107,7 +107,7 @@ class CurrentArtistInfo(ListAPIView):
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self):
-        queryset = Artist.objects.filter(username__username=self.request.user)
+        queryset = Artist.objects.filter(username__id=self.request.user.id)
         if queryset:            
             return queryset
         raise ParseError(

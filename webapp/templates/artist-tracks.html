@@ -9,7 +9,7 @@ const currentUserArtistID = "{{ request.user.artist.id }}"
 
 if (getInfoFromURL("tracktype") === "tracks") {  
     activateLinkNavbarContent("tracks-link")
-    putTitleArtistTracks()
+    document.title = pageTitleText.ArtistTracks
     getAllArtistTracks()    
 }
 
@@ -25,7 +25,7 @@ async function getAllArtistTracks() {
         }
     }
     catch(err) {
-        throw Error(`Artist dosen't have tracks >>>`, err)          
+        throw new Error(`Artist dosen't have tracks >>>`, err)          
     }
 }
 
@@ -116,6 +116,7 @@ function trackToHTML({
         `)
     }
 
+    
     // show repost button 
     if (currentUserArtistID != artistId) {
         getIDPutHTML(            
@@ -157,6 +158,8 @@ function trackToHTML({
     getWaveForm(trackId, trackFile)  
 
 }
+
+
 
 // show no content info
 function noContent() {
