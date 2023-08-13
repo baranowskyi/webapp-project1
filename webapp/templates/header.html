@@ -5,31 +5,31 @@
 loadHeaderBlock()
 
 async function loadHeaderBlock() {
-    console.log("<---------- header start -------------->")
+    // console.log("<---------- header start -------------->")
 
-    console.log("1 - on spinner")
-    putPreloadSpinner()
+    // console.log("1 - on spinner")
+    putPreloadSpinner()    
 
-    console.log("2 - get header")
+    // console.log("2 - get header")
     await getHeader()  
         
-    console.log("3 - load media")
+    // console.log("3 - load media")
     await loadImage('.avatar-profile-img')
     await loadImage('.background-artist-img')
         
-    console.log("4 - load modal")
+    // console.log("4 - load modal")
     ShowAvatarModalWindow() 
         
-    console.log("5 - off spinner")
+    // console.log("5 - off spinner")
     hidePreloaderSpinner() 
         
-    console.log("<---------- header end -------------->")    
+    // console.log("<---------- header end -------------->")    
 }
 
 
 async function getHeader() {
     const res = await fetch(`/api/${getInfoFromURL("artist")}/show-info/`)
-    const data = await res.json() 
+    const data = await res.json()    
     data.forEach(item => infoToHTML(item))
 }
 
@@ -45,9 +45,10 @@ function infoToHTML({
     city,
     country,
     bio,
-    username }) {
+    username }) {      
 
-    const currentUserName = parseCurrentArtistInfo("username", "username")   
+    const currentUserName = parseCurrentArtistInfo("username", "username") 
+    // console.log("parseCurrentArtistInfo = ", currentUserName)    
 
     // show main code header
     getClassPutHTML(
@@ -59,104 +60,46 @@ function infoToHTML({
         </div>
         <div class="artist-info">
             <div class="avatar-profile-block preload-content">
-                <img class="avatar-profile-img" src="${avatar_image}"></img>  
+                <img class="avatar-profile-img" src="${avatar_image}"></img> 
+                ${ currentUserName === username.username ?                    
+                `<div class="edit-avatar-button">
+                    <button onclick="editAvatarDrop()" class="avatar-button"><i class="fa-solid fa-camera"></i>&nbsp Update image</button>
+                    <div class="dropdown-content-edit-avatar">
+                        <a href="#">Replace image</a>
+                        <a href="#">Delete image</a>                
+                    </div>
+                </div>
+                ` 
+                : ``} 
             </div>
             <div class="artist-data"> 
-                <div class="nick-name">${display_name} (logined: ${currentUser})</div>  
-                <div class="name-block"></div>
-                <div class="country-city-block"></div> 
-            </div>
-        </div>        
-    `) 
-        
-    // show edit avatar button
-    if (currentUserName === username.username) {
-        getClassPutHTML(
-            "avatar-profile-img", 
-            "afterEnd",
-            `
-            <div class="edit-avatar-button">
-                <button onclick="editAvatarDrop()" class="avatar-button"><i class="fa-solid fa-camera"></i>&nbsp Update image</button>
-                <div class="dropdown-content-edit-avatar">
-                    <a href="#">Replace image</a>
-                    <a href="#">Delete image</a>                
+                <div class="nick-name">${display_name} (${currentUser})                
+                    ${verification ? `<i class="fa-solid fa-circle-check" style="color: #3588d8; background-color: white; border-radius: 50%;"></i>` : ``}
+                </div>  
+                <div class="name-block">
+                    ${first_name ? `<div class="name">${first_name}</div>` : ``} 
+                    ${last_name ? `<div class="name">${last_name}</div>` : ``}                   
                 </div>
+                <div class="country-city-block">
+                    ${city ? `<div class="country-city">${city}</div>` : ``}
+                    ${country ? `<div class="country-city">${country}</div>` : ``}
+                </div>
+                ${username.pro_user ? `<div class="pro-user"><i class="fa-solid fa-certificate" style="color: #fe5621;"></i>&nbsp NEXT PRO</div>` : ``}
             </div>
-        `)
-    }    
-
-    // show verification
-    if (verification) {
-        getClassPutHTML(
-            "nick-name",
-            "beforeEnd",
-             `
-            <i class="fa-solid fa-circle-check" style="color: #3588d8; background-color: white; border-radius: 50%;"></i>
-        `)
-    }
-
-    // show first name
-    if (first_name) {
-        getClassPutHTML(
-            "name-block",
-            "afterBegin",
-            `<div class="name">${first_name}</div>
-        `)
-    }
-
-    // show last name
-    if (last_name) {
-        getClassPutHTML(
-            "name-block",
-            "beforeEnd",
-            `<div class="name">${last_name}</div>
-        `)
-    }
-
-    // show city
-    if (city) {
-        getClassPutHTML(
-            "country-city-block",
-            "afterBegin",
-            `<div class="country-city">${city}</div>
-        `)
-    }
-
-    // show country
-    if (country) {
-        getClassPutHTML(
-            "country-city-block",
-            "beforeEnd",
-            `<div class="country-city">${country}</div>
-        `)
-    }
-
-    // show pro user
-    if (username.pro_user) {
-        getClassPutHTML(
-            "artist-data",
-            "beforeEnd",
-            `<div class="pro-user"><i class="fa-solid fa-certificate" style="color: #fe5621;"></i>&nbsp NEXT PRO</div>
-        `)
-    }
-
-    // show edit header button
-    if (currentUserName === username.username) {
-        getClassPutHTML(
-            "artist-data", 
-            "afterEnd",
-            `
-            <div class="edit-background">
+            ${currentUserName === username.username ?
+            `<div class="edit-background">
                 <button onclick="editBackgroundDrop()" class="background-button"><i class="fa-solid fa-camera"></i>&nbsp Update image</button>
                 <div class="dropdown-content-edit-background">
                     <a href="#">Replace image</a>
                     <a href="#">Delete image</a>                
                 </div>
             </div>
-        `)
-    }
+            `
+            : ``}
+        </div>        
+    `) 
 
-    // modal avatar view -------------------------------------------------------------/
+    // modal avatar view 
     getIDPutHTML(
         "artist-header-container", 
         "afterEnd", 
@@ -209,7 +152,11 @@ document.addEventListener("click", function(event) {
 function ShowAvatarModalWindow() {
     const modalWindow = document.querySelector("#modal-image-view")     
     const avatarImage = document.querySelector(".avatar-profile-img")    
-    const closeModalWindow = document.querySelector("#span-image")    
+    const closeModalWindow = document.querySelector("#span-image") 
+    
+    function closeModal(target) {
+        target.style.display = "none"
+    }
 
     // if click on avatar show modal window
     avatarImage.onclick = () => {
@@ -218,13 +165,13 @@ function ShowAvatarModalWindow() {
 
     // close modal window on button close
     closeModalWindow.onclick = () => {
-        modalWindow.style.display = "none"
+        closeModal(modalWindow)
     }
 
     // close modal window if click outside modal window
     window.onclick = (event) => {    
         if (event.target === modalWindow) {
-            modalWindow.style.display = "none"
+            closeModal(modalWindow)
         }
     }
 }

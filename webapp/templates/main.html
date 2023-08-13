@@ -15,7 +15,7 @@
 
     <!-- custom js function -->
     <script type='text/javascript' src='{% static "js/services.js" %}'></script>
-    <script defer type='text/javascript'>getCurrentArtistInfo()</script>
+    <script defer type='text/javascript'>getCurrentArtistInfoFromAPI()</script>
     <script type='application/json' id="currentInfo"></script>
     
 
@@ -24,6 +24,9 @@
     <link rel='stylesheet' type='text/css' href='{% static "styles/navbar-content.css" %}'>  
     <link rel='stylesheet' type='text/css' href='{% static "styles/no-content.css" %}'> 
     <link rel='stylesheet' type='text/css' href='{% static "styles/spiner.css" %}'> 
+
+    <link rel='stylesheet' type='text/css' href='{% static "styles/right-artist-info-container.css" %}'> 
+
     <!-- fontawesome -->
     <link rel='stylesheet' type='text/css' href='{% static "fontawesomefree/css/all.min.css" %}'>
     <!-- audioplayer -->
@@ -58,7 +61,7 @@
     
     <!-- custom js -->    
     <script type="text/javascript" src='{% static "audioplayer/audioplayer.js" %}'></script>    
-    <script type="text/javascript" src='{% static "likes/likes.js" %}'></script> 
+    <script type="text/javascript" src='{% static "js/likes.js" %}'></script> 
 
     
 

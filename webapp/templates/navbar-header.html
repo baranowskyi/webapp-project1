@@ -4,21 +4,14 @@
 
 loadNavbarHeaderBlock()
 
-function loadNavbarHeaderBlock() {    
-
+function loadNavbarHeaderBlock() {
     getNavbarHeader()
 }
-
-
     
 function getNavbarHeader() {
 
-    const userIsAuthenticated = parseCurrentArtistInfo("username", "is_authenticated")
-    console.log("userIsAuthenticated", userIsAuthenticated)
-
-    const avatarImage = parseCurrentArtistInfo("avatar_image")
-    console.log("avatarImage", avatarImage)
-
+    const userIsAuthenticated = parseCurrentArtistInfo("username", "is_authenticated")    
+    const avatarImage = parseCurrentArtistInfo("avatar_image")    
     
     getClassPutHTML(
         "container-header-bar", 
@@ -37,78 +30,54 @@ function getNavbarHeader() {
             </form>
         </div>
         <div class="header-section header-right">
+            ${userIsAuthenticated ?
+            `<div class="header-item-right color-text-try-pro"><a href="#">Try Next Pro</a></div>
+            <div class="header-item-right"><a href="#">For Artists</a></div>
+            ` 
+            : 
+            `<div class="login-button sign-in-button"><a href="#">Sign in</a></div>
+            <div class="create-account-button"><a href="#">Create account</a></div>            
+            `
+            }            
             <div class="header-item-right"><a href="#">Upload</a></div> 
         </div> 
-    `)
-
-    
-    if (userIsAuthenticated) {
-        getClassPutHTML(
-            "header-right", 
-            "afterBegin", 
-            `
-            <div class="header-item-right color-text-try-pro"><a href="#">Try Next Pro</a></div>
-            <div class="header-item-right"><a href="#">For Artists</a></div>
-        `)
-    }
-    else {
-        getClassPutHTML(
-            "header-right", 
-            "afterBegin", 
-            `
-            <div class="login-button sign-in-button"><a href="#">Sign in</a></div>
-            <div class="create-account-button"><a href="#">Create account</a></div>
-        `)
-    }
-
-        
-    if (userIsAuthenticated) {
-        getClassPutHTML(
-            "header-right", 
-            "afterEnd", 
-            `
-            <!-- profile navbar -->
-            <div class="profile-navbar">          
-                <div class="photo-navbar"><img class="photo-navbar-img" src="${avatarImage}"></div>
-                <div class="arrow-icon"></div>
-                <button onclick="${profileDrop()}" class="profile-button"></button>
-                <div class="dropdown-content-profile-navbar">
-                    <a href="#"><i class="fa-solid fa-user" style="color: #000000;"></i>&nbsp Profile</a>
-                    <a href="#"><i class="fa-solid fa-heart" style="color: #000000;"></i>&nbsp Likes</a>
-                    <a href="#"><i class="fa-solid fa-folder-open" style="color: #000000;"></i>&nbsp Playlists</a>            
-                    <a href="#" style=" color: #f2f2f2;"><i class="fa-solid fa-tower-cell" style="color: #f2f2f2;"></i>&nbsp Stations</a>
-                    <a href="#"><i class="fa-solid fa-users" style="color: #000000;"></i>&nbsp Following</a>
-                    <a href="#"><i class="fa-solid fa-user-group" style="color: #000000;"></i>&nbsp Who to follow</a>
-                    <a href="#" style=" color: #f2f2f2;"><i class="fa-solid fa-star" style="color: #f2f2f2;"></i>&nbsp Try Next Pro</a>                       
-                    <a href="#" style=" color: #f2f2f2;"><i class="fa-solid fa-gift" style="color: #f2f2f2;"></i>&nbsp Partner offers</a>
-                    <a href="#"><i class="fa-solid fa-signal" style="color: #000000;"></i>&nbsp Tracks</a>
-                    <a href="#" style=" color: #f2f2f2;"><i class="fa-solid fa-chart-column" style="color: #f2f2f2;"></i>&nbsp Insights</a>
-                    <a href="#" style=" color: #f2f2f2;"><i class="fa-solid fa-arrow-up-from-bracket" style="color: #f2f2f2;"></i>&nbsp Distribute</a>
-                </div>
+        ${userIsAuthenticated ?
+        `<!-- profile navbar -->
+        <div class="profile-navbar">          
+            <div class="photo-navbar"><img class="photo-navbar-img" src="${avatarImage}"></div>
+            <div class="arrow-icon"></div>
+            <button onclick="profileDrop()" class="profile-button"></button>
+            <div class="dropdown-content-profile-navbar">
+                <a href="#"><i class="fa-solid fa-user" style="color: #000000;"></i>&nbsp Profile</a>
+                <a href="#"><i class="fa-solid fa-heart" style="color: #000000;"></i>&nbsp Likes</a>
+                <a href="#"><i class="fa-solid fa-folder-open" style="color: #000000;"></i>&nbsp Playlists</a>            
+                <a href="#" style=" color: #f2f2f2;"><i class="fa-solid fa-tower-cell" style="color: #f2f2f2;"></i>&nbsp Stations</a>
+                <a href="#"><i class="fa-solid fa-users" style="color: #000000;"></i>&nbsp Following</a>
+                <a href="#"><i class="fa-solid fa-user-group" style="color: #000000;"></i>&nbsp Who to follow</a>
+                <a href="#" style=" color: #f2f2f2;"><i class="fa-solid fa-star" style="color: #f2f2f2;"></i>&nbsp Try Next Pro</a>                       
+                <a href="#" style=" color: #f2f2f2;"><i class="fa-solid fa-gift" style="color: #f2f2f2;"></i>&nbsp Partner offers</a>
+                <a href="#"><i class="fa-solid fa-signal" style="color: #000000;"></i>&nbsp Tracks</a>
+                <a href="#" style=" color: #f2f2f2;"><i class="fa-solid fa-chart-column" style="color: #f2f2f2;"></i>&nbsp Insights</a>
+                <a href="#" style=" color: #f2f2f2;"><i class="fa-solid fa-arrow-up-from-bracket" style="color: #f2f2f2;"></i>&nbsp Distribute</a>
             </div>
+        </div>
 
-            <!-- notification navbar -->
-            <div class="notification-icon">
-                <button onclick="" class="notification-button"></button>
-            </div>
+        <!-- notification navbar -->
+        <div class="notification-icon">
+            <button onclick="" class="notification-button"></button>
+        </div>
 
-            <!-- letter navbar -->
-            <div class="letter-icon">
-                <button onclick="" class="letter-button"></button>
-            </div>       
-            
-        `)
-    }
+        <!-- letter navbar -->
+        <div class="letter-icon">
+            <button onclick="" class="letter-button"></button>
+        </div>
+        `          
+        : ``}
 
-    
-    getClassPutHTML(
-        "container-header-bar", 
-        "beforeEnd",   
-        `
         <!-- dotting navbar -->
         <div class="dotting-navbar">     
             <div class="dotting-button">       
-                <button onclick="${dottingDrop()}" class="dot-button"></button>
+                <button onclick="dottingDrop()" class="dot-button"></button>
             </div>
             <div class="dropdown-content-dotting-navbar">
                 <a href="#" style=" color: #f2f2f2;">About us</a>
@@ -123,32 +92,19 @@ function getNavbarHeader() {
                 <div class="dropdown-divider"></div>
                 <a href="#" style=" color: #f2f2f2;">Support</a>
                 <a href="#" style=" color: #f2f2f2;">Keyboard shortcuts</a>
+                ${userIsAuthenticated ? 
+                `<a href="#" style=" color: #f2f2f2;">Subscription</a>
+                <a href="#" style=" color: #f2f2f2;">Settings</a>
+                <a href="#">Sign out</a>
+                `    
+                : 
+                `<div class="dropdown-divider"></div>
+                <a href="#" style=" color: #f2f2f2;">Pro plans</a>
+                `
+                }
             </div>
         </div>
     `)
-
-    
-    if (userIsAuthenticated) {
-        getClassPutHTML(
-            "dropdown-content-dotting-navbar", 
-            "beforeEnd", 
-            `
-            <a href="#" style=" color: #f2f2f2;">Subscription</a>
-            <a href="#" style=" color: #f2f2f2;">Settings</a>
-            <a href="#">Sign out</a>
-        `)
-    }
-    else {
-        getClassPutHTML(
-            "dropdown-content-dotting-navbar", 
-            "beforeEnd", 
-            `
-            <div class="dropdown-divider"></div>
-            <a href="#" style=" color: #f2f2f2;">Pro plans</a>
-        `)
-    }
-    
-
 }   
 
 // profile navbar
@@ -181,6 +137,20 @@ document.addEventListener("click", function(event) {
 // 		div.style.display = 'none'; // скрываем элемент т к клик был за его пределами
 // 	}
 // })
+
+
+// document.addEventListener('click', function(event) {
+//   var e=document.getElementById('test');
+//   if (!e.contains(event.target)) e.style.display='none';
+// });
+
+
+// const popup = document.querySelector(".pop-up");
+// document.onclick = function (e) {
+//     if (e.target.className != "pop-up") {
+//         popup.style.display = "none";
+//     };
+// };
  
  
 </script>
