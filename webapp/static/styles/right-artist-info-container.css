@@ -1,0 +1,71 @@
+.right-artist-info-container {
+    margin: 0 0 30px;
+}
+
+.counter-container {
+    margin-bottom: 14px;
+    display: flex;
+}
+
+.followers-counter.stat, 
+.following-counter.stat, 
+.tracks-counter.stat {
+    width: 33.33%;
+    text-align: left;
+}
+
+.followers-counter.border-right,
+.following-counter.border-right {
+    border-right: 1px solid #e5e5e5;
+}
+
+.stat-link {
+    color: #999;    
+}
+
+.stat-link:hover {
+    color: #5a5959;
+}
+
+.stat-title {
+    line-height: .9;
+    padding: 5px 0 3px;
+    font-size: 12px;    
+}
+
+.stat-counter {
+    font-size: 18px;
+    line-height: 1.2;       
+}
+
+.text-indent {
+    text-indent: 10px;
+}
+
+.artist-bio {
+    margin-bottom: 20px;    
+}
+
+.bio-text {
+    font: 12px/1.4 Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;
+    color: #333;
+}
+
+.social-network {
+    margin-bottom: 0px;    
+}
+
+.social-network-link {
+    color: #999;
+    font-size: 12px;
+}
+
+.social-network-link:hover {
+    color: #5a5959;
+}
+
+.social-logo {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+}       

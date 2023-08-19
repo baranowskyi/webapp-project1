@@ -1,3 +1,5 @@
+<!-- NAVBAR CONTENT -->
+
 <script>
 
 // show main navbar content
@@ -14,47 +16,17 @@ getClassPutHTML(
             <div class="navbar-content-left-link"><a class="navbar-content-left-link-a" id="playlists-link" href="/${getInfoFromURL("artist")}/sets" onclick="return false;">Playlists</a></div>
             <div class="navbar-content-left-link"><a class="navbar-content-left-link-a" id="reposts-link" href="/${getInfoFromURL("artist")}/reposts" onclick="return false;">Reposts</a></div>
         </div>
-        <div class="navbar-content-right">            
-            <button class="navbar-content-right-button navbar-content-right-button-station"><i class="fa-solid fa-tower-cell"></i>&nbsp Station</button>            
+        <div class="navbar-content-right">  
+            <button class="navbar-content-right-button orange-button navbar-content-right-button-insights"><i class="fa-solid fa-chart-column" style="color: #fff;"></i>&nbsp Your Insights</button>          
+            <button class="navbar-content-right-button navbar-content-right-button-station"><i class="fa-solid fa-tower-cell"></i>&nbsp Station</button> 
+            <button class="navbar-content-right-button navbar-content-right-button-follow orange-button"><i class="fa-solid fa-user-plus" style="color: #fff;"></i>&nbsp Follow</button>           
             <button class="navbar-content-right-button navbar-content-right-button-share"><i class="fa-solid fa-share-from-square"></i>&nbsp Share</button>
+            <button class="navbar-content-right-button navbar-content-right-button-edit"><i class="fa-solid fa-pen"></i>&nbsp Edit</button>
+            <button class="navbar-content-right-button navbar-content-right-button-letter"><i class="fa-solid fa-envelope"></i></button>
+            <button class="navbar-content-right-button navbar-content-right-button-dots"><i class="fa-solid fa-ellipsis"></i></button>
         </div>
     </div>
 `)
-
-// show insights button
-getClassPutHTML(
-    "navbar-content-right", 
-    "afterBegin",
-    `
-    <button class="navbar-content-right-button orange-button navbar-content-right-button-insights"><i class="fa-solid fa-chart-column" style="color: #fff;"></i>&nbsp Your Insights</button>
-`)
-
-
-// show follow button
-getClassPutHTML(
-    "navbar-content-right-button-station", 
-    "afterEnd",
-    `
-    <button class="navbar-content-right-button navbar-content-right-button-follow orange-button"><i class="fa-solid fa-user-plus" style="color: #fff;"></i>&nbsp Follow</button>
-`)
-
-// show edit button
-getClassPutHTML(
-    "navbar-content-right-button-share", 
-    "afterEnd",
-    `
-    <button class="navbar-content-right-button navbar-content-right-button-edit"><i class="fa-solid fa-pen"></i>&nbsp Edit</button>
-`)
-
-// show letter and dots button
-getClassPutHTML(
-    "navbar-content-right", 
-    "beforeEnd",
-    `
-    <button class="navbar-content-right-button navbar-content-right-button-letter"><i class="fa-solid fa-envelope"></i></button>
-    <button class="navbar-content-right-button navbar-content-right-button-dots"><i class="fa-solid fa-ellipsis"></i></button>
-`)
-
 
 //-------------------------------------------- navbar content links catch event -----------------------------------------------------
 

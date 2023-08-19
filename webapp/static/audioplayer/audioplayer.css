@@ -1,0 +1,518 @@
+/*********************************************************************************************/
+/********************************************** MAIN STYLE ************************************/
+/*********************************************************************************************/
+
+/******************************************** SLIDER MAIN SLYLE *************************************************/
+
+.slider { 
+    -webkit-appearance: none;
+    appearance: none;     
+    cursor: pointer;
+    outline: none;
+    border-radius: 15px;
+    height: 2px;
+    background: #ccc;
+  }
+  
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none; 
+    height: 10px;
+    width: 10px;
+    background-color: #f50;
+    border-radius: 50%;
+    border: none;
+    transition: .2s ease-in-out;
+  }
+  
+.slider::-moz-range-thumb {
+    height: 15px;
+    width: 15px;
+    background-color: #f50;
+    border-radius: 50%;
+    border: none;
+    transition: .2s ease-in-out;
+}
+
+/**************************************************************************************************/
+/************************************************* PLAYER IN PAGE *********************************/
+/**************************************************************************************************/
+
+.audio-container { 
+    width: 100%;        
+    position: relative;
+    display: flex;
+    margin-bottom: 35px;
+}
+  
+.audio-container .audio {    
+    width: 100%;   
+}
+  
+.buttons {
+    position: absolute;
+    right: 0;    
+}
+  
+.audio-container .btn {
+    padding: 16px;
+    width: 24px;
+    margin-right: 10px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+/******************************************************************* COVER TRACK ****************************************/
+
+.track-img {
+    background: transparent 50%/contain no-repeat;
+    display: block;
+    height: 160px;
+    width: 160px;
+    position: relative;
+    margin-right: 10px;
+}
+
+.cover-img {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    background-image: linear-gradient(135deg,#846170,#70929c);
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,.1);
+}
+
+/**************************************************************** TOP INFO TRACK *****************************************/
+
+.track-top-info {    
+    height: 50px;    
+    display: flex;
+    margin-bottom: 10px;
+}
+
+/************ play button start **************/
+
+.main-play-button {
+    font-size: 40px;
+    color: #fe5621;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.main-play-button .fa-circle-pause {
+    display: none;
+}
+
+.main-play-button.playing .fa-circle-pause {
+    display: inline-block;
+}
+
+.main-play-button.playing .fa-circle-play {
+    display: none;
+}
+
+/************ play button end **************/
+
+.name-container {
+    margin-top: 5px;
+}
+
+.name-artist .name-artist-a {
+    color: #999;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 100;
+}
+
+.name-artist .name-artist-a:hover {
+    color: #333;
+}
+
+.name-track .name-track-a {
+    font-size: 15px;
+    line-height: 1.2;
+    font-weight: 100;
+    color: #333;
+}
+
+.name-track .name-track-a:hover {
+    color: #000;
+}
+
+.date-tag-container {
+    margin-top: 8px;
+    right: 0;
+    position: absolute;
+}
+
+.date-tag-container .date-track {
+    color: #ccc;
+    font-size: 12px;
+    font-weight: 100;
+    line-height: 16px;
+    text-align: right;
+    margin-bottom: 5px;
+}
+
+.date-tag-container .tag-track {
+    padding: 0 6px;
+    line-height: 16px;
+    font-size: 12px;    
+    background: #999;
+    border: 1px solid #999;    
+    color: #fff;
+    font-weight: 100;
+    cursor: pointer;
+    border-radius: 20px;
+    position: absolute;
+    right: 0;
+}
+
+.date-tag-container .tag-track:hover {
+    background: #666;
+    border: 1px solid #666;
+    outline: 0;
+}
+
+/****************************************************** WAVE FORM ***************************************************/
+
+.waveform ::part(progress) {
+    height: 50%;
+}
+
+.waveform {
+    cursor: pointer;
+    position: relative; 
+    width: 650px;
+    height: 60px;   
+}
+
+.hover {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 10;
+    pointer-events: none;
+    height: 50%;
+    width: 0;
+    mix-blend-mode: overlay;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.waveform:hover .hover {
+    opacity: 1;
+}
+
+.time,
+.duration {
+    position: absolute;
+    z-index: 11;
+    top: 35%;
+    margin-top: -1px;
+    transform: translateY(-50%);
+    font-size: 11px;
+    background: rgba(0, 0, 0, 0.75);
+    padding: 2px;
+    color: #ddd;
+}
+
+.time {
+    left: 0;
+}
+
+.duration {
+    right: 0;
+}
+
+/******************************************************* BOTTOM INFO TRACK **********************************************/
+
+.track-bottom-container {
+    margin-top: 18px;
+    display: inline-flex;
+} 
+
+.track-bottom-container .default-bt {
+    display: inline-block;
+    position: relative;
+    margin-right: 5px;
+    border: 1px solid #e5e5e5;
+    border-radius: 3px;
+    background-color: #fff;
+    cursor: pointer;
+    color: #333;
+    white-space: nowrap;
+    font-weight: 100;
+    text-align: center;
+    vertical-align: initial;    
+    box-sizing: border-box;
+    font-size: 11px;
+    padding: 2px 9px 2px 8px;
+    height: 22px;
+    line-height: 16px;
+}
+
+.track-bottom-container .like-click {
+    /* border: 1px solid #fe5621;  */
+    color: #fe5621
+}
+
+.track-bottom-container .like-click:hover {
+    border: 1px solid #fe5621; 
+}
+
+.track-bottom-container .fa-heart {
+    margin-right: 3px;
+}
+
+.track-bottom-container .fa-heart, .track-bottom-container .like-button-text {
+    pointer-events: none; /* off event target */
+}
+
+.track-bottom-container .buy-button {
+    display: inline;
+}
+
+.track-bottom-container .buy-button .buy-button-a {    
+    font-size: 11px;
+    padding: 2px 9px 2px 8px;
+    height: 22px;
+    line-height: 16px;
+    font-weight: 100;
+    color: #333;
+}
+
+.track-bottom-container .buy-button .buy-button-a:hover {
+    color: #000;
+}
+
+.play-like-repost-bottom {
+    display: inline-flex;
+    position: absolute;
+    right: 0;
+}
+
+
+.play-like-repost-bottom .play-counter {
+    font-size: 11px;
+    padding: 2px 9px 2px 8px;
+    height: 22px;
+    line-height: 16px;
+    font-weight: 100;
+    color: #999999;
+    margin-top: 2px;
+}
+
+.play-like-repost-bottom .repost-counter .repost-counter-a, 
+.play-like-repost-bottom .comment-counter .comment-counter-a {
+    font-size: 11px;
+    padding: 2px 9px 2px 8px;
+    height: 22px;
+    line-height: 16px;
+    font-weight: 100;
+    color: #999999;
+}
+
+.play-like-repost-bottom .repost-counter .repost-counter-a:hover, 
+.play-like-repost-bottom .comment-counter .comment-counter-a:hover {
+    color: #333;
+}
+
+/**************************************************************************************************/
+/************************************************* FOOTER PLAYER *********************************/
+/**************************************************************************************************/ 
+
+.footer-player {
+    height: 48px;
+    background-color: #f2f2f2;
+    border: 1px solid #cccccc;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
+}  
+
+/*********************************************************************** NAV BUTTON ******************************************/
+
+.footer-buttons {       
+    display: flex;    
+    width: 1240px;
+    margin: 0 auto;
+}
+
+.button-st {
+    width: 7px;
+    margin: 15px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.footer-player .footer-buttons .footer-play-button .fa-pause {
+    display: none;
+}
+  
+.footer-player .footer-buttons .footer-play-button.playing .fa-pause {
+    display: inline-block;
+}
+
+.footer-player .footer-buttons .footer-play-button.footer-play-button.playing .fa-play {
+    display: none;
+}
+
+/***************************************************************** PROGRESS LINE SLIDER **************************************/
+
+.footer-container-line-and-time {
+    margin-left: 25px;
+    margin-right: 25px;
+    display: flex;
+} 
+
+.footer-container-play-line {
+    margin: 10px;
+    margin-left: 20px;
+}
+
+.footer-play-line-start {
+    position: relative;
+}
+
+.footer-play-line-end {
+    position: relative;
+}
+
+#time-line, #duration-line {
+    font-size: 12px;
+}
+
+.footer-play-line-slider {  
+    width: 500px;
+}
+
+.footer-container-play-line .slider::-webkit-slider-thumb {
+    display: none;
+}
+
+.footer-container-play-line:hover .slider::-webkit-slider-thumb {
+    display: block;
+}
+
+/*************************************************************** VOLUME SLIDER *************************************/  
+
+.footer-speaker-container {
+    position: relative;
+    display: flex;
+    width: 90px;
+}
+ 
+.footer-container-volume {
+    background-color: #f2f2f2;
+    height: 125px;
+    width: 30px;
+    border: 1px solid #cccccc;
+    position: relative;
+    bottom: 115px;
+    right: 28px;
+    display: none; 
+}
+
+.footer-volume-slider {  
+    width: 100px;
+    position: relative;
+    top: 50px;
+    left: -37px;    
+    transform: rotate(-90deg);
+}
+
+.footer-container-volume:hover {
+    display: inline-block       
+}
+
+/**************** mute\unmute start ***********/
+
+.footer-speaker-button {
+    height: 48px;
+    width: 35px;
+    font-size: 15px;
+    padding: 13px;
+    cursor: pointer;
+}
+
+.footer-speaker-container .footer-speaker-button .fa-volume-mute {
+    display: none;
+}
+
+.footer-speaker-container .footer-speaker-button.muted .fa-volume-mute {
+    display: inline-block;
+}
+
+.footer-speaker-container .footer-speaker-button.muted .fa-volume-up {
+    display: none;
+}
+
+.footer-speaker-button:hover ~ .footer-container-volume {
+    display: inline-block    
+}
+
+/**************** mute\unmute end ***********/
+
+/*************************************************************** MINI PLAYER INFO ***********************************************/
+
+.mini-player {
+    display: flex;    
+    height: 40px;
+    width: 500px;
+}
+
+.mini-cover-bottom {
+    width: 30px;
+    height: 30px;
+    margin: 10px;
+    margin-left: 0px;
+}
+
+.mini-cover-bottom .mini-cover-img {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.mini-info-bottom {
+    margin-top: 7px;
+    width: 240px;
+}
+
+.mini-info-bottom .mini-name-artist,
+.mini-info-bottom .mini-name-track {
+    margin: 0 auto;
+    height: 15px;
+}
+
+.mini-info-bottom .mini-name-artist .mini-name-artist-a,
+.mini-info-bottom .mini-name-track .mini-name-track-a {
+    font-size: 12px;
+    color: #666;
+}
+
+.mini-info-bottom .mini-name-artist .mini-name-artist-a:hover,
+.mini-info-bottom .mini-name-track .mini-name-track-a:hover {
+    color: #000;
+}
+
+.mini-like-follow-list {
+    display: flex;    
+}
+
+.mini-like-follow-list .mini-like,
+.mini-like-follow-list .mini-follow,
+.mini-like-follow-list .mini-list {
+    margin-left: 13px;
+    margin-top: 13px;
+    font-size: 12px;
+}
+
+.mini-like-follow-list .mini-like .mini-like-a,
+.mini-like-follow-list .mini-follow .mini-follow-a,
+.mini-like-follow-list .mini-list .mini-list-a {
+    color: #222222;    
+}

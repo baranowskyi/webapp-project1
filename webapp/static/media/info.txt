@@ -1,0 +1,3 @@
+svg
+size 70px
+padding 25%
