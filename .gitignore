@@ -1,5 +1,5 @@
 model/
-static/
+# static/
 media/
 
 # migrations
