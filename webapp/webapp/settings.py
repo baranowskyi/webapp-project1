@@ -3,6 +3,9 @@ import os
 from dotenv import load_dotenv
 import tzlocal
 
+# for JWT
+from datetime import timedelta
+
 # use .env
 load_dotenv()
 
@@ -18,8 +21,8 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split()
 # redefine Django User model
 AUTH_USER_MODEL = 'users.UserSite'
 
-# LOGIN_REDIRECT_URL = '/'
-# LOGOUT_REDIRECT_URL = '/'
+
+#---------------- INSTALLED APP -----------------------
 
 
 INSTALLED_APPS = [
@@ -36,7 +39,14 @@ INSTALLED_APPS += [
     'rest_framework',    
     'django_filters',
     'fontawesomefree',
-    'rest_framework.authtoken',
+    'corsheaders',
+]
+
+# installed app authentication
+INSTALLED_APPS += [
+    'rest_framework.authtoken',    
+    'rest_framework_simplejwt',
+    'djoser',
 ]
 
 # project app
@@ -58,6 +68,8 @@ INSTALLED_APPS += [
     'drf_spectacular',
 ]
 
+#-------------------------------------------------------------
+
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
@@ -67,6 +79,7 @@ REST_FRAMEWORK = {
         # 'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
 
     'DEFAULT_PARSER_CLASSES': [
@@ -80,9 +93,10 @@ REST_FRAMEWORK = {
 }
 
 
-MIDDLEWARE = [
+MIDDLEWARE = [    
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',    
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -162,7 +176,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# drf documentation
+#--------------------- API DOCUMENTATION --------------------------
+
 SPECTACULAR_SETTINGS = {
     'TITLE': 'SCCopy API', 
     'VERSION': '0.0.1', 
@@ -185,4 +200,31 @@ SPECTACULAR_SETTINGS = {
     'COMPONENT_SPLIT_REQUEST': True,
     'SORT_OPERATIONS': False,
 }
+
+
+#----------------------- CORS ------------------------
+
+CORS_ALLOWED_ORIGINS = [    
+    'http://localhost:3000',  
+    'http://127.0.0.1:3000',  
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:3000',  
+    'http://127.0.0.1:3000',  
+]
+
+# for Cookie
+CORS_ALLOW_CREDENTIALS = True
+
+#------------------------ AUTHENTICATION --------------------
+
+SIMPLE_JWT = {
+   'AUTH_HEADER_TYPES': ('JWT',),
+
+   "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+}
+
+
+
 

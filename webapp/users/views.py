@@ -16,6 +16,8 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 
 
+
+
 @extend_schema_view(
     post=extend_schema(summary='Registration', tags=['User']),
 )
