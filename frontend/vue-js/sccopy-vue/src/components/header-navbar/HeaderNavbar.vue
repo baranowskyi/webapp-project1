@@ -14,18 +14,12 @@
         <div class="header-item"><a href="#">Library</a></div>
     </div>
     
-   <!-- search --> 
-   <search-navbar></search-navbar>
+    <SearchNavbar />
 
     <div class="header-section header-right">            
         <div class="header-item-right color-text-try-pro"><a href="#">Try Next Pro</a></div>
         <div class="header-item-right"><a href="#">For Artists</a></div>            
-        <div 
-            @click.prevent="showLoginModal" 
-            class="login-button sign-in-button"
-            >
-            <a href="#" >Sign in</a>
-        </div>
+        <div @click.prevent="showLoginModal" class="login-button sign-in-button"><a href="#" >Sign in</a></div>        
         <div class="create-account-button"><a href="#">Create account</a></div>
         <div class="header-item-right"><a href="#">Upload</a></div> 
     </div> 
@@ -54,11 +48,9 @@
         </div>
     </div>
 
-    <!-- notification navbar -->
-    <notification-navbar></notification-navbar>
+    <NotificationNavbar />
 
-    <!-- letter navbar -->
-    <letter-navbar></letter-navbar>
+    <LetterNavbar />
 
     <!-- dotting navbar -->
     <div class="dotting-navbar">     
@@ -100,14 +92,19 @@ import SearchNavbar from '@/components/header-navbar/SearchNavbar.vue'
 import NotificationNavbar from '@/components/header-navbar/NotificationNavbar.vue'
 import LetterNavbar from '@/components/header-navbar/LetterNavbar.vue'
 
+import store from '@/store'
 
 export default {   
     name: "HeaderNavbar", 
     components: {
         SearchNavbar,
         NotificationNavbar,
-        LetterNavbar,
-         
+        LetterNavbar,        
+    },
+    data() {
+        return {
+            
+        }
     },
     methods: {
         profileDropMenu() {
@@ -118,7 +115,8 @@ export default {
             document.querySelector(".dropdown-content-dotting-navbar").classList.toggle("show-dotting-navbar")
         },
         showLoginModal() {
-            document.getElementById("modal-login").style.display = "block" 
+            store.commit("headerNavbarActions/setLoginButton", true)
+            this.isStatusModal =  store.getters["headerNavbarActions/getLoginButton"]
         }
     } 
 }

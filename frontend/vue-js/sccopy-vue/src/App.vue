@@ -3,14 +3,58 @@
 import { RouterLink, RouterView } from 'vue-router'
 import HeaderNavbar from '@/components/header-navbar/HeaderNavbar.vue'
 import ModalLoginForm from '@/components/modal/ModalLoginForm.vue'
+import axios from 'axios'
+import store from './store'
+
 
 export default {
-    name: "App",
+    name: "App",    
     components: {
         HeaderNavbar,  
         ModalLoginForm,
+    },    
+    beforeCreate() {          
+        store.commit("accessModule/initializationStore") 
+        const accessToken = store.getters["accessModule/getAccessToken"] 
+        console.log("accessToken from STORE =", accessToken)
+
+        if ( accessToken ) {
+            axios.defaults.headers.common["Authorization"] = "JWT " + accessToken
+        }
+        else {
+            axios.defaults.headers.common["Authorization"] = ''
+        }        
     },
-    
+    // mounted() {
+    //     setInterval(() => {
+    //         this.upadateToken()
+    //     }, 10000)
+    // },
+    mounted() {
+        this.upadateToken()
+    },
+    methods: {
+        upadateToken() {
+            const accessData = {
+                refresh: store.getters["accessModule/getRefreshToken"]
+            }
+            
+            axios
+                .post("api/auth/jwt/refresh/", accessData, {headers: {"Content-type": "application/json"}}, {withCredentials: true})
+                .then(response => {
+                    const accessToken = response.data.access
+
+                    console.log("new Token =", accessToken)
+
+                    localStorage.setItem("accessToken", accessToken)
+                    store.commit("accessModule/setAccessToken")
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        }
+    }
+
 }
 
 </script>
@@ -19,10 +63,9 @@ export default {
 
 <div class="main">
     <div class="header">
-        <header-navbar></header-navbar>        
-    </div>    
-    <modal-login-form></modal-login-form>
-    
+        <HeaderNavbar />
+        <ModalLoginForm />                
+    </div>
 </div>
   
 </template>

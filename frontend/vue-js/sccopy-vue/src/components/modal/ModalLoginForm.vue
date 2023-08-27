@@ -1,71 +1,130 @@
 <template>
-<div :class="{'modal-show': modalVisible}" id="modal-login" class="modal">    
-    <div class="modal-content">
-        <div class="modal-header">        
-            <span @click="closeModal" id="span-login" class="close">&times;</span>  
-        </div>    
-        <div class="modal-body">  
-
-        <form @submit.prevent="submitLoginData">
-            
-            <div class="welcome-text">Welcome back!</div>
-            <div>                
-                <input v-model="username" class="login-input" type="text" name="username" placeholder="Your Username"/>
+<transition name="show-modal-login">  
+    <div 
+    v-show="getModalStatus"     
+    @click="closeModal" 
+    @keydown.esc="closeModal"
+    tabindex="0"
+    ref="modal"    
+    class="modal"
+    >
+        <transition name="show-modal-login-content"> 
+            <div v-show="getModalStatus" class="modal-content" @click.stop>
+                <div class="modal-header">        
+                    <span @click="closeModal" class="close">&times;</span>  
+                </div>    
+                <div class="modal-body">                
+                    <form @submit.prevent="submitLoginData">            
+                        <div class="welcome-text">Welcome back!</div>                            
+                        <input v-model="username" class="login-input" type="text" name="username" placeholder="Your Username"/> 
+                        <input v-model="password" class="password-input" type="password" name="password" placeholder="Your Password"/>
+                        <input class="submit-button" type="submit" value="Sign in"/>
+                    </form> 
+                </div>       
             </div>
-            <div> 
-                <input v-model="password" class="password-input" type="password" name="password" placeholder="Your Password"/>
-            </div>
-            <div>
-                <input class="submit-button" type="submit" value="Sign in"/>
-            </div>
-            
-        </form>                
-
-        </div>       
-    </div>
-</div>  
+        </transition>
+    </div>  
+</transition> 
 </template>
 
 <script>
 
-export default {      
+import axios from 'axios'
+import store from '@/store'
 
-    name: "ModalLoginForm",
+export default {  
+    name: "ModalLoginForm",    
+    
     data() {
         return {
             username: "",    
             password: "",
-            modalVisible: false,
         }        
+    },    
+
+    computed: {
+        getModalStatus() {   
+            
+            // get focus from close ESC
+            this.$nextTick(() => {
+                this.$refs.modal.focus()
+            })
+            return store.getters["headerNavbarActions/getLoginButton"]
+        }
     },
+
+    
+    
     methods: {
-        async submitLoginData() {
+        submitLoginData() {  
+            
+            // clear token
+            axios.defaults.headers.common["Authorization"] = ''
+            localStorage.removeItem("accessToken")
+            localStorage.removeItem("refreshToken")
+
             const loginData = {
                 username: this.username,
                 password: this.password,
-            }
-            await fetch(`${import.meta.env.VITE_MAIN_URL}/login`, {
-                method: "POST",
-                headers: { "Content-Type": "applicatin/json" },
-                credentials: "include",
-                body: JSON.stringify(loginData)
-            })            
-        },
-        closeModal() {
-            this.modalVisible = false
-            // clearError()
-        }
-    }
+            }  
+            
+            axios
+                .post("/api/auth/jwt/create/", loginData, {headers: {"Content-type": "application/json"}}, {withCredentials: true})
+                .then(response => {
+                    console.log(response)
+                    if (response.status === 200) {
+                        const accessToken = response.data.access
+                        const refreshToken = response.data.refresh
+
+                        console.log("accessToken = ", accessToken)
+                        console.log("refreshToken =", refreshToken)
+
+                        store.commit("accessModule/setAccessToken", accessToken)
+                        store.commit("accessModule/setRefreshToken", refreshToken)
+
+                        axios.defaults.headers.common["Authorization"] = "JWT " + accessToken
+
+                        localStorage.setItem("accessToken", accessToken)
+                        localStorage.setItem("refreshToken", refreshToken)
+                    }
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+
+            store.commit("headerNavbarActions/setLoginButton", false)
+        },                                
+       
+        closeModal() {             
+            store.commit("headerNavbarActions/setLoginButton", false)
+            this.username = ""
+            this.password = ""            
+            // clearError()            
+        },                
+    }    
+    
 }
 
 </script>
 
-<style>
+<style scoped>
 
-.modal {
-    display: none; 
+.show-modal-login-enter-from { opacity: 0; }
+.show-modal-login-enter-to { opacity: 1; }
+.show-modal-login-leave-from { opacity: 1; } 
+.show-modal-login-leave-to { opacity: 0; }
+.show-modal-login-enter-active, .show-modal-login-leave-active { transition: all 0.4s; }
+
+.show-modal-login-content-enter-from { top: -500px; }
+.show-modal-login-content-enter-to { top: 0px; }
+.show-modal-login-content-leave-from { top: 0px; } 
+.show-modal-login-content-leave-to { top: -500px; }
+.show-modal-login-content-enter-active, .show-modal-login-content-leave-active { transition: all 0.4s; }
+
+.modal {  
+    outline: none;  
     position: fixed; 
-    z-index: 999; 
+    z-index: 100; 
     padding-top: 76px; 
     left: 0;
     top: 0;
@@ -73,11 +132,17 @@ export default {
     height: 100%; 
     overflow: auto; 
     background-color: hsla(0,0%,94.9%,.9);
+             
 }
 
-.modal-show {
+ .modal-show {
     display: block;
 }
+
+.modal-hide {
+    display: none;
+}
+
 
 .modal-content {
     position: relative;
@@ -85,22 +150,9 @@ export default {
     margin: auto;
     padding: 0;  
     width: 550px;
-    height: auto;  
-    -webkit-animation-name: animatetop;
-    -webkit-animation-duration: 0.4s;
-    animation-name: animatetop;
-    animation-duration: 0.4s
-    }
-
-@-webkit-keyframes animatetop {
-    from {top:-300px; opacity:0} 
-    to {top:0; opacity:1}
+    height: auto;         
 }
 
-@keyframes animatetop {
-    from {top:-300px; opacity:0}
-    to {top:0; opacity:1}
-}
 
 .close {
     color: #000;
