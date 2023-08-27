@@ -16,8 +16,26 @@
                 <div class="modal-body">                
                     <form @submit.prevent="submitLoginData">            
                         <div class="welcome-text">Welcome back!</div>                            
-                        <input v-model="username" class="login-input" type="text" name="username" placeholder="Your Username"/> 
-                        <input v-model="password" class="password-input" type="password" name="password" placeholder="Your Password"/>
+                        <input 
+                        v-model="username" 
+                        :class="[isUserNameError ? 'input-error': '']" 
+                        @input="isUserNameError = false" 
+                        class="login-input" 
+                        type="text" 
+                        name="username" 
+                        placeholder="Your Username"
+                        /> 
+                        <div v-if="isUserNameError" class="message-error-form">Enter a valid Username</div>
+                        <input 
+                        v-model="password" 
+                        :class="[isPasswordError ? 'input-error': '']" 
+                        @input="isPasswordError = false"
+                        class="password-input" 
+                        type="password" 
+                        name="password" 
+                        placeholder="Your Password"
+                        />
+                        <div v-if="isPasswordError" class="message-error-form">Enter a valid Password</div>
                         <input class="submit-button" type="submit" value="Sign in"/>
                     </form> 
                 </div>       
@@ -28,7 +46,6 @@
 </template>
 
 <script>
-
 import axios from 'axios'
 import store from '@/store'
 
@@ -38,22 +55,20 @@ export default {
     data() {
         return {
             username: "",    
-            password: "",
+            password: "",            
+            isUserNameError: null,
+            isPasswordError: null,
         }        
-    },    
-
+    }, 
     computed: {
-        getModalStatus() {   
-            
+        getModalStatus() { 
             // get focus from close ESC
             this.$nextTick(() => {
                 this.$refs.modal.focus()
             })
             return store.getters["headerNavbarActions/getLoginButton"]
         }
-    },
-
-    
+    },    
     
     methods: {
         submitLoginData() {  
@@ -66,41 +81,88 @@ export default {
             const loginData = {
                 username: this.username,
                 password: this.password,
-            }  
+            }                         
+
+            if (this.validateUsername(this.username)) {                
+                this.usernameClearErros()                
+            }
+            else {                
+                this.usernameAddErrors()
+            }
+
+            if (this.validatePassword(this.password)) {                
+                this.passwordClearErros()                
+            }
+            else {                
+                this.passwordAddErrors()
+            }
+
+            if (this.validateUsername(this.username) && this.validatePassword(this.password)) {
             
-            axios
-                .post("/api/auth/jwt/create/", loginData, {headers: {"Content-type": "application/json"}}, {withCredentials: true})
-                .then(response => {
-                    console.log(response)
-                    if (response.status === 200) {
-                        const accessToken = response.data.access
-                        const refreshToken = response.data.refresh
+                axios
+                    .post("/api/auth/jwt/create/", loginData, {headers: {"Content-type": "application/json"}}, {withCredentials: true})
+                    .then(response => {
+                        console.log(response)
+                        if (response.status === 200) {
+                            const accessToken = response.data.access
+                            const refreshToken = response.data.refresh
 
-                        console.log("accessToken = ", accessToken)
-                        console.log("refreshToken =", refreshToken)
+                            console.log("accessToken = ", accessToken)
+                            console.log("refreshToken =", refreshToken)
 
-                        store.commit("accessModule/setAccessToken", accessToken)
-                        store.commit("accessModule/setRefreshToken", refreshToken)
+                            store.commit("accessModule/setAccessToken", accessToken)
+                            store.commit("accessModule/setRefreshToken", refreshToken)
 
-                        axios.defaults.headers.common["Authorization"] = "JWT " + accessToken
+                            axios.defaults.headers.common["Authorization"] = "JWT " + accessToken
 
-                        localStorage.setItem("accessToken", accessToken)
-                        localStorage.setItem("refreshToken", refreshToken)
-                    }
-                })
-                .catch(error => {
-                    console.log(error)
-                })
+                            localStorage.setItem("accessToken", accessToken)
+                            localStorage.setItem("refreshToken", refreshToken)
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    })
 
-            store.commit("headerNavbarActions/setLoginButton", false)
-        },                                
+                //store.commit("headerNavbarActions/setLoginButton", false)
+            }
+        }, 
+
+        validateUsername(username) {                        
+            if (username != '' &&  (/^[A-Za-z0-9-_]{4,20}$/i.test(username))) {
+                return true
+            }
+        },
+
+        validatePassword(password) {
+            if (password != '' && (/^[A-Za-z0-9-_!@#$%^&*?]{4,30}$/i.test(password))) {
+                return true
+            }
+        },
        
         closeModal() {             
             store.commit("headerNavbarActions/setLoginButton", false)
             this.username = ""
             this.password = ""            
-            // clearError()            
-        },                
+            this.usernameClearErros()   
+            this.passwordClearErros()                   
+        }, 
+
+        usernameAddErrors() {             
+            this.isUserNameError = true
+        },
+        
+        usernameClearErros() {             
+            this.isUserNameError = false
+        },
+
+        passwordAddErrors() {
+            this.isPasswordError = true
+        },
+        
+        passwordClearErros() {
+            this.isPasswordError = false
+        },
+
     }    
     
 }
@@ -152,7 +214,6 @@ export default {
     width: 550px;
     height: auto;         
 }
-
 
 .close {
     color: #000;
