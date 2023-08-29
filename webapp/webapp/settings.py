@@ -219,6 +219,24 @@ CORS_ALLOW_CREDENTIALS = True
 # block cookie for JS
 SESSION_COOKIE_HTTPONLY = True
 
+CORS_ALLOW_METHODS = (
+    "DELETE",
+    "GET",    
+    "PATCH",
+    "POST",
+    "PUT",
+)
+
+CORS_ALLOW_HEADERS = (
+    "accept",
+    "authorization",
+    "content-type",    
+    "x-csrftoken",
+    "origin",
+    "x-requested-with",
+    
+)
+
 #------------------------ AUTHENTICATION --------------------
 
 SIMPLE_JWT = {

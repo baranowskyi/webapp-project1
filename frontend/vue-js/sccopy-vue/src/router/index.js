@@ -3,47 +3,52 @@ import { createRouter, createWebHistory } from 'vue-router'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [  
+    // {
+    //   path: '/',
+    //   name: 'home',
+    //   component: () => import('@/views/ArtistAll.vue'),
+    // },  
     {
-      path: '/',
-      name: 'home',
-      component: () => import('../views/ArtistAll.vue'),
-    },  
-    {
-      path: '/:slug_artist',
-      name: 'artist-all',
-      // lazy load
-      component: () => import('../views/ArtistAll.vue'),
-      meta: {title: "All"}
+      path: '/:artist',
+      name: 'artist-all',      
+      component: () => import('@/views/ArtistAll.vue'),
+      meta: {title: "All"},
+      props: true,
     },
     {
-      path: '/:slug_artist/popular-tracks',
+      path: '/:artist/popular-tracks',
       name: 'artist-popular-tracks',
-      component: () => import('../views/ArtistPopularTracks.vue'),
-      meta: {title: "Popular tracks"}
+      component: () => import('@/views/ArtistPopularTracks.vue'),
+      meta: {title: "Popular tracks"},
+      props: true,
     },
     {
-      path: '/:slug_artist/tracks',
+      path: '/:artist/tracks',
       name: 'artist-tracks',
-      component: () => import('../views/ArtistTracks.vue'),
-      meta: {title: "Tracks"}
+      component: () => import('@/views/ArtistTracks.vue'),
+      meta: {title: "Tracks"},
+      props: true,
     },
     {
-      path: '/:slug_artist/albums',
+      path: '/:artist/albums',
       name: 'artist-albums',
-      component: () => import('../views/ArtistAlbums.vue'),
-      meta: {title: "Albums"}
+      component: () => import('@/views/ArtistAlbums.vue'),
+      meta: {title: "Albums"},
+      props: true,
     },
     {
-      path: '/:slug_artist/sets',
+      path: '/:artist/sets',
       name: 'artist-playlists',
-      component: () => import('../views/ArtistPlaylists.vue'),
-      meta: {title: "Playlists"}
+      component: () => import('@/views/ArtistPlaylists.vue'),
+      meta: {title: "Playlists"},
+      props: true,
     },
     {
-      path: '/:slug_artist/reposts',
+      path: '/:artist/reposts',
       name: 'artist-reposts',
-      component: () => import('../views/ArtistReposts.vue'),
-      meta: {title: "Reposts"}
+      component: () => import('@/views/ArtistReposts.vue'),
+      meta: {title: "Reposts"},
+      props: true,
     },
   ]
 })

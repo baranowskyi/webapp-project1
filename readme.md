@@ -11,7 +11,7 @@
 
 * Отображение формы звуковой волны с возможностью вопроизведения аудио [wavesurfer.js](https://wavesurfer-js.org/)  
 * Автоматическая установка цвета фона аудио проигрывателя в зависимости от цвета обложки [color-thief.js](https://lokeshdhakar.com/projects/color-thief/) 
-* Иконки - **Font Awesome** (free) с интергацией в Django [fontawesomefree](https://fontawesome.com/docs/web/use-with/python-django) 
+* Иконки - **Font Awesome** (free) [fontawesomefree](https://fontawesome.com) 
 * Спиннер загрузки контента [loading.io](https://loading.io/css/)  
 
 ### Настройки проекта
@@ -46,4 +46,5 @@ DB_USER=username # database username
 DB_PASS=password # database password
 TZ=Europe # time zone
 PGDATA=/var/lib/postgresql/data # database storage path
+SECRET_KEY_JWT=xv909Jss55656VVBNMWeewr&34@jkddsdmmZZZZ*%xxxxxx # secret for JWT token
 ```

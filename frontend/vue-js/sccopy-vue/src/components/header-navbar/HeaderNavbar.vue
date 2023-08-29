@@ -1,6 +1,6 @@
 <template>
 
-<div class="container-header-bar">
+<div class="container-header-navbar">
     <!-- site logo -->
     <div class="header-logo">
         <a href="#">
@@ -25,26 +25,33 @@
     </div> 
     
     <!-- profile navbar -->
-    <div class="profile-navbar">          
-        <div class="photo-navbar"><img class="photo-navbar-img" src=""></div>        
+    <div :class="[isShowProfileMenu ? 'profile-navbar-color': '']" class="profile-navbar">          
+        <div class="photo-navbar">
+            <img class="photo-navbar-img" src="">
+        </div>        
         <button 
-        @click.prevent="profileDropMenu"
+        @click.prevent="showProfileMenu" 
         class="profile-button"
+        @keydown.esc="closeProfileMenu"
+        tabindex="0"
+        ref="profileButton"    
         >
             <font-awesome-icon icon="fa-solid fa-chevron-down" class="arrow-icon"/>
         </button>
-        <div class="dropdown-content-profile-navbar">
-            <a href="#"><font-awesome-icon icon="fa-solid fa-user" />&nbsp Profile</a>
-            <a href="#"><font-awesome-icon icon="fa-solid fa-heart" />&nbsp Likes</a>
-            <a href="#"><font-awesome-icon icon="fa-solid fa-folder-open" />&nbsp Playlists</a>            
-            <a href="#"><font-awesome-icon icon="fa-solid fa-tower-cell" />&nbsp Stations</a>
-            <a href="#"><font-awesome-icon icon="fa-solid fa-users" />&nbsp Following</a>
-            <a href="#"><font-awesome-icon icon="fa-solid fa-user-group" />&nbsp Who to follow</a>
-            <a href="#"><font-awesome-icon icon="fa-solid fa-star" />&nbsp Try Next Pro</a>                       
-            <a href="#"><font-awesome-icon icon="fa-solid fa-gift" />&nbsp Partner offers</a>
-            <a href="#"><font-awesome-icon icon="fa-solid fa-signal" />&nbsp Tracks</a>
-            <a href="#"><font-awesome-icon icon="fa-solid fa-chart-column" />&nbsp Insights</a>
-            <a href="#"><font-awesome-icon icon="fa-solid fa-arrow-up-from-bracket" />&nbsp Distribute</a>
+        <div v-show="isShowProfileMenu" class="dropdown-content-profile-navbar show-profile-navbar">
+            <ul>
+                <li><a href="#"><font-awesome-icon icon="fa-solid fa-user" />&nbsp Profile</a></li>
+                <li><a href="#"><font-awesome-icon icon="fa-solid fa-heart" />&nbsp Likes</a></li>
+                <li><a href="#"><font-awesome-icon icon="fa-solid fa-folder-open" />&nbsp Playlists</a></li>          
+                <li><a href="#"><font-awesome-icon icon="fa-solid fa-tower-cell" />&nbsp Stations</a></li>
+                <li><a href="#"><font-awesome-icon icon="fa-solid fa-users" />&nbsp Following</a></li>
+                <li><a href="#"><font-awesome-icon icon="fa-solid fa-user-group" />&nbsp Who to follow</a></li>
+                <li><a href="#"><font-awesome-icon icon="fa-solid fa-star" />&nbsp Try Next Pro</a> </li>                      
+                <li><a href="#"><font-awesome-icon icon="fa-solid fa-gift" />&nbsp Partner offers</a></li>
+                <li><a href="#"><font-awesome-icon icon="fa-solid fa-signal" />&nbsp Tracks</a></li>
+                <li><a href="#"><font-awesome-icon icon="fa-solid fa-chart-column" />&nbsp Insights</a></li>
+                <li><a href="#"><font-awesome-icon icon="fa-solid fa-arrow-up-from-bracket" />&nbsp Distribute</a></li>
+            </ul>
         </div>
     </div>
 
@@ -53,32 +60,38 @@
     <LetterNavbar />
 
     <!-- dotting navbar -->
-    <div class="dotting-navbar">     
+    <div :class="[isShowDottingsMenu ? 'dotting-navbar-color': '']" class="dotting-navbar">     
         <div class="dotting-button">       
             <button 
-            @click.prevent="dottingDropMenu"
+            @click.prevent="showDottingsMenu"
             class="dot-button"
+            @keydown.esc="closeDottingsMenu"
+            tabindex="0"
+            ref="dotButton"
             >
+                <font-awesome-icon icon="fa-solid fa-ellipsis" class="dotting-icon"/>
             </button>
         </div>
-        <div class="dropdown-content-dotting-navbar">
-            <a href="#">About us</a>
-            <a href="#">Legal</a>
-            <a href="#">Copyrigth</a>
-            <div class="dropdown-divider"></div>
-            <a href="#">Mobile apps</a>
-            <a href="#">For Creators</a>
-            <a href="#">Blog</a>
-            <a href="#">Jobs</a>
-            <a href="#">Developers</a>
-            <div class="dropdown-divider"></div>
-            <a href="#">Support</a>
-            <a href="#">Keyboard shortcuts</a>                 
-            <a href="#">Subscription</a>
-            <a href="#">Settings</a>
-            <a href="#">Pro plans</a> 
-            <div class="dropdown-divider"></div>
-            <a href="#">Sign out</a>
+        <div :class="[isShowDottingsMenu ? 'show-dotting-navbar' : '']" class="dropdown-content-dotting-navbar">
+            <ul>
+                <li><a href="#">About us</a></li>
+                <li><a href="#">Legal</a></li>
+                <li><a href="#">Copyrigth</a></li>
+                <div class="dropdown-divider"></div>
+                <li><a href="#">Mobile apps</a></li>
+                <li><a href="#">For Creators</a></li>
+                <li><a href="#">Blog</a></li>
+                <li><a href="#">Jobs</a></li>
+                <li><a href="#">Developers</a></li>
+                <div class="dropdown-divider"></div>
+                <li><a href="#">Support</a></li>
+                <li><a href="#">Keyboard shortcuts</a></li>                
+                <li><a href="#">Subscription</a></li>
+                <li><a href="#">Settings</a></li>
+                <li><a href="#">Pro plans</a></li>
+                <div class="dropdown-divider"></div>
+                <li><a href="#">Sign out</a></li>
+            </ul>
         </div>
     </div>
 </div> 
@@ -103,34 +116,60 @@ export default {
     },
     data() {
         return {
-            
+            isShowProfileMenu: false,
+            isShowDottingsMenu: false,
         }
     },
-    methods: {
-        profileDropMenu() {
-            document.querySelector(".profile-navbar").classList.toggle("profile-navbar-color")
-            document.querySelector(".dropdown-content-profile-navbar").classList.toggle("show-profile-navbar")
-        },
-        dottingDropMenu() {
-            document.querySelector(".dropdown-content-dotting-navbar").classList.toggle("show-dotting-navbar")
-        },
+
+    mounted() {
+        // close the menu after click outside 
+        window.addEventListener("click", event => {
+            if (!this.$el.contains(event.target)) {
+                this.isShowDottingsMenu = false
+                this.isShowProfileMenu = false
+            }
+        })
+        
+    },    
+
+    methods: { 
         showLoginModal() {
-            store.commit("headerNavbarActions/setLoginButton", true)
-            this.isStatusModal =  store.getters["headerNavbarActions/getLoginButton"]
-        }
+            store.commit("headerNavbarActions/setLoginButton", true)            
+        }, 
+        
+        showProfileMenu() {
+            this.isShowProfileMenu = !this.isShowProfileMenu
+            this.isShowDottingsMenu = false
+            this.$nextTick(() => {
+                this.$refs.profileButton.focus()
+            })
+            return this.isShowProfileMenu
+        },
+
+        closeProfileMenu() {
+            this.isShowProfileMenu = false
+        },
+               
+        showDottingsMenu() {
+            this.isShowDottingsMenu = !this.isShowDottingsMenu
+            this.isShowProfileMenu = false
+            this.$nextTick(() => {
+                this.$refs.dotButton.focus()
+            })
+            return this.isShowDottingsMenu
+        }, 
+
+        closeDottingsMenu() {
+            this.isShowDottingsMenu = false
+        },
+        
     } 
 }
 </script>
 
 <style>
 
-.container-header-bar {
-    display: flex; 
-    width: 1240px;
-    margin: 0 auto;
-}    
-
-.header {
+.top-header-navbar {
     display: flex;
     justify-content: space-between;    
     background-color: #333333;   
@@ -141,6 +180,12 @@ export default {
     z-index: 3;
     top: 0;
 }
+
+.container-header-navbar {
+    display: flex; 
+    width: 1240px;
+    margin: 0 auto;
+} 
 
 .header-item {
     display: block;
@@ -167,7 +212,9 @@ export default {
 .logo-icon {
     color: #ffffff; 
     font-size: 38px; 
-    padding-top: 5px;
+    padding-top: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .header-left {
@@ -246,6 +293,7 @@ export default {
     cursor: pointer;
     background: transparent;
     position: absolute;
+    outline: none;
 }
 
 .arrow-icon { 
@@ -291,10 +339,11 @@ export default {
 /*********************** profile end start *****************************************************/
 
 
-
-
-
 /*********************** dotting button start *****************************************************/
+
+.dotting-navbar-color {
+    background-color: #111;
+}
 
 .dot-button {
     padding: 10px;
@@ -303,19 +352,17 @@ export default {
     width: 50px; 
     cursor: pointer;
     background: transparent;  
+    outline: none;
+    font-size: 25px;
 }
 
-.dot-button:focus {
-    background: center / contain no-repeat url(../../assets/media/dot-icon-on-active.svg);
-} 
-
-.dotting-button {  
-    background: center / contain no-repeat url(../../assets/media/dot-icon-off.svg);
+.dotting-icon { 
+    color: #c8c8c8;
 }
 
-.dotting-button:hover {  
-    background: center / contain no-repeat url(../../assets/media/dot-icon-on.svg);
-}  
+.dot-button:hover .dotting-icon {        
+    color: #fff;
+}
 
 .dotting-navbar {
     position: relative;
@@ -357,7 +404,6 @@ export default {
 .show-dotting-navbar {
     display: block;
 }
-
 
 /*********************** dotting button end *****************************************************/
 

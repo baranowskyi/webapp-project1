@@ -1,44 +1,57 @@
 <template>
 <transition name="show-modal-login">  
     <div 
-    v-show="getModalStatus"     
-    @click="closeModal" 
-    @keydown.esc="closeModal"
-    tabindex="0"
-    ref="modal"    
-    class="modal"
+        v-show="getModalStatus"     
+        @click="closeModal" 
+        @keydown.esc="closeModal"
+        tabindex="0"
+        ref="modal"    
+        class="modal"
     >
         <transition name="show-modal-login-content"> 
             <div v-show="getModalStatus" class="modal-content" @click.stop>
                 <div class="modal-header">        
-                    <span @click="closeModal" class="close">&times;</span>  
+                    <span
+                    @click="closeModal" 
+                    class="close" 
+                    >
+                    &times;</span>  
                 </div>    
-                <div class="modal-body">                
-                    <form @submit.prevent="submitLoginData">            
-                        <div class="welcome-text">Welcome back!</div>                            
-                        <input 
-                        v-model="username" 
-                        :class="[isUserNameError ? 'input-error': '']" 
-                        @input="isUserNameError = false" 
-                        class="login-input" 
-                        type="text" 
-                        name="username" 
-                        placeholder="Your Username"
+                <div class="modal-body"> 
+                    <form @submit.prevent="submitLoginForm">            
+                        <div class="welcome-text">Welcome back!</div>  
+                        <div v-if="isServerError" class="message-error-form">Ooops! Server error. Try again or later.</div>                                                 
+                        <input  
+                            :disabled="isShowSpinner"                       
+                            v-model="username" 
+                            :class="[isUserNameError ? 'input-error': '']" 
+                            @input="isUserNameError = false" 
+                            class="login-input" 
+                            type="text" 
+                            name="username" 
+                            placeholder="Your Username"
                         /> 
                         <div v-if="isUserNameError" class="message-error-form">Enter a valid Username</div>
-                        <input 
-                        v-model="password" 
-                        :class="[isPasswordError ? 'input-error': '']" 
-                        @input="isPasswordError = false"
-                        class="password-input" 
-                        type="password" 
-                        name="password" 
-                        placeholder="Your Password"
+                        <Spinner v-if="isShowSpinner"/> 
+                        <input    
+                            :disabled="isShowSpinner"                    
+                            v-model="password" 
+                            :class="[isPasswordError ? 'input-error': '']" 
+                            @input="isPasswordError = false"
+                            class="password-input" 
+                            type="password" 
+                            name="password" 
+                            placeholder="Your Password"
                         />
                         <div v-if="isPasswordError" class="message-error-form">Enter a valid Password</div>
-                        <input class="submit-button" type="submit" value="Sign in"/>
+                        <input 
+                            :disabled="isShowSpinner"
+                            class="submit-button" 
+                            type="submit" 
+                            value="Sign in"
+                        />                  
                     </form> 
-                </div>       
+                </div>                                      
             </div>
         </transition>
     </div>  
@@ -46,11 +59,16 @@
 </template>
 
 <script>
+import Spinner from '@/components/services/Spinner.vue'
+
 import axios from 'axios'
 import store from '@/store'
 
 export default {  
-    name: "ModalLoginForm",    
+    name: "ModalLoginForm",  
+    components: {
+        Spinner,
+    },  
     
     data() {
         return {
@@ -58,6 +76,8 @@ export default {
             password: "",            
             isUserNameError: null,
             isPasswordError: null,
+            isShowSpinner: false,
+            isServerError: false,
         }        
     }, 
     computed: {
@@ -71,38 +91,42 @@ export default {
     },    
     
     methods: {
-        submitLoginData() {  
+        submitLoginForm() {       
+
+            if (this.validateUsername(this.username)) { 
+                this.usernameError(false) 
+            }
+            else { 
+                this.usernameError(true) 
+            }
+
+            if (this.validatePassword(this.password)) { 
+                this.passwordError(false) 
+            }
+            else { 
+                this.passwordError(true) 
+            }
             
-            // clear token
-            axios.defaults.headers.common["Authorization"] = ''
-            localStorage.removeItem("accessToken")
-            localStorage.removeItem("refreshToken")
-
-            const loginData = {
-                username: this.username,
-                password: this.password,
-            }                         
-
-            if (this.validateUsername(this.username)) {                
-                this.usernameClearErros()                
-            }
-            else {                
-                this.usernameAddErrors()
-            }
-
-            if (this.validatePassword(this.password)) {                
-                this.passwordClearErros()                
-            }
-            else {                
-                this.passwordAddErrors()
-            }
-
             if (this.validateUsername(this.username) && this.validatePassword(this.password)) {
+
+                // clear token
+                axios.defaults.headers.common["Authorization"] = ''
+                localStorage.removeItem("accessToken")
+                localStorage.removeItem("refreshToken")
+
+                this.blockModal(true)
+
+                const loginData = {
+                    username: this.username,
+                    password: this.password,
+                }  
             
+                // create JWT token
                 axios
-                    .post("/api/auth/jwt/create/", loginData, {headers: {"Content-type": "application/json"}}, {withCredentials: true})
+                    .post(import.meta.env.VITE_API_JWT_CREATE, loginData)
                     .then(response => {
-                        console.log(response)
+                        
+                        console.log(response.data)
                         if (response.status === 200) {
                             const accessToken = response.data.access
                             const refreshToken = response.data.refresh
@@ -117,11 +141,35 @@ export default {
 
                             localStorage.setItem("accessToken", accessToken)
                             localStorage.setItem("refreshToken", refreshToken)
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error)
-                    })
+
+                            // get user data
+                            axios
+                                .get(import.meta.env.VITE_API_JWT_ME, loginData)
+                                .then(response => {
+                                    console.log(response.data)
+                                    if (response.status === 200) {
+                                        const userID = response.data.id
+                                        const userName = response.data.username
+
+                                        store.commit("accessModule/setIsAuthenticated", true)
+                                        store.commit("accessModule/setUserID", userID)
+                                        store.commit("accessModule/setUserName", userName)                                      
+                                        
+                                        this.blockModal(false)
+                                    }
+                            })
+                            .catch(error => {
+                                this.isServerError = true
+                                this.blockModal(false)
+                                console.log(error)
+                            })
+                        }                    
+                })
+                .catch(error => {
+                    this.isServerError = true
+                    this.blockModal(false)
+                    console.log(error)
+                })                
 
                 //store.commit("headerNavbarActions/setLoginButton", false)
             }
@@ -139,31 +187,31 @@ export default {
             }
         },
        
-        closeModal() {             
-            store.commit("headerNavbarActions/setLoginButton", false)
-            this.username = ""
-            this.password = ""            
-            this.usernameClearErros()   
-            this.passwordClearErros()                   
+        closeModal() {   
+            if (!this.isShowSpinner) {         
+                store.commit("headerNavbarActions/setLoginButton", false)
+                this.username = ""
+                this.password = ""            
+                this.usernameError(false)   
+                this.passwordError(false)
+                this.isServerError = false
+            }                  
         }, 
 
-        usernameAddErrors() {             
-            this.isUserNameError = true
-        },
-        
-        usernameClearErros() {             
-            this.isUserNameError = false
+        usernameError(status) {             
+            this.isUserNameError = status
         },
 
-        passwordAddErrors() {
-            this.isPasswordError = true
+        passwordError(status) {
+            this.isPasswordError = status
         },
         
-        passwordClearErros() {
-            this.isPasswordError = false
-        },
+        // block the modal form elements until get data from the server
+        blockModal(status) {            
+            this.isShowSpinner = status  
+        },        
 
-    }    
+    }  
     
 }
 
@@ -193,8 +241,7 @@ export default {
     width: 100%; 
     height: 100%; 
     overflow: auto; 
-    background-color: hsla(0,0%,94.9%,.9);
-             
+    background-color: hsla(0,0%,94.9%,.9);             
 }
 
  .modal-show {
@@ -204,7 +251,6 @@ export default {
 .modal-hide {
     display: none;
 }
-
 
 .modal-content {
     position: relative;

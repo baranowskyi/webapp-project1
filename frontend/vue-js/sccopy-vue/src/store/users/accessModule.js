@@ -3,6 +3,10 @@ export default {
     state: {
         accessToken: '',
         refreshToken: '',
+        isAuthenticated: false,
+        userID: '',
+        userName: ''
+
     },
     mutations: {
         initializationStore(state) {
@@ -24,7 +28,16 @@ export default {
         },
         setRefreshToken(state, refreshToken) {
             state.refreshToken = refreshToken
-        }
+        },
+        setIsAuthenticated(state, isAuthenticated) {
+            state.isAuthenticated = isAuthenticated
+        },
+        setUserID(state, userID) {
+            state.userID = userID
+        },
+        setUserName(state, userName) {
+            state.userName = userName
+        },
         
     },
     getters: {
@@ -33,6 +46,15 @@ export default {
         },
         getRefreshToken(state) {
             return state.refreshToken
+        },
+        getIsAuthenticated(state) {
+            return state.isAuthenticated
+        },
+        getUserID(state) {
+            return state.userID
+        },
+        getUserName(state) {
+            return state.userName
         }
     }    
 }

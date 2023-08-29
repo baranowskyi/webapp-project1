@@ -1,5 +1,7 @@
 <template>
-<h1>Tracks</h1>
+<div class="artist-tracks left-content-inner">
+    <h1>Artist Tracks</h1>
+</div>
  
 </template>
 
