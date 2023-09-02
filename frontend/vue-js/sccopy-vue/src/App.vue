@@ -12,11 +12,11 @@
             <div class="main-content">                
                 <ContentNavbar />
                 <div class="main-user-content"> 
-                    <!-- left content -->
+                    
                     <div class="left-content">
                         <RouterView /> 
                     </div>
-                    <!-- right content -->
+                    
                     <div class="right-content">            
                         <div class="right-artist-info">
                             {% include 'right-artist-info.html' %}
@@ -35,7 +35,7 @@
 
 <script>
 
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
 import HeaderNavbar from '@/components/header-navbar/HeaderNavbar.vue'
 import ModalLoginForm from '@/components/modal/ModalLoginForm.vue'
 import ArtistHeader from '@/components/header/ArtistHeader.vue'
@@ -43,7 +43,7 @@ import ModalArtistAvatar from '@/components/modal/ModalArtistAvatar.vue'
 import ContentNavbar from '@/components/content-navbar/ContentNavbar.vue'
 
 import axios from 'axios'
-import store from './store'
+import store from '@/store'
 
 
 export default {

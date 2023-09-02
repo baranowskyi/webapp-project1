@@ -5,7 +5,7 @@ export default {
         refreshToken: '',
         isAuthenticated: false,
         userID: '',
-        userName: ''
+        userName: '',
 
     },
     mutations: {
