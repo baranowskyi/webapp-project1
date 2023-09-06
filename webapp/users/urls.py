@@ -1,12 +1,16 @@
-#from django.contrib import admin
 from django.urls import path
 
-from users import views
+from users.views import *
 
-urlpatterns = [    
-    path('users/reg/', views.RegistrationView.as_view(), name='reg'),    
-    path('users/change-password/', views.ChangePasswordView.as_view(), name='change_password'),
-    path('login/', views.login_user, name='login'),
-    path('logout/', views.logout_user, name='logout'),
-    path('register/', views.register_user, name='register')
+urlpatterns = [ 
+
+    #old 
+    path('login/', login_user, name='login'),
+
+    path('api/user/register/', RegisterUserView.as_view(), name='register_user'),
+    path('api/user/login/', LoginUserView.as_view(), name='login_user'), 
+    path('api/user/logout/', LogoutUserView.as_view(), name='logout_user'),
+    path('api/user/me/', MeUserView.as_view(), name='get_current_user'),
+    path('api/user/refresh-token/', RefreshJWTToken.as_view(), name='refresh_token_user'),
+       
 ]

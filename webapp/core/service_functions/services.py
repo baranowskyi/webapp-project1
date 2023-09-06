@@ -7,7 +7,7 @@ from pytils.translit import slugify
 
 from users.models import UserSite
 
-
+from PIL import Image
 
 #--------------------------------------------------------------------------------------------------------------------------------
 #------------------------------------------------------------ UPLOAD FILE -------------------------------------------------------
@@ -19,14 +19,28 @@ def get_default_avatar_image():
     return f"{constants.DEFAULT_AVATAR}" 
 
 
+def get_default_avatar_image_small():      
+    return f"{constants.DEFAULT_AVATAR_SMALL}"
+
+
 def get_avatar_upload_path(instance, file):
     # media/artist/username_[username]/avatar
+
+    # resize and save user avatar for navbar avatar 
+    img = Image.open(file)
+    img_resize_lanczos = img.resize((200, 200), Image.LANCZOS)
+    img_resize_lanczos.save(f"artist/username_{instance.username}/avatar/200x200_{file}")
+
+    # return main user avatar
     return f"artist/username_{instance.username}/avatar/{file}"
     
 
 def validate_size_avatar(file):    
     if file.size > constants.AVATAR_SIZE_LIMIT * (1024 ** 2):
         raise ValidationError(f"Upload File {file.size/1024/1024} MB > File Limit {constants.AVATAR_SIZE_LIMIT} MB")
+    
+ 
+
     
 
 #------------------------------------------------------------- profile header  

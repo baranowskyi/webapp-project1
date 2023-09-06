@@ -18,6 +18,7 @@ class Artist(models.Model):
                                     services.validate_size_avatar
                                     ]
                                     )
+    avatar_image_small = models.ImageField("Avatar small", null=True, blank=True)
     header_image = models.ImageField("Header Cover", 
                                     upload_to=services.get_profile_headear_path,                                  
                                     null=True, 

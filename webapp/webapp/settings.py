@@ -77,8 +77,8 @@ REST_FRAMEWORK = {
 
     'DEFAULT_AUTHENTICATION_CLASSES': [
         # 'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.TokenAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
 
@@ -93,10 +93,10 @@ REST_FRAMEWORK = {
 }
 
 
-MIDDLEWARE = [    
+MIDDLEWARE = [        
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',    
+    'django.contrib.sessions.middleware.SessionMiddleware', 
+    'corsheaders.middleware.CorsMiddleware',       
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -214,10 +214,12 @@ CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1:3000',  
 ]
 
-# Cookie
+# allow send cookie
 CORS_ALLOW_CREDENTIALS = True
 # block cookie for JS
 SESSION_COOKIE_HTTPONLY = True
+CSRF_COOKIE_SECURE = True
+
 
 CORS_ALLOW_METHODS = (
     "DELETE",
@@ -232,9 +234,7 @@ CORS_ALLOW_HEADERS = (
     "authorization",
     "content-type",    
     "x-csrftoken",
-    "origin",
-    "x-requested-with",
-    
+    "origin",      
 )
 
 #------------------------ AUTHENTICATION --------------------
@@ -242,8 +242,12 @@ CORS_ALLOW_HEADERS = (
 SIMPLE_JWT = {
    'AUTH_HEADER_TYPES': ('JWT',),
    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=1),
-#    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+   "REFRESH_TOKEN_LIFETIME": timedelta(minutes=5),
    "SIGNING_KEY": os.environ.get('SECRET_KEY_JWT'),
+}
+
+DJOSER = {
+    'LOGIN_FIELD': 'email',
 }
 
 
