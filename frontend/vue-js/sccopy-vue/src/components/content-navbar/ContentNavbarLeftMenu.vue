@@ -47,10 +47,10 @@
     <div class="navbar-content-left-link">                
         <RouterLink
             @click.prevent="clickLink" 
-            :to="{ name: 'artist-playlists', params: {artist: 'vasja'}}"
+            :to="{ name: 'artist-sets', params: {artist: 'vasja'}}"
             :class="[activeLink.isActivatePlaylistsLink.status ? 'navbar-content-left-link-a-active' : '']"
             class="navbar-content-left-link-a"
-            data-name="artist-playlists"
+            data-name="artist-sets"
         >
         Playlists
         </RouterLink>
@@ -86,30 +86,56 @@ export default {
                 isActivatePopularTracksLink: { status: false , name: 'artist-popular-tracks' },
                 isActivateTracksLink: { status: false , name: 'artist-tracks' },
                 isActivateAlbumsLink: { status: false , name: 'artist-albums' },
-                isActivatePlaylistsLink: { status: false , name: 'artist-playlists' },
+                isActivatePlaylistsLink: { status: false , name: 'artist-sets' },
                 isActivateRepostsLink: { status: false , name: 'artist-reposts' }, 
             }                      
         }
     },
+
+    mounted() {
+        this.activateLinkAfterLoadPage()        
+    },
+
     methods: {
         clickLink(event) {
             for (let key in this.activeLink) { 
+                
                 if (event.target.dataset.name === this.activeLink[key].name)  {
                     this.activeLink[key].status = true
                 }
                 else {
                     this.activeLink[key].status = false
-                }                    
-            } 
+                }                 
+            }            
         },
         
+        activateLinkAfterLoadPage() {
+
+            let path = window.location.pathname.split("/")[2]
+            if (path === undefined) {
+                path = "artist-all"
+            }
+            else {
+                path = "artist-" + window.location.pathname.split("/")[2]
+            }
+            console.log(path)
+
+            for (let key in this.activeLink) { 
+                
+                if (path === this.activeLink[key].name)  {
+                    this.activeLink[key].status = true
+                }
+                else {
+                    this.activeLink[key].status = false
+                }                 
+            }    
+        },
     },
     
 }
 
-
-
 </script>
+
 
 
 <style>

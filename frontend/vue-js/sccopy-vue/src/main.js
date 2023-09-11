@@ -25,6 +25,9 @@ library.add(fas, fab)
 axios.defaults.baseURL = import.meta.env.VITE_MAIN_URL // default axios main URL (http://127.0.0.1:8000) from .env
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 axios.defaults.withCredentials = true
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+
 
 createApp(App)
 .use(router, store, axios)

@@ -19,6 +19,8 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from users.authentication import create_access_token, create_refresh_token, decode_access_token, decode_refresh_token
 
+from rest_framework_simplejwt.authentication import JWTAuthentication
+
 
 @extend_schema_view(
     post=extend_schema( 
@@ -66,7 +68,8 @@ class LoginUserView(APIView):
         # set httponly cookie
         response.set_cookie( key='refreshToken', value=refresh_token, httponly=True )        
         response.data = {
-            'accessToken': access_token            
+            'accessToken': access_token,
+            'user': serializers.LoginUserSerializer(user).data            
         }
 
         return response
@@ -82,11 +85,13 @@ class MeUserView(APIView):
     """
     Get current User
     """
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)    
+    # authentication_classes = (JWTAuthentication,)
     serializer_class = serializers.LoginUserSerializer
 
     def get(self, request):
         auth = get_authorization_header(request).split()
+        print(auth)
 
         if auth and len(auth) == 2:
             token = auth[1].decode('utf-8')

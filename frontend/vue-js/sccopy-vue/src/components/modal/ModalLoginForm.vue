@@ -11,7 +11,7 @@
         <transition name="show-modal-login-content"> 
             <div v-show="getModalStatus" class="modal-content" @click.stop>
                 <div class="modal-header">        
-                    <span
+                    <span                    
                     @click="closeModal" 
                     class="close" 
                     >
@@ -23,15 +23,15 @@
                         <div v-if="isServerError" class="message-error-form">Ooops! Server error. Try again or later.</div>                                                 
                         <input  
                             :disabled="isShowSpinner"                       
-                            v-model="username" 
-                            :class="[isUserNameError ? 'input-error': '']" 
-                            @input="isUserNameError = false" 
-                            class="login-input" 
+                            v-model="email" 
+                            :class="[isEmailError ? 'input-error': '']" 
+                            @input="isEmailError = false" 
+                            class="email-input" 
                             type="text" 
-                            name="username" 
-                            placeholder="Your Username"
+                            name="email" 
+                            placeholder="Your Email"                            
                         /> 
-                        <div v-if="isUserNameError" class="message-error-form">Enter a valid Username</div>
+                        <div v-if="isEmailError" class="message-error-form">Enter a valid Email</div>
                         <Spinner v-if="isShowSpinner"/> 
                         <input    
                             :disabled="isShowSpinner"                    
@@ -59,9 +59,10 @@
 </template>
 
 <script>
-import Spinner from '@/components/services/Spinner.vue'
+import Spinner from '@/components/services/modules/Spinner.vue'
 
-import axios from 'axios'
+import { validateEmail, validatePassword } from '@/components/services/functions/authentication/validation.js'
+import apiAxios from '@/components/services/functions/authentication/apiAxios.js'
 import store from '@/store'
 
 export default {  
@@ -72,134 +73,131 @@ export default {
     
     data() {
         return {
-            username: "",    
+            email: "",    
             password: "",            
-            isUserNameError: null,
+            isEmailError: null,
             isPasswordError: null,
             isShowSpinner: false,
             isServerError: false,
         }        
-    }, 
+    },
+    
+    watch: {
+        email: function () {
+            this.email = this.email.toLowerCase()
+        }
+    },
+ 
     computed: {
         getModalStatus() { 
             // get focus from close ESC
             this.$nextTick(() => {
                 this.$refs.modal.focus()
-            })
+            })            
             return store.getters["headerNavbarActions/getLoginButton"]
         }
     },    
     
     methods: {
-        submitLoginForm() {       
+        async loginUser() {
 
-            if (this.validateUsername(this.username)) { 
-                this.usernameError(false) 
+            // clear user data in storage
+            localStorage.removeItem("isAuthenticated")
+            localStorage.removeItem("accessToken")
+            localStorage.removeItem("userData")
+
+            // show spinner
+            this.AnimationSpinnerAndBlockModal(true)            
+
+            const loginData = {
+                    email: this.email,
+                    password: this.password,
+                }   
+
+            try {                
+                const response = await apiAxios.post(import.meta.env.VITE_API_LOGIN, loginData)                 
+                
+                localStorage.setItem("isAuthenticated", true)                
+                localStorage.setItem("accessToken", response.data.accessToken)                
+
+                const userData = {
+                    userID: response.data.user.id,
+                    userName: response.data.user.username,
+                    userEmail: response.data.user.email,
+                }
+
+                localStorage.setItem("userData", JSON.stringify(userData)) 
+
+                // upadet store
+                store.commit("accessModule/SET_AUTHENTICATION_DATA")
+
+                // hide spinner
+                this.AnimationSpinnerAndBlockModal(false)
+            }
+            catch (error) {    
+                this.isServerError = true
+                this.AnimationSpinnerAndBlockModal(false)                            
+                console.log(error.status)
+            }
+        },
+
+        async getCurrentArtistData() {
+
+            this.AnimationSpinnerAndBlockModal(true)
+
+            try {
+                const response = await apiAxios.get("api/user/me/")
+                console.log(response.data)
+
+            }
+            catch (error) {
+                this.AnimationSpinnerAndBlockModal(false)
+                this.isServerError = true
+                console.log(error.status)
+            }
+
+        },
+
+        async submitLoginForm() {       
+
+            if (validateEmail(this.email)) { 
+                this.emailError(false) 
             }
             else { 
-                this.usernameError(true) 
+                this.emailError(true) 
             }
 
-            if (this.validatePassword(this.password)) { 
+            if (validatePassword(this.password)) { 
                 this.passwordError(false) 
             }
             else { 
                 this.passwordError(true) 
             }
             
-            if (this.validateUsername(this.username) && this.validatePassword(this.password)) {
+            if (validateEmail(this.email) && validatePassword(this.password)) {
 
-                // clear token
-                axios.defaults.headers.common["Authorization"] = ''
-                localStorage.removeItem("accessToken")
-                localStorage.removeItem("refreshToken")
+                // login user and get token
+                await this.loginUser()    
+                await this.getCurrentArtistData()            
 
-                this.blockModal(true)
-
-                const loginData = {
-                    username: this.username,
-                    password: this.password,
-                }  
-            
-                // create JWT token
-                axios
-                    .post(import.meta.env.VITE_API_JWT_CREATE, loginData)
-                    .then(response => {
-                        
-                        console.log(response.data)
-                        if (response.status === 200) {
-                            const accessToken = response.data.access
-                            const refreshToken = response.data.refresh
-
-                            console.log("accessToken = ", accessToken)
-                            console.log("refreshToken =", refreshToken)
-
-                            store.commit("accessModule/setAccessToken", accessToken)
-                            store.commit("accessModule/setRefreshToken", refreshToken)
-
-                            axios.defaults.headers.common["Authorization"] = "JWT " + accessToken
-
-                            localStorage.setItem("accessToken", accessToken)
-                            localStorage.setItem("refreshToken", refreshToken)
-
-                            // get user data
-                            axios
-                                .get(import.meta.env.VITE_API_JWT_ME, loginData)
-                                .then(response => {
-                                    console.log(response.data)
-                                    if (response.status === 200) {
-                                        const userID = response.data.id
-                                        const userName = response.data.username
-
-                                        store.commit("accessModule/setIsAuthenticated", true)
-                                        store.commit("accessModule/setUserID", userID)
-                                        store.commit("accessModule/setUserName", userName)                                      
-                                        
-                                        this.blockModal(false)
-                                    }
-                            })
-                            .catch(error => {
-                                this.isServerError = true
-                                this.blockModal(false)
-                                console.log(error)
-                            })
-                        }                    
-                })
-                .catch(error => {
-                    this.isServerError = true
-                    this.blockModal(false)
-                    console.log(error)
-                })                
-
-                //store.commit("headerNavbarActions/setLoginButton", false)
+                store.commit("headerNavbarActions/setLoginButton", false)
+                
             }
-        }, 
-
-        validateUsername(username) {                        
-            if (username != '' &&  (/^[A-Za-z0-9-_]{4,20}$/i.test(username))) {
-                return true
-            }
-        },
-
-        validatePassword(password) {
-            if (password != '' && (/^[A-Za-z0-9-_!@#$%^&*?]{4,30}$/i.test(password))) {
-                return true
-            }
-        },
+        },        
        
         closeModal() {   
             if (!this.isShowSpinner) {         
                 store.commit("headerNavbarActions/setLoginButton", false)
-                this.username = ""
+                this.email = ""
                 this.password = ""            
-                this.usernameError(false)   
+                this.emailError(false)   
                 this.passwordError(false)
                 this.isServerError = false
             }                  
         }, 
 
-        usernameError(status) {             
-            this.isUserNameError = status
+        emailError(status) {             
+            this.isEmailError = status
         },
 
         passwordError(status) {
@@ -207,9 +205,9 @@ export default {
         },
         
         // block the modal form elements until get data from the server
-        blockModal(status) {            
+        AnimationSpinnerAndBlockModal(status) {            
             this.isShowSpinner = status  
-        },        
+        },       
 
     }  
     
@@ -296,7 +294,7 @@ export default {
     padding: 100px 135px 25px 135px;
 }
 
-.login-input {
+.email-input {
     font-weight: 400;
     color: #000;
     font-size: 16px;

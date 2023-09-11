@@ -17,7 +17,7 @@
                 
             </div>
             <div class="artist-data"> 
-                <div class="nick-name">display_name (currentUser)                
+                <div class="nick-name">display_name ({{ currentUser }})                
                     <font-awesome-icon icon="fa-solid fa-circle-check" style="color: #3588d8; background-color: white; border-radius: 50%;" />
                 </div>  
                 <div class="name-block">
@@ -44,6 +44,21 @@
 </template>
 
 <script>
+
+import store from '@/store'
+
+export default {
+    data() {
+        return {
+            
+        }
+    },
+    computed: {
+        currentUser() {
+            return store.getters["accessModule/getUserName"]
+        }
+    },
+}
 
 </script>
 

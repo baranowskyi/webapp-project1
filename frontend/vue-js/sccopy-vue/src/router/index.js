@@ -39,7 +39,7 @@ const router = createRouter({
     },
     {
       path: '/:artist/sets',
-      name: 'artist-playlists',
+      name: 'artist-sets',
       component: () => import('@/views/ArtistPlaylists.vue'),
       meta: { title: "Playlists" },
       props: true,

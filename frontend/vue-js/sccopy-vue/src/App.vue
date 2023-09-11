@@ -58,50 +58,17 @@ export default {
         
     },   
 
-    beforeCreate() {          
-        store.commit("accessModule/initializationStore") 
-        const accessToken = store.getters["accessModule/getAccessToken"] 
-        console.log("accessToken from STORE =", accessToken)
-
-        if ( accessToken ) {
-            axios.defaults.headers.common["Authorization"] = "JWT " + accessToken
-        }
-        else {
-            axios.defaults.headers.common["Authorization"] = ''
-        } 
-        
+    beforeCreate() {       
+        store.commit("accessModule/SET_AUTHENTICATION_DATA")        
     },
-    
-    // mounted() {
-    //     setInterval(() => {
-    //         this.upadateToken()
-    //     }, 10000)
-    // },
 
     mounted() {
-        this.upadateToken()        
+        // this.upadateToken()        
     },
+    
 
     methods: {
-        upadateToken() {
-            const accessData = {
-                refresh: store.getters["accessModule/getRefreshToken"]
-            }
-            
-            axios
-                .post(import.meta.env.VITE_API_JWT_REFRESH, accessData)
-                .then(response => {
-                    const accessToken = response.data.access
-
-                    console.log("new Token =", accessToken)
-
-                    localStorage.setItem("accessToken", accessToken)
-                    store.commit("accessModule/setAccessToken")
-                })
-                .catch(error => {
-                    console.log(error)
-                })
-        }
+        // upadateToken() {}        
     }
 
 }

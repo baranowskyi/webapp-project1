@@ -1,34 +1,47 @@
 export default {     
     namespaced: true, 
     state: {
-        accessToken: '',
-        refreshToken: '',
+        accessToken: '',                
         isAuthenticated: false,
-        userID: '',
-        userName: '',
-
+        userData: {
+            userID: '',
+            userName: '',
+            userEmail: '',
+        }
+         
     },
     mutations: {
-        initializationStore(state) {
+        SET_AUTHENTICATION_DATA(state) {
             if ( localStorage.getItem("accessToken") ) {
                 state.accessToken = localStorage.getItem("accessToken")
             }
             else {
                 state.accessToken = ''                
-            }
-            if ( localStorage.getItem("refreshToken") ) {
-                state.refreshToken = localStorage.getItem("refreshToken")
+            }         
+            
+            if ( localStorage.getItem("isAuthenticated") ) {
+                state.isAuthenticated = localStorage.getItem("isAuthenticated")
             }
             else {
-                state.refreshToken = ''                
-            }
+                state.isAuthenticated = false                
+            } 
+            if ( localStorage.getItem("userData") ) {
+                
+                const parseUserData = JSON.parse(localStorage.getItem("userData"))
+
+                state.userData.userID = parseUserData.userID
+                state.userData.userName = parseUserData.userName
+                state.userData.userEmail = parseUserData.userEmail                
+            } 
+            else {
+                state.userData.userID = ''
+                state.userData.userName = ''
+                state.userData.userEmail = ''
+            }   
         },
         setAccessToken(state, accessToken) {
             state.accessToken = accessToken
-        },
-        setRefreshToken(state, refreshToken) {
-            state.refreshToken = refreshToken
-        },
+        },        
         setIsAuthenticated(state, isAuthenticated) {
             state.isAuthenticated = isAuthenticated
         },
@@ -37,16 +50,12 @@ export default {
         },
         setUserName(state, userName) {
             state.userName = userName
-        },
-        
+        }, 
     },
     getters: {
         getAccessToken(state) {
             return state.accessToken
-        },
-        getRefreshToken(state) {
-            return state.refreshToken
-        },
+        },        
         getIsAuthenticated(state) {
             return state.isAuthenticated
         },
@@ -55,7 +64,7 @@ export default {
         },
         getUserName(state) {
             return state.userName
-        }
+        },        
     }    
 }
 

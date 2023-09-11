@@ -18,10 +18,10 @@
 
     <div class="header-section header-right">            
         <div class="header-item-right color-text-try-pro"><a href="#">Try Next Pro</a></div>
-        <div class="header-item-right"><a href="#">For Artists</a></div>            
-        <div @click.prevent="showLoginModal" class="login-button sign-in-button"><a href="#" >Sign in</a></div>        
-        <div class="create-account-button"><a href="#">Create account</a></div>
-        <div class="header-item-right"><a href="#">Upload</a></div> 
+        <div class="header-item-right"><a href="#">For Artists</a></div>
+        <div v-if="!userIsAuthenticated" @click.prevent="showLoginModal" class="login-button sign-in-button"><a href="#" >Sign in</a></div>        
+        <div v-if="!userIsAuthenticated" class="create-account-button"><a href="#">Create account</a></div>
+        <div @click.prevent="showUpload" class="header-item-right"><a href="#">Upload</a></div> 
     </div> 
     
     <!-- profile navbar -->
@@ -114,12 +114,27 @@ export default {
         NotificationNavbar,
         LetterNavbar,        
     },
+    
     data() {
         return {
             isShowProfileMenu: false,
-            isShowDottingsMenu: false,
+            isShowDottingsMenu: false,  
+            userIsAuthenticated: false,          
         }
     },
+
+    computed: {
+        getUserStatus() {
+            this.userIsAuthenticated = store.getters["accessModule/getIsAuthenticated"]
+        }
+    },
+
+    watch: {
+        getUserStatus() {
+            this.userIsAuthenticated         
+        }
+    },
+    
 
     mounted() {
         // close the menu after click outside 
@@ -128,14 +143,20 @@ export default {
                 this.isShowDottingsMenu = false
                 this.isShowProfileMenu = false
             }
-        })
-        
-    },    
-
+        })        
+    }, 
+    
+    
     methods: { 
         showLoginModal() {
             store.commit("headerNavbarActions/setLoginButton", true)            
         }, 
+
+        showUpload() {
+            if (!this.userIsAuthenticated) {
+                this.showLoginModal()
+            }
+        },
         
         showProfileMenu() {
             this.isShowProfileMenu = !this.isShowProfileMenu
@@ -161,8 +182,8 @@ export default {
 
         closeDottingsMenu() {
             this.isShowDottingsMenu = false
-        },
-        
+        },      
+       
     } 
 }
 </script>

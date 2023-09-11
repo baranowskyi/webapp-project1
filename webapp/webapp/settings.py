@@ -46,6 +46,7 @@ INSTALLED_APPS += [
 INSTALLED_APPS += [
     'rest_framework.authtoken',    
     'rest_framework_simplejwt',
+    # 'rest_framework_simplejwt.token_blacklist',
     'djoser',
 ]
 
@@ -241,8 +242,8 @@ CORS_ALLOW_HEADERS = (
 
 SIMPLE_JWT = {
    'AUTH_HEADER_TYPES': ('JWT',),
-   "ACCESS_TOKEN_LIFETIME": timedelta(minutes=1),
-   "REFRESH_TOKEN_LIFETIME": timedelta(minutes=5),
+   "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+   "REFRESH_TOKEN_LIFETIME": timedelta(minutes=120),
    "SIGNING_KEY": os.environ.get('SECRET_KEY_JWT'),
 }
 

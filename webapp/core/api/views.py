@@ -108,6 +108,7 @@ class CurrentArtistInfo(ListAPIView):
 
     def get_queryset(self):
         queryset = Artist.objects.filter(username__id=self.request.user.id)
+        print(self.request.user)
         if queryset:            
             return queryset
         raise ParseError(
