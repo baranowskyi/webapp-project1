@@ -103,8 +103,8 @@ class ArtistInfo(ListAPIView):
 )    
 class CurrentArtistInfo(ListAPIView):
 
-    serializer_class = CurrentArtistInfoSerializer   
-    permission_classes = (IsAuthenticatedOrReadOnly,)
+    serializer_class = ArtistInfoSerializer   
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         queryset = Artist.objects.filter(username__id=self.request.user.id)

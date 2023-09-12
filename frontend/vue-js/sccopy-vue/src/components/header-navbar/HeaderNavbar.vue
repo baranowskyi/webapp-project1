@@ -27,7 +27,7 @@
     <!-- profile navbar -->
     <div :class="[isShowProfileMenu ? 'profile-navbar-color': '']" class="profile-navbar">          
         <div class="photo-navbar">
-            <img class="photo-navbar-img" src="">
+            <img class="photo-navbar-img" :src="AvatarImageSmall">
         </div>        
         <button 
         @click.prevent="showProfileMenu" 
@@ -119,20 +119,27 @@ export default {
         return {
             isShowProfileMenu: false,
             isShowDottingsMenu: false,  
-            userIsAuthenticated: false,          
+            userIsAuthenticated: false, 
+            AvatarImageSmall: null,         
         }
     },
 
     computed: {
         getUserStatus() {
             this.userIsAuthenticated = store.getters["accessModule/getIsAuthenticated"]
+        },
+        getAvatar() {
+            this.AvatarImageSmall = store.getters["currentArtist/GET_AVATAR_IMAGE_SMALL"]            
         }
     },
 
     watch: {
         getUserStatus() {
             this.userIsAuthenticated         
-        }
+        },
+        getAvatar() {
+            this.AvatarImageSmall
+        },
     },
     
 
@@ -319,6 +326,7 @@ export default {
 
 .arrow-icon { 
     color: #c8c8c8;
+    margin-left: 31px;
 }
 
 .profile-button:hover .arrow-icon {        

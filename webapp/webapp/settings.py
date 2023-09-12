@@ -46,7 +46,7 @@ INSTALLED_APPS += [
 INSTALLED_APPS += [
     'rest_framework.authtoken',    
     'rest_framework_simplejwt',
-    # 'rest_framework_simplejwt.token_blacklist',
+    'rest_framework_simplejwt.token_blacklist',
     'djoser',
 ]
 
@@ -81,6 +81,7 @@ REST_FRAMEWORK = {
         # 'rest_framework.authentication.SessionAuthentication',
         # 'rest_framework.authentication.TokenAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'rest_framework_simplejwt.authentication.JWTStatelessUserAuthentication',
     ],
 
     'DEFAULT_PARSER_CLASSES': [
@@ -241,10 +242,10 @@ CORS_ALLOW_HEADERS = (
 #------------------------ AUTHENTICATION --------------------
 
 SIMPLE_JWT = {
-   'AUTH_HEADER_TYPES': ('JWT',),
-   "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
-   "REFRESH_TOKEN_LIFETIME": timedelta(minutes=120),
-   "SIGNING_KEY": os.environ.get('SECRET_KEY_JWT'),
+    "AUTH_HEADER_TYPES": ("JWT",),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=1),
+    "REFRESH_TOKEN_LIFETIME": timedelta(minutes=2),    
+    "SIGNING_KEY": os.environ.get("SECRET_KEY_JWT"),
 }
 
 DJOSER = {

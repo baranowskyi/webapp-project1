@@ -105,6 +105,7 @@ export default {
             localStorage.removeItem("isAuthenticated")
             localStorage.removeItem("accessToken")
             localStorage.removeItem("userData")
+            localStorage.removeItem("currentArtist")
 
             // show spinner
             this.AnimationSpinnerAndBlockModal(true)            
@@ -146,8 +147,31 @@ export default {
             this.AnimationSpinnerAndBlockModal(true)
 
             try {
-                const response = await apiAxios.get("api/user/me/")
-                console.log(response.data)
+                let response = await apiAxios.get(import.meta.env.VITE_API_CURRENT_ARTIST)
+                response = response.data[0]                
+
+                const currentArtistData = {
+                    artistID: response.id,
+                    username: response.username.username,
+                    proUser: response.username.pro_user,
+                    displayName: response.display_name,
+                    slugArtist: response.slug_artist,
+                    profileUrl: response.profile_url,
+                    avatarImage: response.avatar_image,
+                    avatarImageSmall: response.avatar_image_small,
+                    headerImage: response.header_image,
+                    verification: response.verification,
+                    firstName: response.first_name,
+                    lastName: response.last_name,
+                    city: response.city,
+                    country: response.country,
+                    bio: response.bio,
+                }
+
+                localStorage.setItem("currentArtistData", JSON.stringify(currentArtistData))
+
+                // upadet store
+                store.commit("currentArtist/SET_CURRENT_ARTIST_DATA")                
 
             }
             catch (error) {

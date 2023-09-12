@@ -20,6 +20,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from users.authentication import create_access_token, create_refresh_token, decode_access_token, decode_refresh_token
 
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 
 @extend_schema_view(
@@ -73,8 +74,32 @@ class LoginUserView(APIView):
         }
 
         return response
+    
 
-        
+
+class MyTokenObtainPairView(TokenObtainPairView): 
+
+    permission_classes = (AllowAny,)     
+
+    def post(self, request, *args, **kwargs):
+
+        user = UserSite.objects.filter(email=request.data['email']).first()
+        if not user:
+            raise APIException('User is not exist.')
+        if not user.check_password(request.data['password']):
+            raise APIException('Invalid password.')
+
+        response = super().post(request, *args, **kwargs)        
+
+        access_token = response.data["access"]
+        refresh_token = response.data["refresh"]
+
+        response.set_cookie( key='refreshToken', value=refresh_token, httponly=True )        
+        response.data = {
+            'accessToken': access_token,   
+            'user': serializers.LoginUserSerializer(user).data                     
+        }
+        return response
 
 
 @extend_schema_view(

@@ -66,12 +66,14 @@ class ArtistInfoSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+# stock serializer don't use
 class CurrentArtistInfoSerializer(serializers.ModelSerializer):
     username = UserNameSerializer(many=False, read_only=True)
 
     class Meta:
         model = Artist
         fields = ['id', 'display_name', 'avatar_image', 'username',]
+        
         
         
    

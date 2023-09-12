@@ -59,7 +59,8 @@ export default {
     },   
 
     beforeCreate() {       
-        store.commit("accessModule/SET_AUTHENTICATION_DATA")        
+        store.commit("accessModule/SET_AUTHENTICATION_DATA")   
+        store.commit("currentArtist/SET_CURRENT_ARTIST_DATA")      
     },
 
     mounted() {
