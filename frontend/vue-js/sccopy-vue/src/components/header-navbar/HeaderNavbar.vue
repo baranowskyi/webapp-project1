@@ -105,8 +105,6 @@ import SearchNavbar from '@/components/header-navbar/SearchNavbar.vue'
 import NotificationNavbar from '@/components/header-navbar/NotificationNavbar.vue'
 import LetterNavbar from '@/components/header-navbar/LetterNavbar.vue'
 
-import store from '@/store'
-
 export default {   
     name: "HeaderNavbar", 
     components: {
@@ -126,10 +124,10 @@ export default {
 
     computed: {
         getUserStatus() {
-            this.userIsAuthenticated = store.getters["accessModule/getIsAuthenticated"]
+            this.userIsAuthenticated = this.$store.getters["accessModule/getIsAuthenticated"]
         },
         getAvatar() {
-            this.AvatarImageSmall = store.getters["currentArtist/GET_AVATAR_IMAGE_SMALL"]            
+            this.AvatarImageSmall = this.$store.getters["currentArtist/GET_AVATAR_IMAGE_SMALL"]            
         }
     },
 
@@ -156,7 +154,7 @@ export default {
     
     methods: { 
         showLoginModal() {
-            store.commit("headerNavbarActions/setLoginButton", true)            
+            this.$store.commit("headerNavbarActions/setLoginButton", true)            
         }, 
 
         showUpload() {

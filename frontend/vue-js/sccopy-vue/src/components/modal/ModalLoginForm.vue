@@ -63,7 +63,6 @@ import Spinner from '@/components/services/modules/Spinner.vue'
 
 import { validateEmail, validatePassword } from '@/components/services/functions/authentication/validation.js'
 import apiAxios from '@/components/services/functions/authentication/apiAxios.js'
-import store from '@/store'
 
 export default {  
     name: "ModalLoginForm",  
@@ -94,7 +93,7 @@ export default {
             this.$nextTick(() => {
                 this.$refs.modal.focus()
             })            
-            return store.getters["headerNavbarActions/getLoginButton"]
+            return this.$store.getters["headerNavbarActions/getLoginButton"]
         }
     },    
     
@@ -130,7 +129,7 @@ export default {
                 localStorage.setItem("userData", JSON.stringify(userData)) 
 
                 // upadet store
-                store.commit("accessModule/SET_AUTHENTICATION_DATA")
+                this.$store.commit("accessModule/SET_AUTHENTICATION_DATA")
 
                 // hide spinner
                 this.AnimationSpinnerAndBlockModal(false)
@@ -171,7 +170,7 @@ export default {
                 localStorage.setItem("currentArtistData", JSON.stringify(currentArtistData))
 
                 // upadet store
-                store.commit("currentArtist/SET_CURRENT_ARTIST_DATA")                
+                this.$store.commit("currentArtist/SET_CURRENT_ARTIST_DATA")                
 
             }
             catch (error) {
@@ -204,14 +203,14 @@ export default {
                 await this.loginUser()    
                 await this.getCurrentArtistData()            
 
-                store.commit("headerNavbarActions/setLoginButton", false)
+                this.$store.commit("headerNavbarActions/setLoginButton", false)
                 
             }
         },        
        
         closeModal() {   
             if (!this.isShowSpinner) {         
-                store.commit("headerNavbarActions/setLoginButton", false)
+                this.$store.commit("headerNavbarActions/setLoginButton", false)
                 this.email = ""
                 this.password = ""            
                 this.emailError(false)   

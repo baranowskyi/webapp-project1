@@ -45,8 +45,6 @@
 
 <script>
 
-import store from '@/store'
-
 export default {
     data() {
         return {
@@ -55,7 +53,7 @@ export default {
     },
     computed: {
         currentUser() {
-            return store.getters["accessModule/getUserName"]
+            return this.$store.getters["accessModule/getUserName"]
         }
     },
 }

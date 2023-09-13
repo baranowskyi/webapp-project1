@@ -1,5 +1,5 @@
 export default {     
-    namespaced: true, 
+    namespaced: true,     
     state: {
         currentArtistData: {
             artistID: '',
@@ -71,6 +71,8 @@ export default {
         GET_AVATAR_IMAGE_SMALL(state) {
             return state.currentArtistData.avatarImageSmall
         },        
-       
+        GET_DISPLAY_NAME(state) {
+            return state.currentArtistData.displayName
+        },
     }    
 }

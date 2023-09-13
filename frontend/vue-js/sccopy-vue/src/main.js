@@ -21,7 +21,6 @@ import { fab } from '@fortawesome/free-brands-svg-icons'
 // add icons FontAwesome to the library
 library.add(fas, fab)
 
-
 axios.defaults.baseURL = import.meta.env.VITE_MAIN_URL // default axios main URL (http://127.0.0.1:8000) from .env
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 axios.defaults.withCredentials = true
@@ -29,7 +28,8 @@ axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
 
-createApp(App)
-.use(router, store, axios)
-.component('font-awesome-icon', FontAwesomeIcon)
-.mount('#app')
+const app = createApp(App)
+app.use(router)
+app.use(store)
+app.component('font-awesome-icon', FontAwesomeIcon)
+app.mount('#app')

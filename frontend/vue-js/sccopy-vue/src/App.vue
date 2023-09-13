@@ -42,10 +42,6 @@ import ArtistHeader from '@/components/header/ArtistHeader.vue'
 import ModalArtistAvatar from '@/components/modal/ModalArtistAvatar.vue'
 import ContentNavbar from '@/components/content-navbar/ContentNavbar.vue'
 
-import axios from 'axios'
-import store from '@/store'
-
-
 export default {
     name: "App",    
     components: {
@@ -59,8 +55,8 @@ export default {
     },   
 
     beforeCreate() {       
-        store.commit("accessModule/SET_AUTHENTICATION_DATA")   
-        store.commit("currentArtist/SET_CURRENT_ARTIST_DATA")      
+        this.$store.commit("accessModule/SET_AUTHENTICATION_DATA")   
+        this.$store.commit("currentArtist/SET_CURRENT_ARTIST_DATA")      
     },
 
     mounted() {
