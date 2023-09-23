@@ -1,64 +1,64 @@
 <template>
 <div class="navbar-content-left">
     <div class="navbar-content-left-link">  
-        <RouterLink  
+        <router-link  
             @click.prevent
             :to="{ name: 'artist-all', params: {artist: 'vasja'}}"
             :class="[activeLink.isActivateAllLink.status ? 'navbar-content-left-link-a-active' : '']"
             class="navbar-content-left-link-a"                      
         >
         All 
-        </RouterLink>
+        </router-link>
     </div>
     <div class="navbar-content-left-link">
-        <RouterLink
+        <router-link
             @click.prevent 
             :to="{ name: 'artist-popular-tracks', params: {artist: 'vasja'}}"
             :class="[activeLink.isActivatePopularTracksLink.status ? 'navbar-content-left-link-a-active' : '']" 
             class="navbar-content-left-link-a"
         >
         Popular tracks
-        </RouterLink>
+        </router-link>
     </div>
     <div class="navbar-content-left-link">                
-        <RouterLink     
+        <router-link     
             @click.prevent     
             :to="{ name: 'artist-tracks', params: {artist: 'vasja'}}" 
             :class="[activeLink.isActivateTracksLink.status ? 'navbar-content-left-link-a-active' : '']"
             class="navbar-content-left-link-a"
         >
         Tracks
-        </RouterLink>
+        </router-link>
     </div>
     <div class="navbar-content-left-link">                
-        <RouterLink
+        <router-link
             @click.prevent 
             :to="{ name: 'artist-albums', params: {artist: 'vasja'}}"
             :class="[activeLink.isActivateAlbumsLink.status ? 'navbar-content-left-link-a-active' : '']"
             class="navbar-content-left-link-a"
         >
         Albums
-        </RouterLink>
+        </router-link>
     </div>
     <div class="navbar-content-left-link">                
-        <RouterLink
+        <router-link
             @click.prevent
             :to="{ name: 'artist-sets', params: {artist: 'vasja'}}"
             :class="[activeLink.isActivatePlaylistsLink.status ? 'navbar-content-left-link-a-active' : '']"
             class="navbar-content-left-link-a"
         >
         Playlists
-        </RouterLink>
+        </router-link>
     </div>
     <div class="navbar-content-left-link">                
-        <RouterLink
+        <router-link
             @click.prevent
             :to="{ name: 'artist-reposts', params: {artist: 'vasja'}}"
             :class="[activeLink.isActivateRepostsLink.status ? 'navbar-content-left-link-a-active' : '']"
             class="navbar-content-left-link-a"
         >
         Reposts
-        </RouterLink>
+        </router-link>
     </div>
 </div>
 

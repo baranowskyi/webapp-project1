@@ -6,7 +6,7 @@ export default {
         userData: {
             userID: '',
             userName: '',
-            userEmail: '',
+            // userEmail: '',
         }
          
     },
@@ -31,39 +31,39 @@ export default {
 
                 state.userData.userID = parseUserData.userID
                 state.userData.userName = parseUserData.userName
-                state.userData.userEmail = parseUserData.userEmail                
+                // state.userData.userEmail = parseUserData.userEmail                
             } 
             else {
                 state.userData.userID = ''
                 state.userData.userName = ''
-                state.userData.userEmail = ''
+                // state.userData.userEmail = ''
             }   
         },
-        setAccessToken(state, accessToken) {
+        SET_ACCESS_TOKEN(state, accessToken) {
             state.accessToken = accessToken
         },        
-        setIsAuthenticated(state, isAuthenticated) {
+        SET_IS_AUTHENTICATED(state, isAuthenticated) {
             state.isAuthenticated = isAuthenticated
         },
-        setUserID(state, userID) {
-            state.userID = userID
-        },
-        setUserName(state, userName) {
-            state.userName = userName
-        }, 
+        // SET_USER_ID(state, userID) {
+        //     state.userID = userID
+        // },
+        // SET_USER_NAME(state, userName) {
+        //     state.userName = userName
+        // }, 
     },
     getters: {
-        getAccessToken(state) {
+        ACCESS_TOKEN(state) {
             return state.accessToken
         },        
-        getIsAuthenticated(state) {
+        IS_AUTHENTICATED(state) {
             return state.isAuthenticated
         },
-        getUserID(state) {
-            return state.userID
+        USER_ID(state) {
+            return state.userData.userID
         },
-        getUserName(state) {
-            return state.userName
+        USER_NAME(state) {
+            return state.userData.userName
         },        
     }    
 }

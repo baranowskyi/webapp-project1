@@ -1,12 +1,12 @@
 import { createStore, createLogger } from 'vuex'
 import accessModule from '@/store/users/accessModule.js'
-import headerNavbarActions from '@/store/header-navbar/headerNavbarActions.js'
+import modalForm from '@/store/modalForm.js'
 import currentArtist from '@/store/artist/currentArtist.js'
 
 const store = createStore({
     modules: {
         accessModule, 
-        headerNavbarActions,   
+        modalForm,   
         currentArtist,    
     },
     plugins: [createLogger()], // console logger

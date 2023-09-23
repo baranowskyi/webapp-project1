@@ -32,7 +32,7 @@
                             placeholder="Your Email"                            
                         /> 
                         <div v-if="isEmailError" class="message-error-form">Enter a valid Email</div>
-                        <Spinner v-if="isShowSpinner"/> 
+                        <LoadSpinner v-if="isShowSpinner"/> 
                         <input    
                             :disabled="isShowSpinner"                    
                             v-model="password" 
@@ -59,15 +59,15 @@
 </template>
 
 <script>
-import Spinner from '@/components/services/modules/Spinner.vue'
+import LoadSpinner from '@/components/utils/LoadSpinner.vue'
 
-import { validateEmail, validatePassword } from '@/components/services/functions/authentication/validation.js'
-import apiAxios from '@/components/services/functions/authentication/apiAxios.js'
+import { validateEmail, validatePassword } from '@/services/functions/authentication/validation.js'
+import apiAxios from '@/services/functions/authentication/apiAxios.js'
 
 export default {  
     name: "ModalLoginForm",  
     components: {
-        Spinner,
+        LoadSpinner,
     },  
     
     data() {
@@ -93,7 +93,7 @@ export default {
             this.$nextTick(() => {
                 this.$refs.modal.focus()
             })            
-            return this.$store.getters["headerNavbarActions/getLoginButton"]
+            return this.$store.getters["modalForm/LOGIN_MODAL_FORM"]
         }
     },    
     
@@ -103,8 +103,7 @@ export default {
             // clear user data in storage
             localStorage.removeItem("isAuthenticated")
             localStorage.removeItem("accessToken")
-            localStorage.removeItem("userData")
-            localStorage.removeItem("currentArtist")
+            localStorage.removeItem("userData")            
 
             // show spinner
             this.AnimationSpinnerAndBlockModal(true)            
@@ -123,12 +122,12 @@ export default {
                 const userData = {
                     userID: response.data.user.id,
                     userName: response.data.user.username,
-                    userEmail: response.data.user.email,
+                    // userEmail: response.data.user.email, //todo: delete email from api request
                 }
 
                 localStorage.setItem("userData", JSON.stringify(userData)) 
 
-                // upadet store
+                // update store
                 this.$store.commit("accessModule/SET_AUTHENTICATION_DATA")
 
                 // hide spinner
@@ -137,47 +136,22 @@ export default {
             catch (error) {    
                 this.isServerError = true
                 this.AnimationSpinnerAndBlockModal(false)                            
-                console.log(error.status)
+                console.log("[ERROR] Login authentication: ", error.status)
             }
         },
 
-        async getCurrentArtistData() {
+        getCurrentArtistData() {
 
             this.AnimationSpinnerAndBlockModal(true)
 
             try {
-                let response = await apiAxios.get(import.meta.env.VITE_API_CURRENT_ARTIST)
-                response = response.data[0]                
-
-                const currentArtistData = {
-                    artistID: response.id,
-                    username: response.username.username,
-                    proUser: response.username.pro_user,
-                    displayName: response.display_name,
-                    slugArtist: response.slug_artist,
-                    profileUrl: response.profile_url,
-                    avatarImage: response.avatar_image,
-                    avatarImageSmall: response.avatar_image_small,
-                    headerImage: response.header_image,
-                    verification: response.verification,
-                    firstName: response.first_name,
-                    lastName: response.last_name,
-                    city: response.city,
-                    country: response.country,
-                    bio: response.bio,
-                }
-
-                localStorage.setItem("currentArtistData", JSON.stringify(currentArtistData))
-
-                // upadet store
-                this.$store.commit("currentArtist/SET_CURRENT_ARTIST_DATA")                
-
+                this.$store.dispatch("currentArtist/GET_CURRENT_ARTIST_DATA")                
             }
             catch (error) {
                 this.AnimationSpinnerAndBlockModal(false)
                 this.isServerError = true
-                console.log(error.status)
-            }
+                console.log("[ERROR] Get current artist data: ", error.status)
+            }              
 
         },
 
@@ -201,16 +175,16 @@ export default {
 
                 // login user and get token
                 await this.loginUser()    
-                await this.getCurrentArtistData()            
+                this.getCurrentArtistData()            
 
-                this.$store.commit("headerNavbarActions/setLoginButton", false)
+                this.$store.commit("modalForm/SET_LOGIN_MODAL_FORM", false)
                 
             }
         },        
        
         closeModal() {   
             if (!this.isShowSpinner) {         
-                this.$store.commit("headerNavbarActions/setLoginButton", false)
+                this.$store.commit("modalForm/SET_LOGIN_MODAL_FORM", false)
                 this.email = ""
                 this.password = ""            
                 this.emailError(false)   

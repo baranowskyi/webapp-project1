@@ -1,57 +1,15 @@
-<template>
-    <div class="main">
-        <div class="top-header-navbar">
-            <HeaderNavbar />
-            <ModalLoginForm />                
-        </div>
-        <div class="full-content">
-            <div class="artist-header">            
-               <ArtistHeader />
-               <ModalArtistAvatar />
-            </div>  
-            <div class="main-content">                
-                <ContentNavbar />
-                <div class="main-user-content"> 
-                    
-                    <div class="left-content">
-                        <RouterView /> 
-                    </div>
-                    
-                    <div class="right-content">            
-                        <div class="right-artist-info">
-                            {% include 'right-artist-info.html' %}
-                        </div>
-                        <div class="right-artist-like-tracks"></div>
-                        <div class="right-artist-following"></div>
-                        <div class="right-artist-last-comments"></div>
-                        <div class="right-artist-another-info"></div>
-                    </div>
-                </div> 
-            </div>
-        </div>
-        {% include 'footer-player.html' %} 
-    </div>      
+<template>    
+    <MainLayout />
 </template>
 
 <script>
 
-import { RouterView } from 'vue-router'
-import HeaderNavbar from '@/components/header-navbar/HeaderNavbar.vue'
-import ModalLoginForm from '@/components/modal/ModalLoginForm.vue'
-import ArtistHeader from '@/components/header/ArtistHeader.vue'
-import ModalArtistAvatar from '@/components/modal/ModalArtistAvatar.vue'
-import ContentNavbar from '@/components/content-navbar/ContentNavbar.vue'
+import MainLayout from '@/layouts/MainLayout.vue'
 
 export default {
     name: "App",    
-    components: {
-        HeaderNavbar,  
-        ModalLoginForm,
-        ArtistHeader,
-        ModalArtistAvatar,
-        ContentNavbar,
-        RouterView,
-        
+    components: { 
+        MainLayout
     },   
 
     beforeCreate() {       

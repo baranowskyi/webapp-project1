@@ -124,20 +124,22 @@ export default {
 
     computed: {
         getUserStatus() {
-            this.userIsAuthenticated = this.$store.getters["accessModule/getIsAuthenticated"]
+            this.userIsAuthenticated = this.$store.getters["accessModule/IS_AUTHENTICATED"]
         },
         getAvatar() {
-            this.AvatarImageSmall = this.$store.getters["currentArtist/GET_AVATAR_IMAGE_SMALL"]            
-        }
+            this.AvatarImageSmall = this.$store.getters["currentArtist/AVATAR_IMAGE_SMALL"]    
+            
+        },        
     },
 
     watch: {
         getUserStatus() {
             this.userIsAuthenticated         
         },
-        getAvatar() {
-            this.AvatarImageSmall
+        getAvatar() {            
+            this.AvatarImageSmall            
         },
+        
     },
     
 
@@ -154,7 +156,7 @@ export default {
     
     methods: { 
         showLoginModal() {
-            this.$store.commit("headerNavbarActions/setLoginButton", true)            
+            this.$store.commit("modalForm/SET_LOGIN_MODAL_FORM", true)            
         }, 
 
         showUpload() {

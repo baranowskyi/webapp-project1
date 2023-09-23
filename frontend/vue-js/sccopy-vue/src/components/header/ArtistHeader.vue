@@ -1,11 +1,11 @@
 <template>
     <div class="artist-header">
         <div class="background-artist preload-content">      
-            <img class="background-artist-img" src="#"/>
+            <img class="background-artist-img" :src="currentArtistData.headerImage"/>
         </div>
         <div class="artist-info">
             <div class="avatar-profile-block preload-content">
-                <img class="avatar-profile-img" src="#" />
+                <img class="avatar-profile-img" :src="currentArtistData.avatarImage" />
                                     
                 <div class="edit-avatar-button">
                     <button onclick="" class="avatar-button"><font-awesome-icon icon="fa-solid fa-camera" />&nbsp Update image</button>
@@ -17,18 +17,18 @@
                 
             </div>
             <div class="artist-data"> 
-                <div class="nick-name">display_name ({{ currentUser }})                
-                    <font-awesome-icon icon="fa-solid fa-circle-check" style="color: #3588d8; background-color: white; border-radius: 50%;" />
+                <div class="nick-name">{{currentArtistData.displayName}} ({{ currentUser }})                
+                    <font-awesome-icon  v-if="currentArtistData.verification" icon="fa-solid fa-circle-check" style="color: #3588d8; background-color: white; border-radius: 50%;" />
                 </div>  
                 <div class="name-block">
-                    <div class="name">first_name</div>
-                    <div class="name">last_name</div>                   
+                    <div v-if="currentArtistData.firstName" class="name">{{currentArtistData.firstName}}</div>
+                    <div v-if="currentArtistData.lastName" class="name">{{currentArtistData.lastName}}</div>                   
                 </div>
                 <div class="country-city-block">
-                    <div class="country-city">city</div>
-                    <div class="country-city">country</div>
+                    <div v-if="currentArtistData.city" class="country-city">{{currentArtistData.city}}</div>
+                    <div v-if="currentArtistData.country" class="country-city">{{currentArtistData.country}}</div>
                 </div>
-                <div class="pro-user"><font-awesome-icon icon="fa-solid fa-certificate" style="color: #fe5621;" />&nbsp NEXT PRO</div>
+                <div v-if="currentArtistData.proUser" class="pro-user"><font-awesome-icon icon="fa-solid fa-certificate" style="color: #fe5621;" />&nbsp NEXT PRO</div>
             </div>
             
             <div class="edit-background">
@@ -47,22 +47,25 @@
 
 export default {
     data() {
-        return {
-            
+        return {                      
         }
     },
     computed: {
         currentUser() {
-            return this.$store.getters["accessModule/getUserName"]
-        }
-    },
+            return this.$store.getters["accessModule/USER_NAME"]            
+        },
+        currentArtistData() {
+          return this.$store.getters["currentArtist/ALL_ARTIST_DATA"]
+        },        
+    },   
+    
 }
 
 </script>
 
 <style>
 
-.preload-content > img
+/* .preload-content > img
 {
   opacity: 0;  
   transition: opacity 1s;
@@ -72,7 +75,7 @@ export default {
 { 
   display: block;
   opacity: 1;
-}
+} */
 
 /*********************** header artist start *****************************************************/
 
