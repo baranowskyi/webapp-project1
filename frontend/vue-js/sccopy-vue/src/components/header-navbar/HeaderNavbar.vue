@@ -3,7 +3,7 @@
 <div class="container-header-navbar">
     <!-- site logo -->
     <div class="header-logo">
-        <a href="#">
+        <a href="/">
             <font-awesome-icon icon="fa-brands fa-soundcloud" class="logo-icon"/>
         </a>
     </div>
@@ -17,15 +17,15 @@
     <SearchNavbar />
 
     <div class="header-section header-right">            
-        <div class="header-item-right color-text-try-pro"><a href="#">Try Next Pro</a></div>
-        <div class="header-item-right"><a href="#">For Artists</a></div>
+        <div v-if="userIsAuthenticated" class="header-item-right color-text-try-pro"><a href="#">Try Next Pro</a></div>
+        <div v-if="userIsAuthenticated" class="header-item-right"><a href="#">For Artists</a></div>
         <div v-if="!userIsAuthenticated" @click.prevent="showLoginModal" class="login-button sign-in-button"><a href="#" >Sign in</a></div>        
         <div v-if="!userIsAuthenticated" class="create-account-button"><a href="#">Create account</a></div>
         <div @click.prevent="showUpload" class="header-item-right"><a href="#">Upload</a></div> 
     </div> 
     
     <!-- profile navbar -->
-    <div :class="[isShowProfileMenu ? 'profile-navbar-color': '']" class="profile-navbar">          
+    <div v-if="userIsAuthenticated" :class="[isShowProfileMenu ? 'profile-navbar-color': '']" class="profile-navbar">          
         <div class="photo-navbar">
             <img class="photo-navbar-img" :src="AvatarImageSmall">
         </div>        
@@ -55,9 +55,9 @@
         </div>
     </div>
 
-    <NotificationNavbar />
+    <NotificationNavbar v-if="userIsAuthenticated" />
 
-    <LetterNavbar />
+    <LetterNavbar v-if="userIsAuthenticated"/>
 
     <!-- dotting navbar -->
     <div :class="[isShowDottingsMenu ? 'dotting-navbar-color': '']" class="dotting-navbar">     
@@ -435,6 +435,31 @@ export default {
 }
 
 /*********************** dotting button end *****************************************************/
+
+
+
+a {
+    color: #cccccc;
+    text-decoration: none;
+} 
+
+a:hover {
+    color: #fff; 
+}
+
+li {
+    list-style-type: none
+}
+
+.color-text-try-pro a  {
+    color: #fe5621;
+}
+
+.color-text-try-pro a:hover {
+    color: #ff8a65; 
+}
+
+
 
 </style>
 

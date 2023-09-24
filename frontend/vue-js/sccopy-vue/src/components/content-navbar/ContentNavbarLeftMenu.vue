@@ -3,7 +3,7 @@
     <div class="navbar-content-left-link">  
         <router-link  
             @click.prevent
-            :to="{ name: 'artist-all', params: {artist: 'vasja'}}"
+            :to="{ name: 'artist-all', params: {artist: getArtistFromRoute }}"
             :class="[activeLink.isActivateAllLink.status ? 'navbar-content-left-link-a-active' : '']"
             class="navbar-content-left-link-a"                      
         >
@@ -13,7 +13,7 @@
     <div class="navbar-content-left-link">
         <router-link
             @click.prevent 
-            :to="{ name: 'artist-popular-tracks', params: {artist: 'vasja'}}"
+            :to="{ name: 'artist-popular-tracks', params: {artist: getArtistFromRoute }}"
             :class="[activeLink.isActivatePopularTracksLink.status ? 'navbar-content-left-link-a-active' : '']" 
             class="navbar-content-left-link-a"
         >
@@ -23,7 +23,7 @@
     <div class="navbar-content-left-link">                
         <router-link     
             @click.prevent     
-            :to="{ name: 'artist-tracks', params: {artist: 'vasja'}}" 
+            :to="{ name: 'artist-tracks', params: {artist: getArtistFromRoute }}" 
             :class="[activeLink.isActivateTracksLink.status ? 'navbar-content-left-link-a-active' : '']"
             class="navbar-content-left-link-a"
         >
@@ -33,7 +33,7 @@
     <div class="navbar-content-left-link">                
         <router-link
             @click.prevent 
-            :to="{ name: 'artist-albums', params: {artist: 'vasja'}}"
+            :to="{ name: 'artist-albums', params: {artist: getArtistFromRoute }}"
             :class="[activeLink.isActivateAlbumsLink.status ? 'navbar-content-left-link-a-active' : '']"
             class="navbar-content-left-link-a"
         >
@@ -43,7 +43,7 @@
     <div class="navbar-content-left-link">                
         <router-link
             @click.prevent
-            :to="{ name: 'artist-sets', params: {artist: 'vasja'}}"
+            :to="{ name: 'artist-sets', params: {artist: getArtistFromRoute }}"
             :class="[activeLink.isActivatePlaylistsLink.status ? 'navbar-content-left-link-a-active' : '']"
             class="navbar-content-left-link-a"
         >
@@ -53,7 +53,7 @@
     <div class="navbar-content-left-link">                
         <router-link
             @click.prevent
-            :to="{ name: 'artist-reposts', params: {artist: 'vasja'}}"
+            :to="{ name: 'artist-reposts', params: {artist: getArtistFromRoute }}"
             :class="[activeLink.isActivateRepostsLink.status ? 'navbar-content-left-link-a-active' : '']"
             class="navbar-content-left-link-a"
         >
@@ -82,16 +82,27 @@ export default {
                 isActivateAlbumsLink: { status: false , name: 'artist-albums' },
                 isActivatePlaylistsLink: { status: false , name: 'artist-sets' },
                 isActivateRepostsLink: { status: false , name: 'artist-reposts' }, 
-            },                                
+                
+            },
+                                           
         }
-    },         
+    }, 
+    
+    mounted() {
+        this.updateRoute()      
+    },
        
     watch: {
         '$route.name': {            
             handler() {
-                console.log("update route: ", this.$route.name)                
-                this.activateLink(this.$route.name)
+                this.updateRoute()
             },
+        }
+    },
+
+    computed: {
+        getArtistFromRoute() {            
+            return this.$route.params.artist
         }
     },
 
@@ -105,6 +116,15 @@ export default {
                     this.activeLink[key].status = false
                 }                 
             }    
+        },
+        updateRoute() {
+            console.log("name route: ", this.$route.name)  
+            console.log("params route: ", this.$route.params.artist)              
+            this.activateLink(this.$route.name)
+
+            // set title page
+            const artist = this.$store.getters["currentArtist/DISPLAY_NAME"]
+            document.title =  this.$route.meta.title.replace(/\[artist\]/i, artist)            
         },
     },
     

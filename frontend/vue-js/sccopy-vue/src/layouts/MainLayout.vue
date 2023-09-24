@@ -18,7 +18,7 @@
                     
                     <div class="right-content">            
                         <div class="right-artist-info">
-                            {% include 'right-artist-info.html' %}
+                            RIGHT BLOCK
                         </div>
                         <div class="right-artist-like-tracks"></div>
                         <div class="right-artist-following"></div>
@@ -59,3 +59,16 @@ export default {
 }
 
 </script>
+
+<style>
+
+.main-content {
+    display: table;    
+    padding: 0 30px;
+    height: 100vh;
+    width: 1240px;
+    margin: 0 auto;
+    background-color: #ffffff;
+}
+
+</style>

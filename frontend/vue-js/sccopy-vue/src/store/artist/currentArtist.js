@@ -20,7 +20,7 @@ export default {
     actions: {
         async GET_CURRENT_ARTIST_DATA({commit}) {
 
-            localStorage.removeItem("currentArtist")
+            localStorage.removeItem("currentArtistData")
 
             try {
                 let response = await apiAxios.get(import.meta.env.VITE_API_CURRENT_ARTIST)

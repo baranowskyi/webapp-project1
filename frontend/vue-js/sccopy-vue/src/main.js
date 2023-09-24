@@ -28,8 +28,13 @@ axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
 
+import EmptyLayout from '@/layouts/EmptyLayout.vue'
+import MainLayout from '@/layouts/MainLayout.vue'
+
 const app = createApp(App)
 app.use(router)
 app.use(store)
 app.component('font-awesome-icon', FontAwesomeIcon)
+app.component('EmptyLayout', EmptyLayout)
+app.component('MainLayout', MainLayout)
 app.mount('#app')

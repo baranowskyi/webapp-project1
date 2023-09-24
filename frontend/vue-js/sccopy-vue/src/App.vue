@@ -1,24 +1,29 @@
 <template>    
-    <MainLayout />
+    <component :is="layout">
+        <RouterView/>
+    </component>
 </template>
 
 <script>
 
-import MainLayout from '@/layouts/MainLayout.vue'
-
 export default {
-    name: "App",    
-    components: { 
-        MainLayout
-    },   
+    name: "App",
 
     beforeCreate() {       
         this.$store.commit("accessModule/SET_AUTHENTICATION_DATA")   
-        this.$store.commit("currentArtist/SET_CURRENT_ARTIST_DATA")      
+        this.$store.commit("currentArtist/SET_CURRENT_ARTIST_DATA")
+        // this.$store.dispatch("currentArtist/GET_CURRENT_ARTIST_DATA")
+        
     },
 
     mounted() {
         // this.upadateToken()        
+    },
+
+    computed: {
+        layout() {
+            return this.$route.meta.layout || 'default-layout'
+        }
     },
     
 
@@ -45,92 +50,60 @@ body {
     font-weight: 100;
     font-size: 14px;
     line-height: 1.5;    
-  }
-
-a {
-    color: #cccccc;
-    text-decoration: none;
-} 
-
-li {
-    list-style-type: none
-}
-
-.color-text-try-pro a  {
-    color: #fe5621;
-}
-
-.color-text-try-pro a:hover {
-    color: #ff8a65; 
-}
-
-a:hover {
-    color: #fff; 
 }
 
 
-
-
-
-.main-content {
-  display: table;
-  padding-top: 46px;
-  padding: 0 30px;
-  width: 1240px;
-  margin: 0 auto;
-  background-color: #ffffff;
-}
 
 /************* nav bar artist content **********************/
 
 
 .main-user-content {
-  /* background-color: bisque; */
-  margin-top: 20px;
-  position: relative;
-  margin-bottom: 20px;
-  display: flex;  
+    /* background-color: bisque; */
+    margin-top: 20px;
+    position: relative;
+    margin-bottom: 20px;
+    display: flex;  
 }
 
 .left-content {
-  /* background-color: rgb(182, 182, 182); */
-  width: 820px;
-  margin-right: 30px;
-  position: relative;    
+    /* background-color: rgb(182, 182, 182); */
+    width: 820px;
+    margin-right: 30px;
+    position: relative;    
 }
 
 .left-content-hide {
-  display: none;
+    display: none;
 }
 
 .spotlight {
-  /* background-color: cadetblue; */
-  position: relative;
-  height: 100px;
-  border-bottom: 1px solid #e5e5e5;
+    /* background-color: cadetblue; */
+    position: relative;
+    height: 100px;
+    border-bottom: 1px solid #e5e5e5;
 }
 
 .recent-track {
-  /* background-color: #f2f; */
-  margin-bottom: 20px;
-  font-size: 20px;
-  margin-top: 35px;
+    /* background-color: #f2f; */
+    margin-bottom: 20px;
+    font-size: 20px;
+    margin-top: 35px;
 }
 
 .artist-tracks {
-  /* background-color: #ff8a65; */
-  margin-top: 10px;
-  position: relative;
-  /* border: 1px solid #ccc; */
+    /* background-color: #ff8a65; */
+    margin-top: 10px;
+    position: relative;
+    /* border: 1px solid #ccc; */
 }
 
 .right-content {
-  /* background-color: rgb(135, 135, 135); */
-  width: 300px;
-  position: relative;  
-  border-left: 1px solid #e5e5e5;  
-  padding-left: 30px;
-  margin-left: 30px;
+    /* background-color: rgb(135, 135, 135); */
+    width: 300px;
+    position: relative;  
+    border-left: 1px solid #e5e5e5;  
+    padding-left: 30px;
+    margin-left: 30px;
 }
 
 /* NO CONTENT */
