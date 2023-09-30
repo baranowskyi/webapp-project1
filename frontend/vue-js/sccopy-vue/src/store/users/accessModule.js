@@ -5,10 +5,8 @@ export default {
         isAuthenticated: false,
         userData: {
             userID: '',
-            userName: '',
-            // userEmail: '',
-        }
-         
+            userName: '',                       
+        }         
     },
     mutations: {
         SET_AUTHENTICATION_DATA(state) {
@@ -30,13 +28,11 @@ export default {
                 const parseUserData = JSON.parse(localStorage.getItem("userData"))
 
                 state.userData.userID = parseUserData.userID
-                state.userData.userName = parseUserData.userName
-                // state.userData.userEmail = parseUserData.userEmail                
+                state.userData.userName = parseUserData.userName                                
             } 
             else {
                 state.userData.userID = ''
-                state.userData.userName = ''
-                // state.userData.userEmail = ''
+                state.userData.userName = ''                
             }   
         },
         SET_ACCESS_TOKEN(state, accessToken) {
@@ -44,13 +40,7 @@ export default {
         },        
         SET_IS_AUTHENTICATED(state, isAuthenticated) {
             state.isAuthenticated = isAuthenticated
-        },
-        // SET_USER_ID(state, userID) {
-        //     state.userID = userID
-        // },
-        // SET_USER_NAME(state, userName) {
-        //     state.userName = userName
-        // }, 
+        },        
     },
     getters: {
         ACCESS_TOKEN(state) {

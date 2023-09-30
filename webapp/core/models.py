@@ -7,8 +7,8 @@ from core.service_functions import services
 
 class Artist(models.Model):    
     display_name = models.CharField("Artist Name", max_length=100, null=True, blank=True)
-    slug_artist = models.SlugField("Slug Artist", max_length=100, null=True, unique=True)
-    profile_url = models.CharField("Profile URL", null=False, unique=True, blank=True)
+    slug_artist = models.SlugField("Slug Artist", max_length=100, null=False, unique=True)
+    # profile_url = models.CharField("Profile URL", null=False, unique=True, blank=True)
     avatar_image = models.ImageField("Avatar", 
                                     upload_to=services.get_avatar_upload_path,                                    
                                     null=True,

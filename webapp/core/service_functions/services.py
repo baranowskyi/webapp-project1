@@ -119,9 +119,9 @@ def get_default_slug_artist_and_name():
 #     instance.profile_url = f"{instance.slug_artist}"
 #     return instance
 
-def get_default_artist_profile_url():   
-    profile_url = get_default_slug_artist_and_name()["slug_artist"]
-    return profile_url
+# def get_default_artist_profile_url():   
+#     profile_url = get_default_slug_artist_and_name()["slug_artist"]
+#     return profile_url
 
 
 

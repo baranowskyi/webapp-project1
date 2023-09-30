@@ -98,12 +98,7 @@ export default {
     },    
     
     methods: {
-        async loginUser() {
-
-            // clear user data in storage
-            localStorage.removeItem("isAuthenticated")
-            localStorage.removeItem("accessToken")
-            localStorage.removeItem("userData")            
+        async loginUser() {                    
 
             // show spinner
             this.AnimationSpinnerAndBlockModal(true)            
@@ -145,7 +140,7 @@ export default {
             this.AnimationSpinnerAndBlockModal(true)
 
             try {
-                this.$store.dispatch("currentArtist/GET_CURRENT_ARTIST_DATA")                
+                this.$store.dispatch("currentArtist/GET_CURRENT_ARTIST_DATA", this.$route.params.artist)                
             }
             catch (error) {
                 this.AnimationSpinnerAndBlockModal(false)

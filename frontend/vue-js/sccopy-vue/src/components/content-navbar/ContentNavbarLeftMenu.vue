@@ -81,10 +81,8 @@ export default {
                 isActivateTracksLink: { status: false , name: 'artist-tracks' },
                 isActivateAlbumsLink: { status: false , name: 'artist-albums' },
                 isActivatePlaylistsLink: { status: false , name: 'artist-sets' },
-                isActivateRepostsLink: { status: false , name: 'artist-reposts' }, 
-                
-            },
-                                           
+                isActivateRepostsLink: { status: false , name: 'artist-reposts' },                 
+            }                                          
         }
     }, 
     
@@ -101,8 +99,15 @@ export default {
     },
 
     computed: {
-        getArtistFromRoute() {            
-            return this.$route.params.artist
+        getArtistFromRoute() {  
+            const getData = this.$store.dispatch('currentArtist/GET_CURRENT_ARTIST_DATA', this.$route.params.artist)            
+            if (getData === "400 Bad Request") {
+                this.$router.push('artist-not-found')
+            }
+            else {
+                return this.$route.params.artist
+            }
+            
         }
     },
 
@@ -123,8 +128,8 @@ export default {
             this.activateLink(this.$route.name)
 
             // set title page
-            const artist = this.$store.getters["currentArtist/DISPLAY_NAME"]
-            document.title =  this.$route.meta.title.replace(/\[artist\]/i, artist)            
+            // const artist = this.$store.getters["currentArtist/DISPLAY_NAME"]
+            // document.title =  this.$route.meta.title.replace(/\[artist\]/i, artist)            
         },
     },
     

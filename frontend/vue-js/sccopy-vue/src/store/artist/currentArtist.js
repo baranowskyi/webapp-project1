@@ -18,39 +18,45 @@ export default {
         } 
     },
     actions: {
-        async GET_CURRENT_ARTIST_DATA({commit}) {
-
-            localStorage.removeItem("currentArtistData")
+        async GET_CURRENT_ARTIST_DATA({commit}, artist) {
 
             try {
-                let response = await apiAxios.get(import.meta.env.VITE_API_CURRENT_ARTIST)
-                response = response.data[0]                
+                
+                // VITE_API_CURRENT_ARTIST_MAIN_INFO = api/[artist]/show-info/
+                const URL = import.meta.env.VITE_API_CURRENT_ARTIST_MAIN_INFO.replace(/\[artist\]/i, artist) 
 
-                const currentArtistData = {
-                    artistID: response.id,
-                    username: response.username.username,
-                    proUser: response.username.pro_user,
-                    displayName: response.display_name,
-                    slugArtist: response.slug_artist,
-                    profileUrl: response.profile_url,
-                    avatarImage: response.avatar_image,
-                    avatarImageSmall: response.avatar_image_small,
-                    headerImage: response.header_image,
-                    verification: response.verification,
-                    firstName: response.first_name,
-                    lastName: response.last_name,
-                    city: response.city,
-                    country: response.country,
-                    bio: response.bio,
-                }
+                let response = await apiAxios.get(URL)
 
-                localStorage.setItem("currentArtistData", JSON.stringify(currentArtistData)) 
+                if (response.status == 200) {                    
 
-                commit('SET_CURRENT_ARTIST_DATA')
+                    response = response.data[0]
+
+                    const currentArtistData = {
+                        artistID: response.id,
+                        username: response.username.username,
+                        proUser: response.username.pro_user,
+                        displayName: response.display_name,
+                        slugArtist: response.slug_artist,
+                        profileUrl: response.profile_url,
+                        avatarImage: response.avatar_image,
+                        avatarImageSmall: response.avatar_image_small,
+                        headerImage: response.header_image,
+                        verification: response.verification,
+                        firstName: response.first_name,
+                        lastName: response.last_name,
+                        city: response.city,
+                        country: response.country,
+                        bio: response.bio,
+                    }
+
+                    localStorage.setItem("currentArtistData", JSON.stringify(currentArtistData)) 
+
+                    commit('SET_CURRENT_ARTIST_DATA')
+                } 
                 
             }
             catch (error) {                
-                console.log(error.status)
+                console.error(error)                    
             }
         }
     },
@@ -72,10 +78,7 @@ export default {
         },
         SLUG_ARTIST(state) {
             return state.currentArtistData.slugArtist
-        },
-        // PROFILE_URL() {
-        //     return state.currentArtistData.profileUrl
-        // },
+        },        
         AVATAR_IMAGE(state) {
             return state.currentArtistData.avatarImage
         },        

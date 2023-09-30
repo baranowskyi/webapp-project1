@@ -2,7 +2,7 @@
 
 <div class="header-section header-middle">
     <form class="search-form" method="GET" action="">
-        <input class="search-input" type="text" name="search" placeholder="Search"/>
+        <input class="search-input" type="text" name="search" :placeholder="[userIsAuthenticated ? 'Search' : 'Search for artists, bands, tracks, podcasts']"/>
         <button class="search-button" type="submit"><font-awesome-icon icon="fa-solid fa-magnifying-glass"/></button>
     </form>
 </div>
@@ -11,8 +11,11 @@
 
 <script>
 
-export default {
+import { userIsAuthenticatedMixin } from '@/mixins'
 
+export default {
+    name: "SearchNavBar",
+    mixins: [userIsAuthenticatedMixin]
 }
 
 </script>

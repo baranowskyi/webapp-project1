@@ -27,7 +27,7 @@ class ShowLikesTrack(ListAPIView):
         if queryset:            
             return queryset
         raise ParseError(
-                "Track don't exists"
+                "Track doesn't exist"
             ) 
     
 
@@ -47,7 +47,7 @@ class EditLikeTrack(CreateAPIView, DestroyAPIView):
         if queryset:
             return queryset
         raise ParseError(
-                "Track don't has likes"    
+                "Track doesn't has likes"    
             )  
 
     def perform_create(self, serializer): 
@@ -75,7 +75,7 @@ class ArtistTracks(ListAPIView):
         if queryset:            
             return queryset
         raise ParseError(
-                "Artist don't has tracks"
+                "Artist doesn't has tracks"
             )   
     
 
@@ -94,7 +94,7 @@ class ArtistInfo(ListAPIView):
         if queryset:            
             return queryset
         raise ParseError(
-                "Don't has Artist info"
+                "Artist doesn't exist"
             )  
     
 

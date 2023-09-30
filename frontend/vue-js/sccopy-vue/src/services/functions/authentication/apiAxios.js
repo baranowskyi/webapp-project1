@@ -1,4 +1,6 @@
 import axios from 'axios'
+import { ARTIST_DOES_NOT_EXIST } from '@/services/constants/errorMessages.js'
+import router from '@/router'
 
 const apiAxios = axios.create()
 
@@ -18,7 +20,7 @@ apiAxios.interceptors.request.use(config => {
     return config
 
 }, error => {
-    console.log(error)
+    console.log("axios interceptors request >>> ", error)
 }) // error from frontend
 
 //--------------------------- end request ---------------------------
@@ -34,8 +36,14 @@ apiAxios.interceptors.response.use(config => {
     return config
 
 }, error => {
+    console.log("axios interceptors response >>> ", error.response)
+
+    if (error.response.data.detail === ARTIST_DOES_NOT_EXIST) {
+        router.push('artist-not-found')
+        console.log("push page not found")
+    }
     if (error.response.data.message === 'Token has expired') {
-        return axios.post(import.meta.env.VITE_API_REFRESH_TOKEN, {
+        return apiAxios.post(import.meta.env.VITE_API_REFRESH_TOKEN, {
             headers: {
                 'authorization': `JWT ${localStorage.getItem('accessToken')}`
             }

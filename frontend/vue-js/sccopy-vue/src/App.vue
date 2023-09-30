@@ -11,25 +11,29 @@ export default {
 
     beforeCreate() {       
         this.$store.commit("accessModule/SET_AUTHENTICATION_DATA")   
-        this.$store.commit("currentArtist/SET_CURRENT_ARTIST_DATA")
-        // this.$store.dispatch("currentArtist/GET_CURRENT_ARTIST_DATA")
+        //this.$store.commit("currentArtist/SET_CURRENT_ARTIST_DATA")
+        //this.$store.dispatch("currentArtist/GET_CURRENT_ARTIST_DATA", this.$route.params.artist)
+        console.log("!!!!", this.$route.path)
         
     },
 
     mounted() {
-        // this.upadateToken()        
+        // this.upadateToken()  
+             
     },
 
     computed: {
         layout() {
             return this.$route.meta.layout || 'default-layout'
-        }
+        },        
     },
     
 
     methods: {
         // upadateToken() {}        
-    }
+    },
+
+      
 
 }
 

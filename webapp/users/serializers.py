@@ -49,7 +49,8 @@ class LoginUserSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'password', 'email',]
         extra_kwargs = {
             'password': { 'write_only': True },
-            'username': { 'read_only': True }
+            'username': { 'read_only': True },
+            'email': { 'write_only': True },
         }
 
 

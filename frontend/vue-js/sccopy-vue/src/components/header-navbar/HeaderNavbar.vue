@@ -2,7 +2,7 @@
 
 <div class="container-header-navbar">
     <!-- site logo -->
-    <div class="header-logo">
+    <div :class="[userIsAuthenticated ? 'header-logo' : 'header-logo-big']">
         <a href="/">
             <font-awesome-icon icon="fa-brands fa-soundcloud" class="logo-icon"/>
         </a>
@@ -105,6 +105,8 @@ import SearchNavbar from '@/components/header-navbar/SearchNavbar.vue'
 import NotificationNavbar from '@/components/header-navbar/NotificationNavbar.vue'
 import LetterNavbar from '@/components/header-navbar/LetterNavbar.vue'
 
+import { userIsAuthenticatedMixin } from '@/mixins'
+
 export default {   
     name: "HeaderNavbar", 
     components: {
@@ -113,19 +115,18 @@ export default {
         LetterNavbar,        
     },
     
+    mixins: [userIsAuthenticatedMixin],
+    
     data() {
         return {
             isShowProfileMenu: false,
-            isShowDottingsMenu: false,  
-            userIsAuthenticated: false, 
+            isShowDottingsMenu: false,
             AvatarImageSmall: null,         
         }
     },
 
     computed: {
-        getUserStatus() {
-            this.userIsAuthenticated = this.$store.getters["accessModule/IS_AUTHENTICATED"]
-        },
+        
         getAvatar() {
             this.AvatarImageSmall = this.$store.getters["currentArtist/AVATAR_IMAGE_SMALL"]    
             
@@ -133,9 +134,7 @@ export default {
     },
 
     watch: {
-        getUserStatus() {
-            this.userIsAuthenticated         
-        },
+        
         getAvatar() {            
             this.AvatarImageSmall            
         },
@@ -234,6 +233,13 @@ export default {
     background: #111;
     height: 46px;
     width: 70px;
+    text-align: center;
+}
+
+.header-logo-big {
+    background: #111;
+    height: 46px;
+    width: 154px;
     text-align: center;
 }
 

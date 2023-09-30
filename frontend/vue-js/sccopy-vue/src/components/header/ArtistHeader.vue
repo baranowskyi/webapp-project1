@@ -17,8 +17,9 @@
                 
             </div>
             <div class="artist-data"> 
-                <div class="nick-name">{{currentArtistData.displayName}} ({{ currentUser }})                
+                <div class="nick-name">{{currentArtistData.displayName}}                
                     <font-awesome-icon  v-if="currentArtistData.verification" icon="fa-solid fa-circle-check" style="color: #3588d8; background-color: white; border-radius: 50%;" />
+                    {{ currentUser }} 
                 </div>  
                 <div class="name-block">
                     <div v-if="currentArtistData.firstName" class="name">{{currentArtistData.firstName}}</div>
@@ -47,17 +48,21 @@
 
 export default {
     data() {
-        return {                      
+        return {   
+                                           
         }
     },
+
     computed: {
         currentUser() {
             return this.$store.getters["accessModule/USER_NAME"]            
         },
         currentArtistData() {
             return this.$store.getters["currentArtist/ALL_ARTIST_DATA"]
-        },        
-    },   
+        }, 
+             
+    },
+    
     
 }
 

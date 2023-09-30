@@ -1,19 +1,39 @@
 <template>
     <div class="navbar-content-right">  
-            <button class="navbar-content-right-button orange-button navbar-content-right-button-insights"><font-awesome-icon icon="fa-solid fa-chart-column" style="color: #fff;" />&nbsp Your Insights</button>          
+            <button v-if="userIsAuthenticated" class="navbar-content-right-button orange-button navbar-content-right-button-insights"><font-awesome-icon icon="fa-solid fa-chart-column" style="color: #fff;" />&nbsp Your Insights</button>          
             <button class="navbar-content-right-button navbar-content-right-button-station"><font-awesome-icon icon="fa-solid fa-tower-cell" />&nbsp Station</button> 
             <button class="navbar-content-right-button navbar-content-right-button-follow orange-button"><font-awesome-icon icon="fa-solid fa-user-plus" style="color: #fff;" />&nbsp Follow</button>           
             <button class="navbar-content-right-button navbar-content-right-button-share"><font-awesome-icon icon="fa-solid fa-share-from-square" />&nbsp Share</button>
-            <button class="navbar-content-right-button navbar-content-right-button-edit"><font-awesome-icon icon="fa-solid fa-pen" />&nbsp Edit</button>
-            <button class="navbar-content-right-button navbar-content-right-button-letter"><font-awesome-icon icon="fa-solid fa-envelope" /></button>
-            <button class="navbar-content-right-button navbar-content-right-button-dots"><font-awesome-icon icon="fa-solid fa-ellipsis" /></button>
+            <button v-if="userIsAuthenticated" class="navbar-content-right-button navbar-content-right-button-edit"><font-awesome-icon icon="fa-solid fa-pen" />&nbsp Edit</button>
+            <button v-if="userIsAuthenticated" class="navbar-content-right-button navbar-content-right-button-letter"><font-awesome-icon icon="fa-solid fa-envelope" /></button>
+            <button v-if="userIsAuthenticated" class="navbar-content-right-button navbar-content-right-button-dots"><font-awesome-icon icon="fa-solid fa-ellipsis" /></button>
         </div>
 </template>
 
 <script>
 
 export default {
-    name: "ContentNavbarRightMenu",
+    name: "ContentNavbarRightMenu",  
+
+    data() {
+        return {             
+            userIsAuthenticated: false,
+                    
+        }
+    },
+
+    computed: {
+        getUserStatus() {
+            this.userIsAuthenticated = this.$store.getters["accessModule/IS_AUTHENTICATED"]
+        },              
+    },
+
+    watch: {
+        getUserStatus() {
+            this.userIsAuthenticated         
+        },        
+        
+    },
 }
 
 </script>

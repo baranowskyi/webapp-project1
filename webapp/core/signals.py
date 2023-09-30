@@ -23,7 +23,7 @@ def create_artist(sender, instance, created, **kwargs):
             avatar_image=services.get_default_avatar_image(),
             avatar_image_small=services.get_default_avatar_image_small(),
             header_image=services.get_default_header_image(),
-            profile_url=services.get_default_artist_profile_url()
+            # profile_url=services.get_default_artist_profile_url()
             )  
 
 

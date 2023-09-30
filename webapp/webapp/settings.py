@@ -243,8 +243,8 @@ CORS_ALLOW_HEADERS = (
 
 SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("JWT",),
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=1),
-    "REFRESH_TOKEN_LIFETIME": timedelta(minutes=10),    
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=120),
+    "REFRESH_TOKEN_LIFETIME": timedelta(minutes=180),    
     "SIGNING_KEY": os.environ.get("SECRET_KEY_JWT"),
 }
 
