@@ -3,8 +3,10 @@
 <div class="container-header-navbar">
     <!-- site logo -->
     <div :class="[userIsAuthenticated ? 'header-logo' : 'header-logo-big']">
-        <a href="/">
-            <font-awesome-icon icon="fa-brands fa-soundcloud" class="logo-icon"/>
+        <a href="/"> 
+            <font-awesome-icon  v-if="userIsAuthenticated" icon="fa-brands fa-soundcloud" class="logo-icon"/>
+            <img class="img-logo-big" v-else src="@/assets/media/logo/site-logo-big.png">            
+            
         </a>
     </div>
 
@@ -231,16 +233,21 @@ export default {
 
 .header-logo {
     background: #111;
-    height: 46px;
+    height: 47px;
     width: 70px;
     text-align: center;
 }
 
 .header-logo-big {
     background: #111;
-    height: 46px;
+    height: 47px;
     width: 154px;
     text-align: center;
+}
+
+.img-logo-big {
+    height: 47px;
+    width: 154px;
 }
 
 .logo-icon {
@@ -443,6 +450,8 @@ export default {
 /*********************** dotting button end *****************************************************/
 
 
+
+/*********************** main style */
 
 a {
     color: #cccccc;

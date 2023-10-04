@@ -18,7 +18,7 @@
             </div>
             <div class="artist-data"> 
                 <div class="nick-name">{{currentArtistData.displayName}}                
-                    <font-awesome-icon  v-if="currentArtistData.verification" icon="fa-solid fa-circle-check" style="color: #3588d8; background-color: white; border-radius: 50%;" />
+                    <font-awesome-icon icon="fa-solid fa-circle-check" v-if="currentArtistData.verification" style="color: #3588d8; background-color: white; border-radius: 50%;" />
                     {{ currentUser }} 
                 </div>  
                 <div class="name-block">

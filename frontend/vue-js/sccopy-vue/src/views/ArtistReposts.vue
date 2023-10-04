@@ -6,7 +6,7 @@
             <img src="@/assets/media/no-content/no-content-artist-reposts.png" class="no-content-img">
             <div class="no-content-text-up"></div>
             <div class="no-content-text-down">
-                ${} hasn’t reposted any sounds yet.
+                {{ artistDisplayName }} hasn’t reposted any sounds yet.
             </div>
         </div>
     </div>    
@@ -17,6 +17,12 @@
 
 
 <script>
+
+import { artistDisplayNameMixin } from '@/mixins'
+
+export default {
+    mixins: [ artistDisplayNameMixin ]
+}
 
 </script>
 

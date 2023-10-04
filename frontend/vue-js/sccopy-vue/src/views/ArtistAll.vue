@@ -11,7 +11,7 @@
                 Nothing to hear here        
             </div>
             <div class="no-content-text-down">
-                Follow {} for updates on sounds they share in the future.
+                Follow {{ artistDisplayName }} for updates on sounds they share in the future.
             </div>
         </div> 
     </div>  
@@ -22,6 +22,12 @@
 
 
 <script>
+
+import { artistDisplayNameMixin } from '@/mixins'
+
+export default {
+    mixins: [ artistDisplayNameMixin ]
+}
 
 </script>
 

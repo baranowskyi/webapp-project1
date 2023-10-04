@@ -24,6 +24,8 @@
                         <div class="right-artist-following"></div>
                         <div class="right-artist-last-comments"></div>
                         <div class="right-artist-another-info"></div>
+                        <MobileAppLinks />
+                        <FooterInfo />
                     </div>
                 </div> 
             </div>
@@ -42,6 +44,8 @@ import ArtistHeader from '@/components/header/ArtistHeader.vue'
 import ModalArtistAvatar from '@/components/modal/ModalArtistAvatar.vue'
 import ContentNavbar from '@/components/content-navbar/ContentNavbar.vue'
 import FooterPlayer from '@/components/footer-player/FooterPlayer.vue'
+import FooterInfo from '@/components/info/FooterInfo.vue'
+import MobileAppLinks from '@/components/info/MobileAppLinks.vue'
 
 
 export default {
@@ -52,6 +56,8 @@ export default {
         ArtistHeader,
         ModalArtistAvatar,
         FooterPlayer, 
+        FooterInfo,
+        MobileAppLinks,
         ContentNavbar,       
         RouterView,
         

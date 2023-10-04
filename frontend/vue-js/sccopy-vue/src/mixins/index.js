@@ -20,3 +20,26 @@ export const userIsAuthenticatedMixin = {
     }
 
 }
+
+
+export const artistDisplayNameMixin = {
+
+    data() {
+        return {             
+            artistDisplayName: null                    
+        }
+    },
+
+    computed: {
+        getArtistDisplayName() {
+            this.artistDisplayName = this.$store.getters["currentArtist/DISPLAY_NAME"]
+        }            
+    },
+
+    watch: {
+        getArtistDisplayName() {
+            this.artistDisplayName         
+        }
+    }
+
+}

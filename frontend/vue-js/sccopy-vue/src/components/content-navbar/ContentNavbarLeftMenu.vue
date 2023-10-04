@@ -99,13 +99,14 @@ export default {
     },
 
     computed: {
-        getArtistFromRoute() {  
-            const getData = this.$store.dispatch('currentArtist/GET_CURRENT_ARTIST_DATA', this.$route.params.artist)            
-            if (getData === "400 Bad Request") {
-                this.$router.push('artist-not-found')
-            }
-            else {
+        getArtistFromRoute() { 
+     
+            if (this.$route.params.artist) {
+                this.$store.dispatch('currentArtist/GET_CURRENT_ARTIST_DATA', this.$route.params.artist)
                 return this.$route.params.artist
+            }      
+            else {
+                this.$router.push('artist-not-found')
             }
             
         }

@@ -14,12 +14,12 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 // import specific icons
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
-//import { far } from '@fortawesome/free-regular-svg-icons'
+import { far } from '@fortawesome/free-regular-svg-icons'
 
 //-----------------------------------------------------------
 
 // add icons FontAwesome to the library
-library.add(fas, fab)
+library.add(fas, fab, far)
 
 axios.defaults.baseURL = import.meta.env.VITE_MAIN_URL // default axios main URL (http://127.0.0.1:8000) from .env
 axios.defaults.headers.post['Content-Type'] = 'application/json'
